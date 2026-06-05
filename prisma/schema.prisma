@@ -1,0 +1,278 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Bảng Khoa (Faculty)
+model Faculty {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique // Tên khoa (VD: Khoa CNTT, Khoa Ngoại ngữ)
+  users     User[]   // Một khoa có nhiều sinh viên
+  createdAt DateTime @default(now())
+}
+
+// Bảng Người dùng (Tình nguyện viên, Admin, Thầy cô...)
+model User {
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  password         String
+  fullName         String
+  avatar           String?
+  role             Role              @default(VOLUNTEER) 
+  phone            String?            
+  dob              String?            
+  gender           Gender?           
+  studentId        String?
+  donations   Donation[]
+  
+  // Địa chỉ lưu trú & Tọa độ để quét khoảng cách gần nhất
+  address          String?           @db.Text // Địa chỉ lưu trú (VD: "95 Tăng Nhơn Phú, Phước Long B, Q9")
+  lat              Float?            // Vĩ độ (Latitude) của nơi ở
+  lng              Float?            // Kinh độ (Longitude) của nơi ở
+resetPasswordOtp      String?   // Lưu mã 6 số
+  resetPasswordExpires  DateTime? // Lưu thời gian hết hạn
+  isVerified        Boolean   @default(false) // Trạng thái đã xác thực email hay chưa
+  verifyOtp         String?   // Mã OTP 6 số để xác thực
+  verifyOtpExpires  DateTime? // Thời gian hết hạn của OTP (5 phút)
+  // Các mối quan hệ liên kết bảng
+  facultyId        Int?              // Cho phép null nếu Admin/BTC không thuộc khoa nào
+  faculty          Faculty?          @relation(fields: [facultyId], references: [id])
+  pointEvaluations PointEvaluation[] // Điểm rèn luyện trực tuyến theo kỳ
+  registrations    Registration[]    // 1 User có thể đăng ký nhiều Chiến dịch
+  itemDonations    ItemDonation[]    // Danh sách vật phẩm quyên góp
+  moments          Moment[]          // Các bài viết khoảnh khắc đã đăng lên bảng tin
+  comments         Comment[]         // Các bình luận tương tác
+  createdAt        DateTime          @default(now())
+}
+
+// Danh mục chiến dịch (Category)
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique // Tên danh mục (Môi trường, Giáo dục...)
+  description String?    // Mô tả ngắn
+  campaigns   Campaign[] // Một danh mục có nhiều chiến dịch
+  createdAt   DateTime   @default(now())
+}
+
+// Bảng Chiến dịch tình nguyện
+model Campaign {
+  id                  Int            @id @default(autoincrement())
+  title               String
+  description         String         @db.Text
+  image               String?
+  requiredVolunteers Int
+  startDate           DateTime
+  endDate             DateTime
+  status              CampaignStatus @default(OPEN)
+  type                CampaignType   @default(ORGANIZATION)
+  
+  // 🌟 THÊM 2 DÒNG NÀY VÀO ĐỂ QUẢN LÝ QUỸ TIỀN MẶT CHIẾN DỊCH
+  targetAmount        Float          @default(0) // Số tiền mục tiêu cần đạt
+  currentAmount       Float          @default(0) // Số tiền hiện tại tích lũy (Ban đầu bằng 0)
+
+  donations           Donation[]
+  createdAt           DateTime       @default(now())
+  location            String
+  lat                 Float?
+  lng                 Float?
+  categoryId          Int?
+  category            Category?      @relation(fields: [categoryId], references: [id])
+  registrations       Registration[]
+  itemDonations       ItemDonation[]
+  moments             Moment[]
+}
+
+// Bảng Đơn đăng ký (Bảng trung gian quản lý thành viên chiến dịch)
+model Registration {
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  campaignId Int
+  status     RegStatus  @default(PENDING) 
+  appliedAt  DateTime   @default(now())
+
+  // Khóa ngoại liên kết
+  user       User       @relation(fields: [userId], references: [id])
+  campaign   Campaign   @relation(fields: [campaignId], references: [id])
+  
+  // Liên kết 1-nhiều với Task và Evaluation
+  tasks       Task[]
+  evaluations Evaluation[]
+}
+
+// Quản lý Nhiệm vụ (Task) phân công cho Tình nguyện viên
+model Task {
+  id             Int          @id @default(autoincrement())
+  registrationId Int          
+  taskName       String       
+  description    String?      @db.Text 
+  status         TaskStatus   @default(TODO) 
+  createdAt      DateTime     @default(now())
+
+  registration   Registration @relation(fields: [registrationId], references: [id])
+}
+
+// Đánh giá & Ghi nhận (Evaluation) sau khi kết thúc nhiệm vụ
+model Evaluation {
+  id             Int          @id @default(autoincrement())
+  registrationId Int          
+  rating         Int          // Số sao đánh giá (Ví dụ: 1 đến 5 sao)
+  comment        String       @db.Text 
+  evaluatedAt    DateTime     @default(now())
+
+  registration   Registration @relation(fields: [registrationId], references: [id])
+}
+
+// Bảng Banner Quảng cáo / Slide trình chiếu trang chủ
+model Banner {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  imageUrl  String
+  link      String?  // Đường dẫn điều hướng khi click banner
+  active    Boolean  @default(true) // Ẩn/hiện banner linh hoạt
+  createdAt DateTime @default(now())
+}
+
+// Bảng Quản lý Quyên góp Vật phẩm (Sách, Quần áo...)
+model ItemDonation {
+  id         Int      @id @default(autoincrement())
+  campaignId Int
+  userId     Int
+  type       String   // Loại vật phẩm (Sách cũ, Quần áo, Mỳ tôm...)
+  quantity   String   // Số lượng / Tình trạng đóng gói
+  date       String   // Dự kiến ngày mang đến giao
+  note       String?  // Ghi chú thêm từ người quyên góp
+  status     String   @default("PENDING") // Trạng thái: PENDING (Chờ nhận), RECEIVED (Đã nhận)
+  createdAt  DateTime @default(now())
+
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Bảng Lưu trữ Bài đăng Nhật ký / Khoảnh khắc Mạng xã hội
+model Moment {
+  id         Int       @id @default(autoincrement())
+  title      String    
+  content    String?   @db.Text // Bài viết tâm sự / nhật ký chi tiết
+  location   String?   
+  date       DateTime  
+  likes      Int       @default(0) // Lượt thích thật
+  shares     Int       @default(0) // Lượt chia sẻ thật
+  createdAt  DateTime  @default(now())
+  
+  media      Media[]   // Một bài đăng chứa được Album nhiều Ảnh/Video cùng lúc
+
+  campaignId Int?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  userId     Int?
+  user       User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  comments   Comment[] // Các lượt bình luận tại chỗ công khai
+}
+
+// Bảng Bình luận tương tác dưới bài đăng Newsfeed
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.Text    
+  createdAt DateTime @default(now())
+
+  momentId  Int
+  moment    Moment   @relation(fields: [momentId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Bảng chứa tệp đa phương tiện của Album bài viết
+model Media {
+  id       Int    @id @default(autoincrement())
+  url      String // Đường dẫn file (/uploads/...)
+  type     String // Định dạng phân loại phân biệt: "IMAGE" hoặc "VIDEO"
+  momentId Int
+  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+}
+
+// Bảng Lưu phiếu điểm rèn luyện trực tuyến của Sinh viên
+model PointEvaluation {
+  id             Int      @id @default(autoincrement())
+  semester       String   // Học kỳ (VD: "Học kỳ I", "Học kỳ II")
+  academicYear   String   // Năm học (VD: "2025-2026")
+  
+  // Điểm số phân phối theo 4 mục lớn quy chuẩn
+  scoreI         Int      @default(0) // Mục I: Ý thức học tập (Tối đa 25)
+  scoreII        Int      @default(0) // Mục II: Chấp hành nội quy (Tối đa 25)
+  scoreIII       Int      @default(0) // Mục III: Hoạt động CT-XH, tình nguyện (Tối đa 35)
+  scoreIV        Int      @default(0) // Mục IV: Công tác cán bộ lớp, Đoàn thể (Tối đa 15)
+  
+  // Điểm cộng khích lệ và Điểm phạt vi phạm nằm ngoài khung 100
+  scoreBonus     Int      @default(0) // Mục V: Điểm cộng khuyến khích (Tối đa 20)
+  scorePenalty   Int      @default(0) // Mục VI: Điểm trừ vi phạm quy chế
+  
+  totalScore     Int      @default(0) // Tổng điểm rèn luyện cuối cùng (Tối đa 100)
+  status         String   @default("STUDENT_SUBMITTED") // Trạng thái phê duyệt: STUDENT_SUBMITTED, ADVISOR_APPROVED
+  classification String   // Phân loại tự động: Xuất sắc, Tốt, Khá, Trung bình, Chưa đạt
+
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+}
+model Post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String   @db.Text
+  image       String?
+  createdAt   DateTime @default(now())
+}
+model Donation {
+  id          Int      @id @default(autoincrement())
+  orderId     String   @unique // Mã giao dịch duy nhất (Ví dụ: DONATE-17171717)
+  amount      Float    // Số tiền quyên góp
+  status      String   @default("PENDING") // Trạng thái: PENDING (Chờ), SUCCESS (Thành công), FAILED (Thất bại)
+  content     String?  // Lời nhắn gửi từ người quyên góp
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Liên kết tới chiến dịch nhận tiền
+  campaignId  Int
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  // Liên kết tới người dùng quyên góp (ẩn danh nếu chưa đăng nhập thì để optional ?)
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+// ================= ĐỊNH NGHĨA CÁC ĐIỀU HƯỚNG ENUM CỐ ĐỊNH =================
+enum Role {
+  ADMIN 
+  ORGANIZATION
+  VOLUNTEER
+}
+
+enum CampaignStatus {
+  OPEN
+  CLOSED
+  COMPLETED
+}
+
+enum RegStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TaskStatus {
+  TODO
+  DOING
+  DONE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum CampaignType {
+  INDIVIDUAL
+  ORGANIZATION
+}
