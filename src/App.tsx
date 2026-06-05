@@ -19,7 +19,10 @@ import Footer from './components/Footer';
 import LatestNewsSection from './components/LatestNewsSection';
 import NewsDetail from './pages/NewsDetail';
 import NewsPage from './pages/NewsPage';
+import PaymentReturn from './pages/PaymentReturn';
 import Profile from './pages/Profile';
+import DonationPage from './pages/DonationPage';
+import ForgotPassword from './pages/ForgotPassword';
 
 // ─── Page transition wrapper ──────────────────────
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -75,6 +78,9 @@ function AppInner() {
             <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
             <Route path="/news" element={<PageWrapper><NewsPage /></PageWrapper>} />
             <Route path="/news/:id" element={<PageWrapper><NewsDetail /></PageWrapper>} />
+            <Route path="/payment-return" element={<PageWrapper><PaymentReturn /></PageWrapper>} />
+            <Route path="/campaign/:id/donate" element={<DonationPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </AnimatePresence>
       </main>

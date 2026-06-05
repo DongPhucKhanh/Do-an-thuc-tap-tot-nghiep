@@ -227,7 +227,7 @@ export default function Footer() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {/* Email */}
-              <a href="mailto:volunteer@university.edu.vn" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', textDecoration: 'none' }}>
+              <a href="khanh0387093523@gmail.com" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', textDecoration: 'none' }}>
                 <div style={{
                   width: '30px', height: '30px', borderRadius: '8px',
                   backgroundColor: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.25)',
@@ -242,13 +242,13 @@ export default function Footer() {
                     onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#e2e8f0'}
                     onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#94a3b8'}
                   >
-                    volunteer@university.edu.vn
+                    khanh0387093523@gmail.com
                   </div>
                 </div>
               </a>
 
               {/* Phone */}
-              <a href="tel:+842838xxxxxx" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', textDecoration: 'none' }}>
+              <a href="tel:0376xxxxxx" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', textDecoration: 'none' }}>
                 <div style={{
                   width: '30px', height: '30px', borderRadius: '8px',
                   backgroundColor: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.2)',
@@ -260,7 +260,7 @@ export default function Footer() {
                 <div>
                   <div style={{ fontSize: '11px', color: '#475569', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '2px' }}>Điện thoại</div>
                   <div style={{ fontSize: '13.5px', color: '#94a3b8' }}>
-                    (028) 3838 xxxx
+                    (037) 6xxxxxx
                   </div>
                 </div>
               </a>
@@ -278,9 +278,8 @@ export default function Footer() {
                 <div>
                   <div style={{ fontSize: '11px', color: '#475569', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '2px' }}>Địa chỉ</div>
                   <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: '1.5' }}>
-                    Trường Đại học Công nghệ<br />
-                    Thông tin — ĐHQG TP.HCM<br />
-                    Khu phố 6, Linh Trung, Thủ Đức
+                    Trường Cao đẳng Công Thương TP.HCM<br />
+                    20 Tăng Nhơn Phú, Phước Long, Hồ Chí Minh 700000
                   </div>
                 </div>
               </div>
@@ -348,7 +347,7 @@ export default function Footer() {
           <p style={{ fontSize: '13px', color: '#475569', margin: 0 }}>
             © {currentYear} ThienNguyen Platform. Được xây dựng với{' '}
             <Heart size={12} style={{ display: 'inline', color: '#e11d48', marginBottom: '-1px' }} />{' '}
-            bởi sinh viên UIT.
+            bởi sinh viên HITU.
           </p>
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
             {['Chính sách bảo mật', 'Điều khoản', 'Cookie'].map((text, i) => (
