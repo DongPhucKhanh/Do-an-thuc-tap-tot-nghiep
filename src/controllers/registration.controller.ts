@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import * as registrationService from '../services/registration.service';
 import { AuthRequest } from '../middlewares/auth.middleware';
+import { sendCampaignApprovalEmail,sendCampaignRejectionEmail } from '../utils/email.util';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -45,6 +46,40 @@ export const updateStatus = async (req: AuthRequest, res: Response): Promise<voi
 
         const result = await registrationService.updateRegistrationStatus(regId, status);
         
+        // 🌟 XỬ LÝ LÔ-GÍC BẮN EMAIL CHO CẢ 2 TRƯỜNG HỢP ĐẬU / RỚT
+        const regInfo = await prisma.registration.findUnique({
+            where: { id: regId },
+            include: {
+                user: true,
+                campaign: true
+            }
+        });
+
+        if (regInfo && regInfo.user && regInfo.campaign) {
+            const volunteerName = regInfo.user.fullName || 'Tình nguyện viên';
+            const campaignTitle = regInfo.campaign.title; // Đổi thành .name nếu DB mày dùng chữ name
+
+            if (status === 'APPROVED') {
+                const timeStr = regInfo.campaign.startDate 
+                    ? new Date(regInfo.campaign.startDate).toLocaleString('vi-VN') 
+                    : 'Sẽ thông báo sau';
+
+                await sendCampaignApprovalEmail(
+                    regInfo.user.email,
+                    volunteerName,
+                    campaignTitle,
+                    timeStr,
+                    regInfo.campaign.location || 'Sẽ thông báo sau'
+                );
+            } else if (status === 'REJECTED') {
+                await sendCampaignRejectionEmail(
+                    regInfo.user.email,
+                    volunteerName,
+                    campaignTitle
+                );
+            }
+        }
+
         res.status(200).json({
             message: `Đã cập nhật trạng thái thành ${status}!`,
             data: result
