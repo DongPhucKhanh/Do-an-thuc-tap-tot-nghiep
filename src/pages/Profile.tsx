@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
-import { Grid, Heart, MessageSquare, Camera, Settings, MapPin, Phone, Mail, User, Calendar, Shield, X, Edit2, Share2 } from 'lucide-react';
+import { Heart, MessageSquare, Camera, X, Edit2, Share2, FileText, Users, Award, Gift, CalendarCheck, MapPin } from 'lucide-react';
 import api from '../api/axios';
 
 export default function Profile() {
     const [profileData, setProfileData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const coverInputRef = useRef<HTMLInputElement>(null);
 
-    // 🌟 STATE ĐÓNG/MỞ MODAL CẬP NHẬT THÔNG TIN
+    // STATE TABS
+    const [activeTab, setActiveTab] = useState<'activities' | 'achievements' | 'campaigns' | 'donations'>('activities');
+
+    // STATE ĐÓNG/MỞ MODAL CẬP NHẬT THÔNG TIN
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     
-    // 🌟 STATE ĐÓNG/MỞ MODAL XEM CHI TIẾT BÀI VIẾT (MỚI THÊM)
+    // STATE ĐÓNG/MỞ MODAL XEM CHI TIẾT BÀI VIẾT (MỚI THÊM)
     const [selectedMoment, setSelectedMoment] = useState<any>(null);
 
     const [editForm, setEditForm] = useState({
@@ -64,6 +68,29 @@ export default function Profile() {
         }
     };
 
+    const handleCoverClick = () => { coverInputRef.current?.click(); };
+
+    const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            const formData = new FormData();
+            formData.append('coverPhoto', file);
+            
+            formData.append('fullName', editForm.fullName); formData.append('phone', editForm.phone);
+            formData.append('studentId', editForm.studentId); formData.append('faculty', editForm.faculty);
+            formData.append('dob', editForm.dob); formData.append('gender', editForm.gender);
+            formData.append('address', editForm.address);
+
+            try {
+                await api.put('/users/profile', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+                alert('🎉 Cập nhật ảnh bìa mới thành công!');
+                fetchProfile();
+            } catch (error) {
+                alert('Lỗi khi tải ảnh bìa lên server!');
+            }
+        }
+    };
+
     const handleUpdateProfileSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const formData = new FormData();
@@ -85,112 +112,273 @@ export default function Profile() {
         }
     };
 
-    if (loading) return <div className="flex justify-center items-center min-h-[60vh] text-gray-400 font-medium">Đang kết nối luồng dữ liệu trang cá nhân...</div>;
+    const renderTabContent = () => {
+        switch (activeTab) {
+            case 'activities':
+                return (
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4">Bài đăng khoảnh khắc</h3>
+                        <div className="grid grid-cols-3 gap-1 sm:gap-4 mt-4">
+                            {profileData?.moments?.length === 0 ? (
+                                <div className="col-span-3 text-center py-12 text-gray-400 text-sm font-medium">Bạn chưa có bài viết khoảnh khắc nào.</div>
+                            ) : (
+                                profileData?.moments?.map((moment: any) => {
+                                    const firstMedia = moment.media && moment.media.length > 0 ? moment.media[0] : null;
+                                    let mediaUrl = 'https://placehold.co/400x400/f1f5f9/94a3b8?text=Moment';
+                                    let isVideo = false;
+
+                                    if (firstMedia) {
+                                        mediaUrl = firstMedia.url.startsWith('http') ? firstMedia.url : `http://localhost:5000${firstMedia.url}`;
+                                        isVideo = firstMedia.type === 'VIDEO' || mediaUrl.toLowerCase().endsWith('.mp4');
+                                    }
+
+                                    return (
+                                        <div 
+                                            key={moment.id} 
+                                            onClick={() => setSelectedMoment(moment)}
+                                            className="relative aspect-square overflow-hidden bg-gray-100 group rounded-xl cursor-pointer"
+                                        >
+                                            {isVideo ? (
+                                                <video src={mediaUrl} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" muted playsInline />
+                                            ) : (
+                                                <img src={mediaUrl} alt={moment.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/e2e8f0/94a3b8?text=Image'; }} />
+                                            )}
+                                            
+                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-bold text-sm">
+                                                <span className="flex items-center gap-1"><Heart size={16} className="fill-current" /> {moment.likes || 0}</span>
+                                                <span className="flex items-center gap-1"><MessageSquare size={16} className="fill-current" /> {moment.shares || 0}</span>
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </div>
+                );
+            case 'achievements':
+                return (
+                    <div className="flex flex-col items-center justify-center py-16 text-center">
+                        <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mb-4">
+                            <Award size={40} className="text-orange-500" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">Thành tựu của bạn</h3>
+                        <p className="text-gray-500 text-sm max-w-md">
+                            Tính năng vinh danh và cấp huy hiệu theo số lượng chiến dịch tham gia đang được phát triển. Bạn hãy chờ nhé!
+                        </p>
+                    </div>
+                );
+            case 'campaigns':
+                return (
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4">Chiến dịch đã tham gia</h3>
+                        {(!profileData?.registrations || profileData.registrations.length === 0) ? (
+                            <div className="text-center py-12 text-gray-400 text-sm font-medium">Bạn chưa đăng ký tham gia chiến dịch nào.</div>
+                        ) : (
+                            <div className="space-y-4">
+                                {profileData.registrations.map((reg: any) => (
+                                    <div key={reg.id} className="flex items-start gap-4 p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-all">
+                                        <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 shrink-0">
+                                            <CalendarCheck size={24} />
+                                        </div>
+                                        <div className="flex-1">
+                                            <h4 className="font-bold text-gray-800">{reg.campaign?.title}</h4>
+                                            <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                                <MapPin size={12} /> {reg.campaign?.location || 'Không có địa điểm'}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <span className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold ${reg.status === 'APPROVED' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}`}>
+                                                {reg.status === 'APPROVED' ? 'Đã duyệt' : 'Chờ duyệt'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            case 'donations':
+                return (
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4">Lịch sử Ủng hộ</h3>
+                        
+                        <div className="space-y-6">
+                            {/* Tiền mặt */}
+                            <div>
+                                <h4 className="font-semibold text-gray-700 mb-3 text-sm flex items-center gap-2"><Heart size={16} className="text-red-500" /> Quyên góp tiền mặt</h4>
+                                {(!profileData?.donations || profileData.donations.length === 0) ? (
+                                    <p className="text-xs text-gray-400 italic">Chưa có giao dịch quyên góp tiền.</p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {profileData.donations.map((d: any) => (
+                                            <div key={d.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                                                <div>
+                                                    <p className="font-bold text-gray-800 text-sm">{d.campaign?.title}</p>
+                                                    <p className="text-xs text-gray-500 mt-0.5">{new Date(d.createdAt).toLocaleDateString('vi-VN')}</p>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="font-bold text-green-600">+{d.amount.toLocaleString()} đ</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Hiện vật */}
+                            <div>
+                                <h4 className="font-semibold text-gray-700 mb-3 text-sm flex items-center gap-2 mt-6"><Gift size={16} className="text-orange-500" /> Quyên góp vật phẩm</h4>
+                                {(!profileData?.itemDonations || profileData.itemDonations.length === 0) ? (
+                                    <p className="text-xs text-gray-400 italic">Chưa có quyên góp vật phẩm.</p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {profileData.itemDonations.map((d: any) => (
+                                            <div key={d.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                                                <div>
+                                                    <p className="font-bold text-gray-800 text-sm">{d.campaign?.title}</p>
+                                                    <p className="text-xs text-gray-600 mt-0.5 font-medium">{d.type} - {d.quantity}</p>
+                                                </div>
+                                                <div>
+                                                    <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${d.status === 'RECEIVED' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}>
+                                                        {d.status === 'RECEIVED' ? 'Đã nhận' : 'Chờ nhận'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+        }
+    };
+
+    if (loading) return <div className="flex justify-center items-center min-h-screen text-gray-400 font-medium bg-[#f2f4f7]">Đang tải trang cá nhân...</div>;
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8 bg-[#fbfbfb] min-h-screen">
+        <div className="bg-[#f2f4f7] min-h-screen pb-12">
             
-            {/* ================= HEADER PROFILE ================= */}
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-8 md:gap-16 border-b pb-12 mb-8">
-                <div className="relative group cursor-pointer shrink-0" onClick={handleAvatarClick}>
-                    <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden p-1 bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 shadow-md">
-                        <div className="w-full h-full bg-white rounded-full p-1">
-                            <img src={profileData?.avatar ? (profileData.avatar.startsWith('http') ? profileData.avatar : `http://localhost:5000${profileData.avatar}`) : 'https://placehold.co/150x150/e2e8f0/94a3b8?text=Avatar'} alt="avatar" className="w-full h-full object-cover rounded-full" />
-                        </div>
-                    </div>
-                    <div className="absolute inset-1 rounded-full bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all">
-                        <Camera size={24} className="animate-pulse" />
-                    </div>
-                    <input type="file" ref={fileInputRef} onChange={handleAvatarChange} accept="image/*" className="hidden" />
-                </div>
-
-                <div className="space-y-5 flex-1 w-full text-center md:text-left">
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <h2 className="text-xl sm:text-2xl font-light text-gray-800 tracking-wide">{profileData?.fullName}</h2>
-                        <div className="flex gap-2">
-                            <button onClick={() => setIsEditModalOpen(true)} className="flex items-center gap-1 px-5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold rounded-lg transition-all border">
-                                <Edit2 size={12} /> Chỉnh sửa trang cá nhân
-                            </button>
-                            <button className="p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg border">
-                                <Settings size={14} />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-center md:justify-start gap-10 text-sm sm:text-base border-y sm:border-y-0 py-3 sm:py-0">
-                        <p className="text-gray-500 font-medium"><span className="text-gray-900 font-extrabold">{profileData?.moments?.length || 0}</span> bài viết</p>
-                        <p className="text-gray-500 font-medium"><span className="text-gray-900 font-extrabold">{profileData?.totalLikes || 0}</span> lượt thích</p>
-                        <p className="text-gray-500 font-medium"><span className="text-gray-900 font-extrabold">🎖️ {profileData?.faculty || 'Học viên'}</span></p>
-                    </div>
-
-                    <div className="text-xs sm:text-sm font-semibold text-gray-600 space-y-1.5 max-w-md">
-                        <p className="text-gray-900 font-black uppercase tracking-wider text-[10px] bg-blue-50 text-blue-600 inline-block px-2.5 py-0.5 rounded-md border border-blue-100">🛡️ Quyền: {profileData?.role}</p>
-                        <p className="flex items-center justify-center md:justify-start gap-1.5"><Mail size={13} className="text-gray-400" /> {profileData?.email}</p>
-                        <p className="flex items-center justify-center md:justify-start gap-1.5"><Phone size={13} className="text-gray-400" /> {profileData?.phone || 'Chưa có số điện thoại'}</p>
-                        <p className="flex items-center justify-center md:justify-start gap-1.5"><Calendar size={13} className="text-gray-400" /> NS: {profileData?.dob || 'Chưa cập nhật ngày sinh'}</p>
-                        <p className="flex items-center justify-center md:justify-start gap-1.5 truncate"><MapPin size={13} className="text-gray-400" /> Nơi ở: {profileData?.address || 'Chưa có địa chỉ lưu trú'}</p>
-                    </div>
-                </div>
+            {/* ================= HEADER BÌA ================= */}
+            <div className="relative w-full h-[250px] md:h-[350px]">
+                {/* Ảnh bìa */}
+                <img 
+                    src={profileData?.coverPhoto ? (profileData.coverPhoto.startsWith('http') ? profileData.coverPhoto : `http://localhost:5000${profileData.coverPhoto}`) : 'https://placehold.co/1920x600/f97316/ffffff?text=Anh+bia'} 
+                    className="w-full h-full object-cover" 
+                    alt="cover" 
+                />
+                <button onClick={handleCoverClick} className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/70 text-white px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm backdrop-blur-sm transition-all shadow-sm">
+                    <Camera size={16} /> <span className="hidden sm:inline">Chỉnh sửa ảnh bìa</span>
+                </button>
+                <input type="file" ref={coverInputRef} onChange={handleCoverChange} accept="image/*" className="hidden" />
             </div>
 
-            <div className="flex justify-center border-t border-gray-200 tracking-wider">
-                <div className="flex items-center gap-1.5 px-4 py-3 border-t border-black -mt-[1px] text-xs font-bold uppercase text-gray-900 cursor-pointer">
-                    <Grid size={14} /> Bài đăng khoảnh khắc
-                </div>
-            </div>
+            {/* ================= THÔNG TIN & TABS ================= */}
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="relative bg-white rounded-b-2xl shadow-sm -mt-4 pt-16 sm:pt-20 px-4 sm:px-8 pb-0 mb-6 flex flex-col items-center sm:items-start">
+                    
+                    {/* Avatar */}
+                    <div 
+                        className="absolute -top-16 sm:-top-20 w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-white overflow-hidden bg-white shadow-md cursor-pointer group left-1/2 sm:left-8 -translate-x-1/2 sm:translate-x-0"
+                        onClick={handleAvatarClick}
+                    >
+                        <img 
+                            src={profileData?.avatar ? (profileData.avatar.startsWith('http') ? profileData.avatar : `http://localhost:5000${profileData.avatar}`) : 'https://placehold.co/150x150/f97316/ffffff?text=Avatar'} 
+                            alt="avatar" 
+                            className="w-full h-full object-cover" 
+                        />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all">
+                            <Camera size={24} />
+                        </div>
+                        <input type="file" ref={fileInputRef} onChange={handleAvatarChange} accept="image/*" className="hidden" />
+                    </div>
 
-            {/* ================= LƯỚI ẢNH GRID ================= */}
-            <div className="grid grid-cols-3 gap-1 sm:gap-6 mt-4">
-                {profileData?.moments?.length === 0 ? (
-                    <div className="col-span-3 text-center py-16 text-gray-400 text-xs font-medium">Sếp chưa có bài viết khoảnh khắc nào.</div>
-                ) : (
-                    profileData?.moments?.map((moment: any) => {
-                        const firstMedia = moment.media && moment.media.length > 0 ? moment.media[0] : null;
-                        let mediaUrl = 'https://placehold.co/400x400/f1f5f9/94a3b8?text=Moment';
-                        let isVideo = false;
+                    {/* Info & Buttons */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start w-full relative mb-6 pl-0 sm:pl-44">
+                        <div className="text-center sm:text-left mt-2 sm:mt-0">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{profileData?.fullName}</h1>
+                            <p className="text-gray-500 text-sm mt-0.5">
+                                @{profileData?.studentId || profileData?.email?.split('@')[0]}
+                            </p>
+                            <div className="flex items-center justify-center sm:justify-start gap-4 mt-3 text-sm text-gray-600 font-medium">
+                                <span className="flex items-center gap-1.5"><FileText size={16} className="text-gray-400" /> {profileData?.totalPosts || 0} bài viết</span>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-2 mt-4 sm:mt-0">
+                            <button onClick={() => setIsEditModalOpen(true)} className="flex items-center gap-1.5 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg text-sm transition-all shadow-sm">
+                                <Edit2 size={16} /> Chỉnh sửa thông tin
+                            </button>
+                            <button className="p-2 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg transition-all">
+                                <Share2 size={18} />
+                            </button>
+                        </div>
+                    </div>
 
-                        if (firstMedia) {
-                            mediaUrl = firstMedia.url.startsWith('http') ? firstMedia.url : `http://localhost:5000${firstMedia.url}`;
-                            isVideo = firstMedia.type === 'VIDEO' || mediaUrl.toLowerCase().endsWith('.mp4');
-                        }
-
-                        return (
-                            <div 
-                                key={moment.id} 
-                                // 🌟 GẮN SỰ KIỆN CLICK VÀO ĐÂY ĐỂ MỞ MODAL XEM CHI TIẾT
-                                onClick={() => setSelectedMoment(moment)}
-                                className="relative aspect-square overflow-hidden bg-gray-900 group border rounded-xl shadow-2sm cursor-pointer"
+                    {/* Tabs */}
+                    <div className="flex gap-6 sm:gap-10 w-full border-t border-gray-100 justify-center sm:justify-start overflow-x-auto no-scrollbar pt-1">
+                        {[
+                            { id: 'activities', label: 'Hoạt động' },
+                            { id: 'achievements', label: 'Thành tựu' },
+                            { id: 'campaigns', label: 'Chiến dịch đồng hành' },
+                            { id: 'donations', label: 'Ủng hộ' }
+                        ].map(tab => (
+                            <button 
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id as any)}
+                                className={`pb-4 pt-3 px-1 text-sm font-bold whitespace-nowrap transition-all border-b-[3px] ${
+                                    activeTab === tab.id 
+                                        ? 'border-orange-500 text-orange-500' 
+                                        : 'border-transparent text-gray-500 hover:text-gray-800'
+                                }`}
                             >
-                                {isVideo ? (
-                                    <video src={mediaUrl} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" muted playsInline />
-                                ) : (
-                                    <img src={mediaUrl} alt={moment.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/e2e8f0/94a3b8?text=Image'; }} />
-                                )}
-                                
-                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-bold text-sm sm:text-base cursor-pointer">
-                                    <span className="flex items-center gap-1.5"><Heart size={18} className="fill-current" /> {moment.likes || 0}</span>
-                                    <span className="flex items-center gap-1.5"><MessageSquare size={18} className="fill-current" /> {moment.shares || 0}</span>
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* ================= MAIN CONTENT 2 CỘT ================= */}
+                <div className="flex flex-col lg:flex-row gap-6">
+                    
+                    {/* Cột trái - Tab Content */}
+                    <div className="flex-1 bg-white rounded-2xl shadow-sm p-6 min-h-[400px]">
+                        {renderTabContent()}
+                    </div>
+
+                    {/* Cột phải - Thẻ thống kê */}
+                    <div className="w-full lg:w-[350px] shrink-0">
+                        <div className="bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl shadow-md text-white p-6 sticky top-6">
+                            <h3 className="text-orange-50 font-medium text-sm">Đã ủng hộ và đồng hành</h3>
+                            <div className="text-3xl font-bold mt-1 mb-6">
+                                {(profileData?.totalDonatedAmount || 0).toLocaleString()} đ
+                            </div>
+                            
+                            <div className="flex gap-4">
+                                <div className="flex-1 bg-white/20 rounded-xl p-3 backdrop-blur-sm">
+                                    <Users size={20} className="text-orange-100 mb-2" />
+                                    <div className="font-bold text-2xl">{profileData?.registrations?.length || 0}</div>
+                                    <div className="text-xs text-orange-100 font-medium mt-1">chiến dịch đã tham gia</div>
+                                </div>
+                                <div className="flex-1 bg-white/20 rounded-xl p-3 backdrop-blur-sm">
+                                    <Heart size={20} className="text-orange-100 mb-2" />
+                                    <div className="font-bold text-2xl">{profileData?.totalDonationCount || 0}</div>
+                                    <div className="text-xs text-orange-100 font-medium mt-1">lượt ủng hộ</div>
                                 </div>
                             </div>
-                        );
-                    })
-                )}
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
 
-            {/* ========================================================================
-                ================= MODAL BUNG TO XEM CHI TIẾT KHOẢNH KHẮC =================
-                ======================================================================== */}
+            {/* ================= MODAL BUNG TO XEM CHI TIẾT KHOẢNH KHẮC ================= */}
             {selectedMoment && (
                 <div 
                     className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50 animate-fade-in"
-                    onClick={() => setSelectedMoment(null)} // Bấm ra ngoài khoảng đen sẽ đóng
+                    onClick={() => setSelectedMoment(null)}
                 >
-                    {/* Ngăn sự kiện click xuyên qua cục màu trắng */}
-                    <div 
-                        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh]"
-                        onClick={(e) => e.stopPropagation()} 
-                    >
-                        {/* Header của Popup */}
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center p-4 border-b">
                             <div className="flex items-center gap-2">
                                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase">
@@ -205,18 +393,13 @@ export default function Profile() {
                                 <X size={18} />
                             </button>
                         </div>
-
-                        {/* Nội dung bên trong (Cuộn được nếu ảnh dài) */}
                         <div className="overflow-y-auto">
-                            {/* Khu vực hiển thị File Media (Hỗ trợ lướt xem nhiều file nếu có) */}
                             {selectedMoment.media && selectedMoment.media.length > 0 && (
                                 <div className="bg-black flex flex-col items-center justify-center w-full gap-1">
                                     {selectedMoment.media.map((file: any, index: number) => {
                                         const mediaUrl = file.url.startsWith('http') ? file.url : `http://localhost:5000${file.url}`;
                                         const isVideo = file.type === 'VIDEO' || mediaUrl.toLowerCase().endsWith('.mp4');
-                                        
                                         return isVideo ? (
-                                            // 🌟 Bật controls để kéo thời gian video, object-contain để không bị cắt xén
                                             <video key={index} src={mediaUrl} controls autoPlay className="max-h-[60vh] w-full object-contain bg-black" />
                                         ) : (
                                             <img key={index} src={mediaUrl} alt="media" className="max-h-[60vh] w-full object-contain bg-black" />
@@ -224,15 +407,9 @@ export default function Profile() {
                                     })}
                                 </div>
                             )}
-                            
-                            {/* Khu vực Caption và Title */}
                             <div className="p-5 space-y-3">
                                 <h3 className="font-bold text-lg text-gray-900">{selectedMoment.title}</h3>
-                                {selectedMoment.content && (
-                                    <p className="text-gray-700 text-sm whitespace-pre-wrap leading-relaxed">{selectedMoment.content}</p>
-                                )}
-                                
-                                {/* Thống kê tương tác */}
+                                {selectedMoment.content && <p className="text-gray-700 text-sm whitespace-pre-wrap leading-relaxed">{selectedMoment.content}</p>}
                                 <div className="flex items-center gap-5 text-sm text-gray-500 font-bold pt-4 border-t mt-4">
                                     <span className="flex items-center gap-1.5"><Heart size={18} className="text-red-500" /> {selectedMoment.likes || 0} Thích</span>
                                     <span className="flex items-center gap-1.5"><MessageSquare size={18} className="text-blue-500" /> {selectedMoment.comments?.length || 0} Bình luận</span>
@@ -244,10 +421,9 @@ export default function Profile() {
                 </div>
             )}
 
-            {/* ================= MODAL CẬP NHẬT THÔNG TIN (ĐÃ ẨN GỌN DƯỚI NÀY, GIỮ NGUYÊN) ================= */}
+            {/* ================= MODAL CẬP NHẬT THÔNG TIN ================= */}
             {isEditModalOpen && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-                    {/* ... (Code form cập nhật của mày ở đây, tao thu gọn để tập trung cái ở trên) ... */}
                     <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100 animate-fade-in">
                         <div className="bg-gray-900 p-4 text-white flex justify-between items-center">
                             <h3 className="font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center gap-1.5">📝 Cập nhật thông tin tài khoản</h3>

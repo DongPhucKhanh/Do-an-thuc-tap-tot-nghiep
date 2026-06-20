@@ -14,6 +14,8 @@ export default function DonationPage() {
     const [content, setContent] = useState<string>('');
     const [fullName, setFullName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+    const [studentId, setStudentId] = useState<string>('');
+    const [faculty, setFaculty] = useState<string>('');
     const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 
     const [orderId, setOrderId] = useState<string>('');
@@ -125,7 +127,11 @@ export default function DonationPage() {
                 orderId: newOrderId,
                 amount: numericAmount,
                 campaignId: Number(id),
-                content: textNote
+                content: content,
+                guestName: isAnonymous ? 'Ẩn danh' : fullName,
+                guestEmail: isAnonymous ? '' : email,
+                guestStudentId: isAnonymous ? '' : studentId,
+                guestFaculty: isAnonymous ? '' : faculty
             });
 
             // 2. Tạo đường dẫn QR
@@ -467,7 +473,7 @@ export default function DonationPage() {
                                             <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a', marginBottom: '16px' }}>Thông tin của bạn</h4>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div className="space-y-2">
-                                                    <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block' }}>Họ và tên</label>
+                                                    <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block' }}>Họ và tên <span style={{ color: '#ef4444' }}>*</span></label>
                                                     <input
                                                         type="text"
                                                         disabled={isAnonymous}
@@ -481,11 +487,38 @@ export default function DonationPage() {
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block' }}>Địa chỉ Email</label>
+                                                    <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block' }}>Mã số sinh viên <span style={{ color: '#ef4444' }}>*</span></label>
+                                                    <input
+                                                        type="text"
+                                                        disabled={isAnonymous}
+                                                        required={!isAnonymous}
+                                                        placeholder="Nhập MSSV"
+                                                        value={studentId}
+                                                        onChange={(e) => setStudentId(e.target.value)}
+                                                        style={{ ...inputStyle, opacity: isAnonymous ? 0.45 : 1 }}
+                                                        onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#f97316'}
+                                                        onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#e2e8f0'}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block' }}>Khoa <span style={{ color: '#ef4444' }}>*</span></label>
+                                                    <input
+                                                        type="text"
+                                                        disabled={isAnonymous}
+                                                        required={!isAnonymous}
+                                                        placeholder="Ví dụ: Khoa CNTT"
+                                                        value={faculty}
+                                                        onChange={(e) => setFaculty(e.target.value)}
+                                                        style={{ ...inputStyle, opacity: isAnonymous ? 0.45 : 1 }}
+                                                        onFocus={e => (e.target as HTMLInputElement).style.borderColor = '#f97316'}
+                                                        onBlur={e => (e.target as HTMLInputElement).style.borderColor = '#e2e8f0'}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label style={{ fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block' }}>Địa chỉ Email (Không bắt buộc)</label>
                                                     <input
                                                         type="email"
                                                         disabled={isAnonymous}
-                                                        required={!isAnonymous}
                                                         placeholder="Nhập địa chỉ email"
                                                         value={email}
                                                         onChange={(e) => setEmail(e.target.value)}
