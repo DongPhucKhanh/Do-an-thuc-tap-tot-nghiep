@@ -22,6 +22,7 @@ model User {
   password         String
   fullName         String
   avatar           String?
+  coverPhoto       String?
   role             Role              @default(VOLUNTEER) 
   phone            String?            
   dob              String?            
@@ -230,6 +231,10 @@ model Donation {
   amount      Float    // Số tiền quyên góp
   status      String   @default("PENDING") // Trạng thái: PENDING (Chờ), SUCCESS (Thành công), FAILED (Thất bại)
   content     String?  // Lời nhắn gửi từ người quyên góp
+  guestName   String?
+  guestStudentId String?
+  guestFaculty String?
+  guestEmail   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

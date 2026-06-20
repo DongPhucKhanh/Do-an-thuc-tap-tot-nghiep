@@ -48,7 +48,7 @@ router.post('/reset-password', resetPassword);               // API đặt lại
 // =========================================================
 // Nhúng middleware upload.single('avatar') đón đầu tệp tin gửi lên
 router.get('/profile', verifyToken, getProfile);
-router.put('/profile', verifyToken, upload.single('avatar'), updateProfile); 
+router.put('/profile', verifyToken, upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'coverPhoto', maxCount: 1 }]), updateProfile); 
 router.post('/verify-email', verifyEmailOtp);
 // =========================================================
 // API QUẢN TRỊ (ADMIN)

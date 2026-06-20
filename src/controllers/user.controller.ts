@@ -68,8 +68,24 @@ export const getProfile = async (req: AuthRequest, res: Response): Promise<void>
                 faculty: true,
                 // 🌟 Lấy thêm danh sách bài đăng khoảnh khắc và tệp media để vẽ Grid Instagram
                 moments: {
-                    include: { media: true },
+                    include: { media: true, comments: true },
                     orderBy: { createdAt: 'desc' }
+                },
+                // 🌟 Lấy danh sách quyên góp tiền (chỉ lấy trạng thái SUCCESS để tính tổng tiền hợp lệ)
+                donations: {
+                    where: { status: 'SUCCESS' },
+                    include: { campaign: true },
+                    orderBy: { createdAt: 'desc' }
+                },
+                // 🌟 Lấy danh sách quyên góp vật phẩm
+                itemDonations: {
+                    include: { campaign: true },
+                    orderBy: { createdAt: 'desc' }
+                },
+                // 🌟 Lấy danh sách chiến dịch đã tham gia
+                registrations: {
+                    include: { campaign: true },
+                    orderBy: { appliedAt: 'desc' }
                 }
             } 
         });
@@ -82,11 +98,19 @@ export const getProfile = async (req: AuthRequest, res: Response): Promise<void>
         // 🌟 Tính tổng số lượt tim tích lũy từ tất cả các bài đăng của sinh viên này
         const totalLikes = userProfile.moments.reduce((sum, current) => sum + current.likes, 0);
 
+        // 🌟 Tính tổng số tiền đã ủng hộ
+        const totalDonatedAmount = userProfile.donations.reduce((sum, current) => sum + current.amount, 0);
+
+        // 🌟 Tính tổng lượt ủng hộ (tiền + hiện vật)
+        const totalDonationCount = userProfile.donations.length + userProfile.itemDonations.length;
+
         const formattedData = {
             ...userProfile,
             faculty: userProfile.faculty?.name || '', // Ép tên Khoa ra thành chuỗi text cho Frontend dễ đọc
             totalPosts: userProfile.moments.length, // Tổng số bài viết hiển thị ở Header
-            totalLikes: totalLikes                  // Tổng số tim thật tích lũy
+            totalLikes: totalLikes,                 // Tổng số tim thật tích lũy
+            totalDonatedAmount,                     // Tổng số tiền donate
+            totalDonationCount                      // Tổng lượt ủng hộ
         };
         
         res.status(200).json({
@@ -171,8 +195,10 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
         const userId = req.user.id; 
         const { fullName, phone, studentId, faculty, dob, gender, address } = req.body;
 
-        // 🌟 1. Kiểm tra nếu sinh viên có đăng tải tệp tin Avatar mới từ Máy ảnh / Thư viện
-        const avatarUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+        // 🌟 1. Kiểm tra nếu sinh viên có đăng tải tệp tin Avatar hoặc CoverPhoto mới
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        const avatarUrl = files && files['avatar'] ? `/uploads/${files['avatar'][0].filename}` : undefined;
+        const coverPhotoUrl = files && files['coverPhoto'] ? `/uploads/${files['coverPhoto'][0].filename}` : undefined;
 
         // 🌟 2. Ép kiểu dữ liệu tọa độ địa lý truyền lên từ map
         const lat = req.body.lat ? parseFloat(req.body.lat) : undefined;
@@ -206,7 +232,8 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
                 address,                               // Địa chỉ lưu trú text
                 lat,                                   // Vĩ độ radar vị trí gần nhất
                 lng,                                   // Kinh độ radar vị trí gần nhất
-                ...(avatarUrl && { avatar: avatarUrl }) // Chỉ cập nhật trường avatar nếu có file ảnh thật truyền lên
+                ...(avatarUrl && { avatar: avatarUrl }), // Chỉ cập nhật trường avatar nếu có file ảnh thật truyền lên
+                ...(coverPhotoUrl && { coverPhoto: coverPhotoUrl })
             }
         });
 

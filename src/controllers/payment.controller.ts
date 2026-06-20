@@ -5,8 +5,9 @@ import prisma from '../config/prisma';
 export const createFakePending = async (req: Request, res: Response): Promise<void> => {
     try {
         // Ép kiểu ép phom chắc chắn orderId là string bằng từ khóa 'as string'
+        // Ép kiểu ép phom chắc chắn orderId là string bằng từ khóa 'as string'
         const orderId = req.body.orderId as string;
-        const { amount, campaignId, userId } = req.body;
+        const { amount, campaignId, userId, guestName, guestStudentId, guestFaculty, guestEmail, content } = req.body;
 
         if (!amount || isNaN(amount) || amount <= 0) {
             res.status(400).json({ error: "Số tiền quyên góp không hợp lệ!" });
@@ -27,7 +28,12 @@ export const createFakePending = async (req: Request, res: Response): Promise<vo
                 amount: Number(amount),
                 campaignId: Number(campaignId),
                 userId: userId ? Number(userId) : null,
-                status: "PENDING"
+                status: "PENDING",
+                content: content || null,
+                guestName: guestName || null,
+                guestStudentId: guestStudentId || null,
+                guestFaculty: guestFaculty || null,
+                guestEmail: guestEmail || null
             }
         });
 
@@ -141,6 +147,102 @@ export const forceSuccessPayment = async (req: Request, res: Response): Promise<
         
     } catch (error: any) {
         console.error("[FORCE SUCCESS ERROR]:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// 🌟 4. API Lấy tất cả lịch sử giao dịch quyên góp cho Admin
+export const getAllDonations = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const donations = await prisma.donation.findMany({
+            include: {
+                user: {
+                    select: {
+                        fullName: true,
+                        studentId: true,
+                        email: true,
+                        faculty: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                },
+                campaign: {
+                    select: {
+                        title: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        const formattedDonations = donations.map(d => ({
+            id: d.id,
+            orderId: d.orderId,
+            amount: d.amount,
+            status: d.status,
+            createdAt: d.createdAt,
+            studentName: d.user?.fullName || d.guestName || null,
+            studentId: d.user?.studentId || d.guestStudentId || null,
+            faculty: d.user?.faculty?.name || d.guestFaculty || null,
+            email: d.user?.email || d.guestEmail || null,
+            campaignName: d.campaign?.title || null,
+            campaignId: d.campaignId,
+            content: d.content || null
+        }));
+
+        res.status(200).json({ success: true, data: formattedDonations });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// 🌟 5. API Cập nhật trạng thái giao dịch cho Admin
+export const updateDonationStatus = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body; 
+
+        const donation = await prisma.donation.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (!donation) {
+            res.status(404).json({ error: 'Không tìm thấy đơn quyên góp' });
+            return;
+        }
+
+        if (donation.status === 'SUCCESS' || donation.status === 'REJECTED') {
+            res.status(400).json({ error: 'Đơn quyên góp đã được xử lý' });
+            return;
+        }
+
+        if (status === 'SUCCESS') {
+            await prisma.$transaction([
+                prisma.donation.update({
+                    where: { id: Number(id) },
+                    data: { status: 'SUCCESS' }
+                }),
+                prisma.campaign.update({
+                    where: { id: donation.campaignId },
+                    data: { currentAmount: { increment: donation.amount } }
+                })
+            ]);
+        } else if (status === 'REJECTED') {
+             await prisma.donation.update({
+                where: { id: Number(id) },
+                data: { status: 'REJECTED' }
+            });
+        } else {
+             res.status(400).json({ error: 'Trạng thái không hợp lệ' });
+             return;
+        }
+
+        res.status(200).json({ success: true, message: 'Cập nhật trạng thái thành công' });
+    } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 };
