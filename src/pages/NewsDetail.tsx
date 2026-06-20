@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, ArrowLeft, Clock, BookOpen, User } from 'lucide-react';
 import api from '../api/axios'; // Đường dẫn axios của sếp
+import ArticleReader from '../components/ArticleReader'; // 🚀 IMPORT NÚT NGHE BÀI VIẾT VÀO ĐÂY
 
 export default function NewsDetail() {
     const { id } = useParams<{ id: string }>(); // Bóc tách ID từ URL trên trình duyệt
@@ -80,6 +81,14 @@ export default function NewsDetail() {
                         <h1 className="text-xl sm:text-3xl font-black text-slate-900 leading-tight tracking-tight">
                             {post.title}
                         </h1>
+
+                        {/* 🚀 GỌI NÚT ĐỌC VĂN BẢN (TEXT-TO-SPEECH) Ở ĐÂY 🚀 */}
+                        <div className="pt-2">
+                            <ArticleReader 
+                                title={post.title} 
+                                content={post.content || ''} 
+                            />
+                        </div>
                     </div>
 
                     {/* Hình ảnh lớn tiêu điểm nằm giữa bài viết */}

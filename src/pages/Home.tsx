@@ -240,6 +240,127 @@ function CampaignSlider({ id, campaigns, loading }: { id: string; campaigns: any
 }
 
 // ════════════════════════════════════════════════════
+//  COMPONENT MỚI: TỔ CHỨC ĐỒNG HÀNH NỔI BẬT (Style Nền Cam)
+// ════════════════════════════════════════════════════
+const TopOrganizations = () => {
+  // Data giả lập các tổ chức/CLB nổi bật (Mày có thể call API thay thế sau)
+  const orgs = [
+    {
+      id: 1,
+      name: 'Đoàn Thanh niên Trường',
+      handle: '@doanthanhnien',
+      desc: 'Tổ chức chính trị - xã hội của thanh niên, dẫn dắt các phong trào tình nguyện cốt lõi và các chiến dịch Mùa Hè Xanh toàn trường.',
+      statLabel: 'Lượt tình nguyện viên',
+      statValue: '12,450',
+      logo: 'https://images.unsplash.com/photo-1560252829-804f1aedf1be?q=80&w=200&auto=format&fit=crop', // Thay bằng logo thực tế
+    },
+    {
+      id: 2,
+      name: 'Đội Công tác Xã hội',
+      handle: '@congtacxahoi',
+      desc: 'Tập hợp những trái tim nhiệt huyết, chuyên tổ chức các chương trình thiện nguyện, mái ấm nhà mở và hiến máu nhân đạo.',
+      statLabel: 'Lượt tình nguyện viên',
+      statValue: '8,320',
+      logo: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=200&auto=format&fit=crop',
+    },
+    {
+      id: 3,
+      name: 'Câu lạc bộ Môi trường',
+      handle: '@greenclub',
+      desc: 'Hành động vì một môi trường xanh - sạch - đẹp. Thường xuyên tổ chức các chiến dịch dọn rác, trồng cây và tái chế.',
+      statLabel: 'Lượt tình nguyện viên',
+      statValue: '5,100',
+      logo: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=200&auto=format&fit=crop',
+    }
+  ];
+
+  return (
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px 80px' }}>
+      <div style={{ 
+        position: 'relative', 
+        backgroundColor: '#f97316', // Màu cam rực rỡ y hệt ảnh mẫu
+        backgroundImage: 'radial-gradient(circle at top right, #fb923c, #ea580c)',
+        borderRadius: '24px', 
+        padding: '40px 32px 56px',
+        overflow: 'hidden',
+        boxShadow: '0 10px 30px rgba(234, 88, 12, 0.2)'
+      }}>
+        
+        {/* Họa tiết trang trí nền (Wavy background effect) */}
+        <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '300px', height: '300px', borderRadius: '50%', border: '40px solid rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-20%', left: '10%', width: '200px', height: '200px', borderRadius: '50%', border: '20px solid rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
+
+        {/* Tiêu đề Component */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '64px', position: 'relative', zIndex: 10 }}>
+          <h2 style={{ fontSize: '28px', fontWeight: 800, color: 'white', letterSpacing: '-0.02em', margin: 0 }}>
+            Tổ chức, Câu lạc bộ nổi bật
+          </h2>
+        </div>
+
+        {/* Lưới chứa các Thẻ (Cards) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', position: 'relative', zIndex: 10 }}>
+          {orgs.map((org) => (
+            <div key={org.id} style={{ 
+              backgroundColor: 'white', 
+              borderRadius: '20px', 
+              padding: '48px 24px 24px', 
+              textAlign: 'center', 
+              position: 'relative',
+              marginTop: '40px', // Đẩy thẻ xuống để chừa chỗ cho logo nổi lên
+              boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+              transition: 'transform 0.3s ease'
+            }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = 'translateY(-5px)'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'}
+            >
+              {/* Logo bay lơ lửng */}
+              <div style={{
+                position: 'absolute',
+                top: '-40px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                backgroundColor: 'white',
+                padding: '4px',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.08)'
+              }}>
+                <img src={org.logo} alt={org.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              </div>
+
+              {/* Thông tin Tổ chức */}
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>{org.name}</h3>
+              <p style={{ fontSize: '13px', color: '#f97316', fontWeight: 600, marginBottom: '12px' }}>{org.handle}</p>
+              
+              <p style={{ 
+                fontSize: '13.5px', color: '#64748b', lineHeight: 1.6, marginBottom: '24px', 
+                display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' 
+              }}>
+                {org.desc}
+              </p>
+
+              {/* Số liệu nổi bật */}
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '4px' }}>{org.statLabel}</div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#ea580c' }}>
+                  {org.statValue} <span style={{ fontSize: '14px', fontWeight: 600 }}>TNV</span>
+                </div>
+              </div>
+
+              {/* Nút Call to Action */}
+             
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+
+// ════════════════════════════════════════════════════
 //  MAIN HOME COMPONENT
 // ════════════════════════════════════════════════════
 export default function Home() {
@@ -669,10 +790,10 @@ export default function Home() {
       </div>
 
       {/* ══════════════════════════════════════════
-          5. STATS SECTION
+          5. STATS SECTION (Đồng hành cùng cộng đồng)
       ══════════════════════════════════════════ */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px' }}>
-
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px 60px' }}>
+        
         {/* Section header */}
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <motion.div
@@ -716,8 +837,11 @@ export default function Home() {
         </div>
       </div>
 
+      {/* 🚀 BANNER SLIDER NẰM CHÍNH XÁC Ở ĐÂY (DƯỚI STATS - TRÊN NEWS) 🚀 */}
+      <TopOrganizations />
+
       {/* ══════════════════════════════════════════
-          6. NEWS SECTION
+          6. NEWS SECTION (Tin tức & Câu chuyện Tình nguyện)
       ══════════════════════════════════════════ */}
       <LatestNewsSection />
 

@@ -23,8 +23,8 @@ export default function Gallery() {
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
   const [campaignId, setCampaignId] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // Đổi thành mảng chứa nhiều file
-  const [previews, setPreviews] = useState<PreviewItem[]>([]); // Mảng chứa nhiều link xem trước
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<PreviewItem[]>([]);
   const [submittingPost, setSubmittingPost] = useState(false);
 
   const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
@@ -49,7 +49,6 @@ export default function Gallery() {
     fetchData();
   }, []);
 
-  // Xử lý khi người dùng quét chọn nhiều file (Cả ảnh và video) cùng lúc
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
@@ -63,7 +62,6 @@ export default function Gallery() {
     }
   };
 
-  // Xóa bớt file trong hàng chờ preview
   const removeSelectedFile = (index: number) => {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index));
     setPreviews(prev => prev.filter((_, i) => i !== index));
@@ -85,7 +83,6 @@ export default function Gallery() {
     if (campaignId) formData.append('campaignId', campaignId);
     if (currentUser.id) formData.append('userId', currentUser.id);
 
-    // 🌟 KỸ THUẬT GỬI MẢNG FILE: Append tuần tự toàn bộ file vào cùng 1 key 'media'
     selectedFiles.forEach(file => {
       formData.append('media', file);
     });
@@ -159,7 +156,7 @@ export default function Gallery() {
     <div className="min-h-screen bg-[#f0f2f5] py-8 px-4">
       <div className="max-w-[620px] mx-auto space-y-5">
         
-        {/* ================= HỘP TẠO BÀI ĐĂNG FACEBOOK CHỌN ĐA FILE ================= */}
+        {/* ================= HỘP TẠO BÀI ĐĂNG ================= */}
         {currentUser.id ? (
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 space-y-4">
             <div className="flex items-center gap-3">
@@ -186,7 +183,6 @@ export default function Gallery() {
               </div>
 
               <div className="flex items-center justify-between border-t border-slate-100 pt-3">
-                {/* Chấp nhận đa định dạng file thông qua multiple và accept video/* */}
                 <label className="flex items-center gap-2 text-slate-600 hover:bg-slate-50 px-3 py-2 rounded-xl cursor-pointer text-xs sm:text-sm font-bold transition-all">
                   <ImageIcon size={18} className="text-emerald-500" />
                   <span>Chọn Ảnh / Video *</span>
@@ -198,13 +194,14 @@ export default function Gallery() {
                 </button>
               </div>
 
-              {/* Lưới hiển thị danh sách file xem trước (Preview) */}
+              {/* Lưới preview ảnh/video trước khi đăng */}
               {previews.length > 0 && (
                 <div className="grid grid-cols-3 gap-2 mt-2 max-h-48 overflow-y-auto p-1 bg-slate-50 rounded-xl border">
                   {previews.map((item, index) => (
-                    <div key={index} className="h-20 rounded-lg overflow-hidden border bg-black relative group">
+                    <div key={index} className="h-20 rounded-lg overflow-hidden border bg-black relative group flex items-center justify-center">
                       {item.type === 'VIDEO' ? (
-                        <video src={item.url} className="w-full h-full object-cover" />
+                        // Fix 1: Chuyển cover thành contain trong Preview
+                        <video src={item.url} className="w-full h-full object-contain" />
                       ) : (
                         <img src={item.url} className="w-full h-full object-cover" />
                       )}
@@ -223,7 +220,7 @@ export default function Gallery() {
           </div>
         )}
 
-        {/* ================= LUỒNG TIMELINE HIỂN THỊ BÀI VIẾT ================= */}
+        {/* ================= LUỒNG TIMELINE ================= */}
         {loading && moments.length === 0 ? (
           <div className="flex items-center justify-center py-10 text-slate-500 text-xs font-semibold gap-2"><Loader2 size={16} className="animate-spin text-blue-600" /> Đang cập nhật bảng tin...</div>
         ) : moments.length === 0 ? (
@@ -232,11 +229,10 @@ export default function Gallery() {
           moments.map((moment) => {
             const isLiked = likedMoments.includes(moment.id);
             const isCommentOpen = showCommentBoxId === moment.id;
+            const isSingleMedia = moment.media && moment.media.length === 1;
 
             return (
               <div key={moment.id} className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
-                
-                {/* Header bài viết */}
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm uppercase font-mono">
@@ -259,31 +255,41 @@ export default function Gallery() {
                   <button className="text-slate-400 p-2 hover:bg-slate-50 rounded-full"><MoreHorizontal size={16} /></button>
                 </div>
 
-                {/* Caption / Nội dung text */}
                 <div className="px-4 pb-3 space-y-2 text-xs sm:text-sm text-slate-800 leading-relaxed">
                   <h4 className="font-bold text-slate-950 text-[14.5px]">{moment.title}</h4>
                   {moment.content && <p className="text-slate-700 font-normal">{moment.content}</p>}
                 </div>
 
-                {/* 🌟 THAY ĐỔI LỚN: KHU VỰC HIỂN THỊ ALBUM LƯỚI ẢNH/VIDEO KIỂU FACEBOOK */}
+                {/* 🌟 FIX 2: BẢNG TIN ALBUM ẢNH / VIDEO */}
                 {moment.media && moment.media.length > 0 && (
-                  <div className={`grid gap-1 bg-slate-100 border-y ${
-                    moment.media.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
-                  }`}>
+                  <div className={`grid gap-1 bg-black border-y ${isSingleMedia ? 'grid-cols-1' : 'grid-cols-2'}`}>
                     {moment.media.slice(0, 4).map((file: any, index: number) => {
                       const fileSrc = file.url.startsWith('http') ? file.url : `http://localhost:5000${file.url}`;
                       
                       return (
-                        <div key={file.id} className="relative h-64 bg-slate-900 overflow-hidden flex items-center justify-center">
+                        <div 
+                          key={file.id} 
+                          // Nếu có 1 hình/video thì cho tự do kéo giãn (max 80vh), nếu nhiều thì ép cao 64
+                          className={`relative bg-black overflow-hidden flex items-center justify-center ${isSingleMedia ? 'max-h-[80vh] w-full' : 'h-64'}`}
+                        >
                           {file.type === 'VIDEO' ? (
-                            <video src={fileSrc} controls className="w-full h-full object-cover" />
+                            <video 
+                              src={fileSrc} 
+                              controls 
+                              // Video luôn dùng contain để không bị méo/bó chiều
+                              className="w-full h-full object-contain" 
+                            />
                           ) : (
-                            <img src={fileSrc} alt="Media content" className="w-full h-full object-cover" />
+                            <img 
+                              src={fileSrc} 
+                              alt="Media content" 
+                              // Ảnh thì nếu có 1 tấm cho contain, nhiều tấm thì cover để lưới đều
+                              className={`w-full h-full ${isSingleMedia ? 'object-contain' : 'object-cover'}`} 
+                            />
                           )}
 
-                          {/* Nếu có nhiều hơn 4 file, hiển thị nhãn phủ "+X lượt" giống FB */}
                           {index === 3 && moment.media.length > 4 && (
-                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xl font-bold">
+                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xl font-bold cursor-pointer hover:bg-black/70">
                               +{moment.media.length - 4}
                             </div>
                           )}
@@ -293,7 +299,6 @@ export default function Gallery() {
                   </div>
                 )}
 
-                {/* Thống kê tương tác */}
                 <div className="px-4 py-2 flex items-center justify-between border-b text-xs text-slate-500 font-medium">
                   <div className="flex items-center gap-1">
                     <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-[8px]"><ThumbsUp size={9} fill="currentColor" /></div>
@@ -306,7 +311,6 @@ export default function Gallery() {
                   </div>
                 </div>
 
-                {/* Thanh Nút bấm hành động */}
                 <div className="px-1.5 py-0.5 flex items-center justify-between border-b text-slate-600 font-bold text-xs sm:text-sm">
                   <button onClick={() => toggleLike(moment.id)} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl hover:bg-slate-50 transition-all ${isLiked ? 'text-blue-600' : 'hover:text-slate-900'}`}>
                     <ThumbsUp size={16} fill={isLiked ? "currentColor" : "none"} /> Thích
@@ -319,7 +323,6 @@ export default function Gallery() {
                   </button>
                 </div>
 
-                {/* Khung bình luận tại chỗ (Inline Comments) */}
                 {isCommentOpen && (
                   <div className="bg-slate-50 p-4 space-y-4">
                     {moment.comments && moment.comments.length > 0 && (
@@ -352,7 +355,6 @@ export default function Gallery() {
                     </form>
                   </div>
                 )}
-
               </div>
             );
           })
