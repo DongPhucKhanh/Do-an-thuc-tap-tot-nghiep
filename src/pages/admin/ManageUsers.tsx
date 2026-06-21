@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../config/axios';
-import { Users, Filter, Shield, User, Trash2 } from 'lucide-react';
+import { Users, Filter, Trash2 } from 'lucide-react';
 import Pagination from '../../components/admin/Pagination';
 
 export default function ManageUsers() {
@@ -59,16 +59,16 @@ export default function ManageUsers() {
     const paginatedUsers = filteredUsers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div style={{ padding: '30px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-            <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#1e1e2d', marginBottom: '25px' }}>
-                <Users size={28} color="#0984e3" /> Quản lý Tài khoản Hệ thống
+        <div>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: 600, color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Users size={20} color="#2563eb" /> Quản lý Tài khoản Hệ thống
             </h2>
 
             {/* BỘ LỌC TÌM KIẾM */}
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                <div style={{ flex: 1, maxWidth: '400px' }}>
-                    <label style={{ fontWeight: 'bold', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        <Filter size={16}/> Lọc tài khoản theo Khoa:
+            <div style={{ marginBottom: '16px', backgroundColor: '#fafafa', padding: '16px', borderRadius: '6px', border: '1px solid #e5e7eb' }}>
+                <div style={{ maxWidth: '360px' }}>
+                    <label style={{ fontWeight: 600, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '13px', color: '#374151' }}>
+                        <Filter size={13}/> Lọc tài khoản theo Khoa:
                     </label>
                     <select 
                         value={selectedFacultyId} 
@@ -84,51 +84,51 @@ export default function ManageUsers() {
             </div>
 
             {/* BẢNG DANH SÁCH TÀI KHOẢN */}
-            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                    <h4 style={{ margin: 0 }}>Danh sách Tài khoản</h4>
-                    <span style={{ backgroundColor: '#e1f5fe', color: '#0288d1', padding: '6px 15px', borderRadius: '20px', fontWeight: 'bold' }}>
-                        Tổng số: {filteredUsers.length} tài khoản
+            <div style={{ backgroundColor: 'white', borderRadius: '6px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+                <div style={{ padding: '12px 16px', borderBottom: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fafafa' }}>
+                    <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#374151' }}>Danh sách Tài khoản</h4>
+                    <span style={{ fontSize: '12px', color: '#6b7280' }}>
+                        Tổng số: <strong>{filteredUsers.length}</strong> tài khoản
                     </span>
                 </div>
 
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
-                        <tr style={{ borderBottom: '2px solid #f1f2f6', color: '#636e72', backgroundColor: '#fafafa' }}>
-                            <th style={{ padding: '12px 10px' }}>Họ và Tên</th>
-                            <th style={{ padding: '12px 10px' }}>Email</th>
-                            <th style={{ padding: '12px 10px' }}>Khoa trực thuộc</th>
-                            <th style={{ padding: '12px 10px', textAlign: 'center' }}>Quyền hạn</th>
-                            <th style={{ padding: '12px 10px', textAlign: 'center' }}>Hành động</th>
+                        <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                            <th style={thStyle}>Họ và Tên</th>
+                            <th style={thStyle}>Email</th>
+                            <th style={thStyle}>Khoa trực thuộc</th>
+                            <th style={{ ...thStyle, textAlign: 'center' }}>Quyền hạn</th>
+                            <th style={{ ...thStyle, textAlign: 'center' }}>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {paginatedUsers.map((user, index) => (
-                            <tr key={user.id} style={{ borderBottom: '1px solid #f1f2f6', backgroundColor: index % 2 === 0 ? '#fff' : '#fcfcfc' }}>
-                                <td style={{ padding: '12px 10px', fontWeight: 'bold', color: '#2d3436' }}>{user.fullName}</td>
-                                <td style={{ padding: '12px 10px', color: '#636e72' }}>{user.email}</td>
+                        {paginatedUsers.map((user) => (
+                            <tr key={user.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                                <td style={{ ...tdStyle, fontWeight: 500, color: '#111827' }}>{user.fullName}</td>
+                                <td style={{ ...tdStyle, color: '#6b7280' }}>{user.email}</td>
                                 
                                 {/* HIỂN THỊ KHOA */}
-                                <td style={{ padding: '12px 10px' }}>
+                                <td style={tdStyle}>
                                     {user.faculty ? (
-                                        <span style={{ backgroundColor: '#f3e5f5', color: '#8e44ad', padding: '4px 10px', borderRadius: '6px', fontSize: '13px', fontWeight: '500' }}>
+                                        <span style={{ backgroundColor: '#f3f4f6', color: '#374151', padding: '2px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 500 }}>
                                             {user.faculty.name}
                                         </span>
                                     ) : (
-                                        <span style={{ color: '#b2bec3', fontStyle: 'italic', fontSize: '13px' }}>Chưa cập nhật</span>
+                                        <span style={{ color: '#9ca3af', fontStyle: 'italic', fontSize: '12px' }}>Chưa cập nhật</span>
                                     )}
                                 </td>
 
                                 {/* CỘT QUYỀN HẠN (Có thể bấm để đổi) */}
-                                <td style={{ padding: '12px 10px', textAlign: 'center' }}>
+                                <td style={{ ...tdStyle, textAlign: 'center' }}>
                                     <select 
                                         value={user.role} 
                                         onChange={(e) => handleUpdateRole(user.id, e.target.value)}
                                         style={{ 
-                                            padding: '6px 10px', borderRadius: '6px', border: '1px solid #dfe6e9', 
-                                            backgroundColor: user.role === 'ADMIN' ? '#e8f8f5' : '#f1f2f6',
-                                            color: user.role === 'ADMIN' ? '#00b894' : '#2d3436',
-                                            fontWeight: 'bold', cursor: 'pointer', outline: 'none'
+                                            padding: '5px 8px', borderRadius: '4px', border: '1px solid #d1d5db', 
+                                            backgroundColor: user.role === 'ADMIN' ? '#dcfce7' : '#f9fafb',
+                                            color: user.role === 'ADMIN' ? '#15803d' : '#374151',
+                                            fontWeight: 500, cursor: 'pointer', outline: 'none', fontSize: '12px'
                                         }}
                                     >
                                         <option value="VOLUNTEER">Tình nguyện viên</option>
@@ -137,20 +137,20 @@ export default function ManageUsers() {
                                 </td>
 
                                 {/* NÚT XÓA */}
-                                <td style={{ padding: '12px 10px', textAlign: 'center' }}>
+                                <td style={{ ...tdStyle, textAlign: 'center' }}>
                                     <button 
                                         onClick={() => handleDeleteUser(user.id)} 
                                         title="Xóa tài khoản" 
-                                        style={{ border: 'none', background: '#ffeaa7', color: '#d63031', padding: '8px', borderRadius: '6px', cursor: 'pointer' }}
+                                        style={btnDelete}
                                     >
-                                        <Trash2 size={18} />
+                                        <Trash2 size={15} />
                                     </button>
                                 </td>
                             </tr>
                         ))}
                         {filteredUsers.length === 0 && (
                             <tr>
-                                <td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#b2bec3' }}>
+                                <td colSpan={5} style={{ textAlign: 'center', padding: '32px', color: '#9ca3af', fontSize: '13px' }}>
                                     Không có tài khoản nào thuộc Khoa này.
                                 </td>
                             </tr>
@@ -169,6 +169,10 @@ export default function ManageUsers() {
     );
 }
 
-const inputStyle = {
-    width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #dfe6e9', outline: 'none', backgroundColor: '#fdfdfd', fontSize: '14px'
+const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '8px 10px', borderRadius: '6px', border: '1px solid #d1d5db',
+    outline: 'none', backgroundColor: '#ffffff', fontSize: '13px'
 };
+const thStyle: React.CSSProperties = { padding: '10px 14px', fontSize: '12px', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' };
+const tdStyle: React.CSSProperties = { padding: '10px 14px', fontSize: '13px' };
+const btnDelete: React.CSSProperties = { border: 'none', background: '#fee2e2', color: '#dc2626', padding: '6px 8px', borderRadius: '4px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' };

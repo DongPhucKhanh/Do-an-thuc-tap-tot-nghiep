@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
 import api from '../../config/axios';
 import Pagination from '../../components/admin/Pagination';
+import { useTheme } from '../../context/ThemeContext';
+import {
+    getThStyle, getTdStyle, getInputStyle, getLabelStyle, getBtnSave,
+    getFilterPanel, getSectionCard, getSectionHeader, palette
+} from '../../styles/adminTheme';
 
 export default function EvaluateVolunteers() {
+    const { isDark } = useTheme();
+    const p = isDark ? palette.dark : palette.light;
+
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampId, setSelectedCampId] = useState<number | null>(null);
     const [selectedCampaignTitle, setSelectedCampaignTitle] = useState<string>('');
@@ -72,21 +80,24 @@ export default function EvaluateVolunteers() {
     const totalPages = Math.ceil(filteredParticipants.length / itemsPerPage);
     const paginatedParticipants = filteredParticipants.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+    const labelStyle = getLabelStyle(isDark);
+    const inputStyle = getInputStyle(isDark);
+    const thStyle = getThStyle(isDark);
+    const tdStyle = getTdStyle(isDark);
+    const btnSave = getBtnSave(isDark);
+
     return (
-        <div className="p-6">
-            <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-800">Đánh giá & Ghi nhận Đóng góp</h2>
-                <p className="text-gray-600 mt-2">Chọn chiến dịch đã hoàn thành để đánh giá tình nguyện viên</p>
+        <div>
+            <div style={{ marginBottom: '20px' }}>
+                <h2 style={{ margin: '0 0 4px 0', fontSize: '20px', fontWeight: 600, color: p.text }}>Đánh giá & Ghi nhận Đóng góp</h2>
+                <p style={{ margin: 0, fontSize: '13px', color: p.textMuted }}>Chọn chiến dịch đã hoàn thành để đánh giá tình nguyện viên</p>
             </div>
 
-            {/* 👇 CỤM BỘ LỌC (Chiến dịch + Khoa) */}
-            <div className="mb-8 flex flex-col md:flex-row gap-6">
-                
+            {/* CỤM BỘ LỌC (Chiến dịch + Khoa) */}
+            <div style={{ ...getFilterPanel(isDark), display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
                 {/* Chọn chiến dịch */}
-                <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Chọn chiến dịch đã tổ chức
-                    </label>
+                <div>
+                    <label style={labelStyle}>Chọn chiến dịch đã tổ chức</label>
                     <select 
                         onChange={(e) => {
                             const selectedCamp = campaigns.find(c => c.id === Number(e.target.value));
@@ -95,33 +106,27 @@ export default function EvaluateVolunteers() {
                             }
                         }} 
                         defaultValue="" 
-                        className="w-full lg:w-[420px] px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                        style={inputStyle}
                     >
                         <option value="" disabled>-- Chọn chiến dịch để đánh giá --</option>
                         {campaigns.map(camp => (
-                            <option key={camp.id} value={camp.id}>
-                                {camp.title}
-                            </option>
+                            <option key={camp.id} value={camp.id}>{camp.title}</option>
                         ))}
                     </select>
                 </div>
 
-                {/* Chọn Khoa (Mới thêm) */}
-                <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Lọc theo Khoa sinh viên
-                    </label>
+                {/* Chọn Khoa */}
+                <div>
+                    <label style={labelStyle}>Lọc theo Khoa sinh viên</label>
                     <select 
                         value={selectedFacultyId}
                         onChange={(e) => setSelectedFacultyId(e.target.value)}
-                        disabled={!selectedCampId} // Khóa ô này lại nếu chưa chọn chiến dịch
-                        className="w-full lg:w-[420px] px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        disabled={!selectedCampId}
+                        style={{ ...inputStyle, opacity: !selectedCampId ? 0.5 : 1 }}
                     >
                         <option value="">-- Tất cả các Khoa --</option>
                         {faculties.map(f => (
-                            <option key={f.id} value={f.id}>
-                                {f.name}
-                            </option>
+                            <option key={f.id} value={f.id}>{f.name}</option>
                         ))}
                     </select>
                 </div>
@@ -129,63 +134,59 @@ export default function EvaluateVolunteers() {
 
             {/* Bảng đánh giá */}
             {selectedCampId && (
-                <div className="bg-white rounded-2xl shadow overflow-hidden">
-                    <div className="px-6 py-5 border-b bg-gray-50 flex justify-between items-center">
-                        <h3 className="font-semibold text-lg text-gray-800">
-                            {selectedCampaignTitle}
-                        </h3>
-                        {/* 👇 Đổi lại hiển thị số lượng của mảng đã lọc */}
-                        <span className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
-                            Đang hiển thị: {filteredParticipants.length} sinh viên
+                <div style={getSectionCard(isDark)}>
+                    <div style={{ ...getSectionHeader(isDark), justifyContent: 'space-between' }}>
+                        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: p.textSub }}>{selectedCampaignTitle}</h4>
+                        <span style={{ fontSize: '12px', color: p.textMuted }}>
+                            Đang hiển thị: <strong>{filteredParticipants.length}</strong> sinh viên
                         </span>
                     </div>
 
-                    <table className="w-full min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Tình nguyện viên</th>
-                                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Khoa</th>
-                                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Nhận xét / Đánh giá</th>
-                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-32">Hành động</th>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ backgroundColor: p.surfaceAlt, borderBottom: `1px solid ${p.border}` }}>
+                                <th style={thStyle}>Tình nguyện viên</th>
+                                <th style={thStyle}>Khoa</th>
+                                <th style={thStyle}>Nhận xét / Đánh giá</th>
+                                <th style={{ ...thStyle, textAlign: 'center', width: '100px' }}>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white">
+                        <tbody>
                             {filteredParticipants.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-16 text-center text-gray-500">
+                                    <td colSpan={4} style={{ textAlign: 'center', padding: '40px', color: p.textFaint, fontSize: '13px' }}>
                                         Không có tình nguyện viên nào.
                                     </td>
                                 </tr>
                             ) : (
                                 paginatedParticipants.map((reg) => {
                                     const inputId = `note-${reg.id}`;
-
                                     return (
-                                        <tr key={reg.id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-6 py-5">
-                                                <div className="font-semibold text-gray-800">
+                                        <tr key={reg.id} style={{ borderBottom: `1px solid ${p.borderLight}` }}>
+                                            <td style={tdStyle}>
+                                                <div style={{ fontWeight: 500, color: p.text, fontSize: '13px' }}>
                                                     {reg.user?.fullName || 'Không có tên'}
                                                 </div>
-                                                <div className="text-sm text-gray-500 mt-1">
+                                                <div style={{ fontSize: '12px', color: p.textFaint }}>
                                                     {reg.user?.email}
                                                 </div>
                                             </td>
-                                            {/* 👇 Cột hiển thị tên Khoa */}
-                                            <td className="px-6 py-5">
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-purple-100 text-purple-800">
+                                            {/* Cột hiển thị tên Khoa */}
+                                            <td style={tdStyle}>
+                                                <span style={{ backgroundColor: isDark ? '#263244' : '#f3f4f6', color: p.textSub, padding: '2px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 500 }}>
                                                     {reg.user?.faculty?.name || 'N/A'}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-5">
+                                            <td style={tdStyle}>
                                                 <textarea
                                                     id={inputId}
                                                     defaultValue={reg.notes || ''}
                                                     placeholder="Nhập nhận xét, đánh giá đóng góp của tình nguyện viên..."
                                                     rows={3}
-                                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y min-h-[80px]"
+                                                    style={{ width: '100%', padding: '8px 10px', border: `1px solid ${p.border}`, borderRadius: '6px', outline: 'none', fontSize: '13px', resize: 'vertical', boxSizing: 'border-box', backgroundColor: p.surface, color: p.text }}
                                                 />
                                             </td>
-                                            <td className="px-6 py-5 text-center">
+                                            <td style={{ ...tdStyle, textAlign: 'center' }}>
                                                 <button
                                                     onClick={() => {
                                                         const textarea = document.getElementById(inputId) as HTMLTextAreaElement;
@@ -193,9 +194,9 @@ export default function EvaluateVolunteers() {
                                                             handleSaveNote(reg.id, textarea.value);
                                                         }
                                                     }}
-                                                    className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-xl transition-all shadow-sm w-full whitespace-nowrap"
+                                                    style={btnSave}
                                                 >
-                                                    💾 Lưu lại
+                                                    Lưu lại
                                                 </button>
                                             </td>
                                         </tr>
@@ -217,9 +218,8 @@ export default function EvaluateVolunteers() {
             )}
 
             {!selectedCampId && (
-                <div className="bg-white rounded-2xl shadow p-16 text-center">
-                    <div className="text-6xl mb-6">📝</div>
-                    <p className="text-xl text-gray-500">Vui lòng chọn một chiến dịch để bắt đầu đánh giá</p>
+                <div style={{ backgroundColor: p.surface, border: `1px solid ${p.border}`, borderRadius: '6px', padding: '48px', textAlign: 'center' }}>
+                    <p style={{ fontSize: '14px', color: p.textMuted }}>Vui lòng chọn một chiến dịch để bắt đầu đánh giá</p>
                 </div>
             )}
         </div>
