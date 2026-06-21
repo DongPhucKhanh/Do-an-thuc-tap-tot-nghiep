@@ -2,14 +2,30 @@ import { useState, useEffect } from 'react';
 import api from '../../config/axios';
 import { GraduationCap, PlusCircle, Trash2, BookOpen } from 'lucide-react';
 import Pagination from '../../components/admin/Pagination';
+import { useTheme } from '../../context/ThemeContext';
+import {
+    getThStyle, getTdStyle, getInputStyle, getLabelStyle,
+    getBtnDelete, getSectionCard, getSectionHeader, getH2Style, getSubText,
+    palette
+} from '../../styles/adminTheme';
 
 export default function ManageFaculties() {
+    const { isDark } = useTheme();
+    const p = isDark ? palette.dark : palette.light;
+
     const [faculties, setFaculties] = useState<any[]>([]);
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
+
+    // Style constants (theme-aware)
+    const labelStyle = getLabelStyle(isDark);
+    const inputStyle = getInputStyle(isDark);
+    const thStyle = getThStyle(isDark);
+    const tdStyle = getTdStyle(isDark);
+    const btnDelete = getBtnDelete(isDark);
 
     const fetchFaculties = async () => {
         try {
@@ -57,121 +73,110 @@ export default function ManageFaculties() {
     const paginatedFaculties = faculties.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div>
             {/* Header */}
-            <div className="flex items-center gap-4 mb-10">
-                <div className="bg-purple-100 p-4 rounded-2xl">
-                    <GraduationCap size={36} className="text-purple-600" />
-                </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                <GraduationCap size={22} color="#2563eb" />
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800">Quản lý Khoa</h1>
-                    <p className="text-gray-600 mt-1">Thêm và quản lý các khoa trong hệ thống</p>
+                    <h2 style={{ ...getH2Style(isDark), margin: 0 }}>Quản lý Khoa</h2>
+                    <p style={getSubText(isDark)}>Thêm và quản lý các khoa trong hệ thống</p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px' }}>
                 
                 {/* Form thêm Khoa mới */}
-                <div className="lg:col-span-4">
-                    <div className="bg-white rounded-3xl shadow-xl p-8 sticky top-6">
-                        <div className="flex items-center gap-3 mb-6">
-                            <PlusCircle size={24} className="text-purple-600" />
-                            <h3 className="text-xl font-semibold text-gray-800">Thêm Khoa Mới</h3>
+                <div style={{ backgroundColor: p.surfaceAlt, padding: '20px', borderRadius: '6px', border: `1px solid ${p.border}`, height: 'fit-content' }}>
+                    <h4 style={{ margin: '0 0 16px 0', fontSize: '14px', fontWeight: 600, color: p.textSub, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <PlusCircle size={16} color="#2563eb" /> Thêm Khoa Mới
+                    </h4>
+
+                    <form onSubmit={handleAddFaculty} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div>
+                            <label style={labelStyle}>
+                                Tên Khoa <span style={{ color: '#ef4444' }}>*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                value={name} 
+                                onChange={(e) => setName(e.target.value)} 
+                                required 
+                                placeholder="Ví dụ: Khoa Công nghệ Thông tin"
+                                style={inputStyle}
+                            />
                         </div>
 
-                        <form onSubmit={handleAddFaculty} className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Tên Khoa <span className="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    value={name} 
-                                    onChange={(e) => setName(e.target.value)} 
-                                    required 
-                                    placeholder="Ví dụ: Khoa Công nghệ Thông tin"
-                                    className="w-full px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                />
-                            </div>
-
-                            <button 
-                                type="submit" 
-                                disabled={loading || !name.trim()}
-                                className={`w-full py-4 rounded-2xl font-semibold text-lg transition-all shadow-md
-                                    ${loading || !name.trim() 
-                                        ? 'bg-gray-400 cursor-not-allowed' 
-                                        : 'bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white'
-                                    }`}
-                            >
-                                {loading ? 'Đang thêm...' : '➕ Thêm Khoa'}
-                            </button>
-                        </form>
-                    </div>
+                        <button 
+                            type="submit" 
+                            disabled={loading || !name.trim()}
+                            style={{
+                                padding: '9px 16px',
+                                backgroundColor: loading || !name.trim() ? '#9ca3af' : '#2563eb',
+                                color: 'white', border: 'none', borderRadius: '6px',
+                                fontWeight: 600, cursor: loading || !name.trim() ? 'not-allowed' : 'pointer',
+                                fontSize: '13px'
+                            }}
+                        >
+                            {loading ? 'Đang thêm...' : 'Thêm Khoa'}
+                        </button>
+                    </form>
                 </div>
 
                 {/* Danh sách Khoa */}
-                <div className="lg:col-span-8">
-                    <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                        <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                            <div className="flex items-center gap-3">
-                                <BookOpen size={24} className="text-purple-600" />
-                                <h3 className="text-xl font-semibold text-gray-800">Danh sách Khoa hiện có</h3>
-                            </div>
-                            <div className="text-sm text-gray-500 font-medium">
-                                Tổng cộng: <span className="font-semibold text-gray-700">{faculties.length}</span> khoa
-                            </div>
+                <div style={getSectionCard(isDark)}>
+                    <div style={{ ...getSectionHeader(isDark), justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <BookOpen size={16} color="#2563eb" />
+                            <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: p.textSub }}>Danh sách Khoa hiện có</h4>
                         </div>
-
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-50 border-b border-gray-200">
-                                        <th className="px-8 py-5 text-left text-sm font-semibold text-gray-600">Tên Khoa</th>
-                                        <th className="px-8 py-5 text-center text-sm font-semibold text-gray-600 w-32">Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100">
-                                    {paginatedFaculties.map((faculty, index) => (
-                                        <tr key={faculty.id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-8 py-6">
-                                                <div className="font-medium text-gray-800 text-lg">
-                                                    {faculty.name}
-                                                </div>
-                                            </td>
-                                            <td className="px-8 py-6 text-center">
-                                                <button 
-                                                    onClick={() => handleDelete(faculty.id)}
-                                                    className="inline-flex items-center justify-center w-10 h-10 text-red-600 hover:bg-red-50 rounded-xl transition-all hover:scale-110"
-                                                    title="Xóa khoa"
-                                                >
-                                                    <Trash2 size={20} />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-
-                                    {faculties.length === 0 && (
-                                        <tr>
-                                            <td colSpan={2} className="px-8 py-20 text-center">
-                                                <div className="text-6xl mb-4">🏫</div>
-                                                <p className="text-gray-500 text-lg">Chưa có khoa nào được thêm.</p>
-                                                <p className="text-gray-400 mt-1">Hãy thêm khoa mới ở bên trái.</p>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                        {faculties.length > 0 && (
-                            <Pagination 
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                totalItems={faculties.length}
-                                itemsPerPage={itemsPerPage}
-                                onPageChange={setCurrentPage}
-                            />
-                        )}
+                        <span style={{ fontSize: '12px', color: p.textMuted }}>
+                            Tổng cộng: <strong>{faculties.length}</strong> khoa
+                        </span>
                     </div>
+
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                        <thead>
+                            <tr>
+                                <th style={thStyle}>Tên Khoa</th>
+                                <th style={{ ...thStyle, textAlign: 'center', width: '80px' }}>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {paginatedFaculties.map((faculty) => (
+                                <tr key={faculty.id}>
+                                    <td style={{ ...tdStyle, fontWeight: 500, color: p.text }}>
+                                        {faculty.name}
+                                    </td>
+                                    <td style={{ ...tdStyle, textAlign: 'center' }}>
+                                        <button 
+                                            onClick={() => handleDelete(faculty.id)}
+                                            style={btnDelete}
+                                            title="Xóa khoa"
+                                        >
+                                            <Trash2 size={15} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+
+                            {faculties.length === 0 && (
+                                <tr>
+                                    <td colSpan={2} style={{ textAlign: 'center', padding: '32px', color: p.textFaint, fontSize: '13px' }}>
+                                        Chưa có khoa nào được thêm. Hãy thêm khoa mới ở bên trái.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                    {faculties.length > 0 && (
+                        <Pagination 
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            totalItems={faculties.length}
+                            itemsPerPage={itemsPerPage}
+                            onPageChange={setCurrentPage}
+                        />
+                    )}
                 </div>
             </div>
         </div>

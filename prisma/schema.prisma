@@ -47,6 +47,7 @@ resetPasswordOtp      String?   // Lưu mã 6 số
   itemDonations    ItemDonation[]    // Danh sách vật phẩm quyên góp
   moments          Moment[]          // Các bài viết khoảnh khắc đã đăng lên bảng tin
   comments         Comment[]         // Các bình luận tương tác
+  notifications    Notification[]
   createdAt        DateTime          @default(now())
 }
 
@@ -246,6 +247,21 @@ model Donation {
   userId      Int?
   user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
+
+// Bảng Thông báo (Notification)
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  content   String   @db.Text
+  isRead    Boolean  @default(false)
+  type      String   // VD: "SYSTEM", "CAMPAIGN", "REGISTRATION"
+  link      String?  // Đường dẫn tùy chọn khi click
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 // ================= ĐỊNH NGHĨA CÁC ĐIỀU HƯỚNG ENUM CỐ ĐỊNH =================
 enum Role {
   ADMIN 

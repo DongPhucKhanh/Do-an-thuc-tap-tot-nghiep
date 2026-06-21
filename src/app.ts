@@ -15,6 +15,7 @@ import momentRoute from './routes/moment.route';
 import postRoutes from './routes/post.route';
 import paymentRoutes from './routes/payment.route';
 import aiRoutes from './routes/ai.route';
+import notificationRoutes from './routes/notification.route';
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use('/api/moments', momentRoute);
 app.use('/api/posts', postRoutes);
 app.use('/api/payment', paymentRoutes); // Link chuẩn: /api/payment/create-fake-pending
 app.use('/api/ai', aiRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Chào mừng bạn đến với API Hệ thống Điều phối Tình nguyện!');

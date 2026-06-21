@@ -2,8 +2,18 @@ import { useState, useEffect } from 'react';
 import api from '../../config/axios';
 import { Users, CheckCircle, XCircle, Filter } from 'lucide-react';
 import Pagination from '../../components/admin/Pagination';
+import { useTheme } from '../../context/ThemeContext';
+import {
+    getThStyle, getTdStyle, getInputStyle,
+    getBtnApprove, getBtnReject, getSectionCard, getSectionHeader, getFilterPanel, getH2Style,
+    getTagStyle,
+    palette
+} from '../../styles/adminTheme';
 
 export default function ManageRegistrations() {
+    const { isDark } = useTheme();
+    const p = isDark ? palette.dark : palette.light;
+
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampaignId, setSelectedCampaignId] = useState('');
     const [registrations, setRegistrations] = useState<any[]>([]);
@@ -14,6 +24,14 @@ export default function ManageRegistrations() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+
+    // Style constants (theme-aware)
+    const thStyle = getThStyle(isDark);
+    const tdStyle = getTdStyle(isDark);
+    const inputStyle = getInputStyle(isDark);
+    const btnApprove = getBtnApprove(isDark);
+    const btnReject = getBtnReject(isDark);
+    const tagStyle = getTagStyle(isDark);
 
     // Lấy danh sách Chiến dịch và danh sách Khoa khi vừa vào trang
     useEffect(() => {
@@ -38,6 +56,7 @@ export default function ManageRegistrations() {
             setRegistrations(prev => prev.map(r => r.id === regId ? { ...r, status } : r));
         } catch (error) { alert("Lỗi cập nhật trạng thái!"); }
     };
+
     const filteredRegistrations = selectedFacultyId
         ? registrations.filter(r => r.user?.faculty?.id?.toString() === selectedFacultyId)
         : registrations;
@@ -50,24 +69,24 @@ export default function ManageRegistrations() {
     const paginatedRegistrations = filteredRegistrations.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div style={{ padding: '30px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-            <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#1e1e2d', marginBottom: '25px' }}>
-                <Users size={28} color="#00b894" /> Quản lý Đơn đăng ký (Theo Khoa)
+        <div>
+            <h2 style={getH2Style(isDark)}>
+                <Users size={20} color="#2563eb" /> Quản lý Đơn đăng ký (Theo Khoa)
             </h2>
 
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                <div style={{ flex: 1 }}>
-                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Chọn Chiến dịch:</label>
+            {/* BỘ LỌC */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px', ...getFilterPanel(isDark) }}>
+                <div>
+                    <label style={{ fontWeight: 600, display: 'block', marginBottom: '6px', fontSize: '13px', color: p.textSub }}>Chọn Chiến dịch:</label>
                     <select value={selectedCampaignId} onChange={e => setSelectedCampaignId(e.target.value)} style={inputStyle}>
                         <option value="">Chọn một chiến dịch để xem</option>
                         {campaigns.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
                     </select>
                 </div>
 
-                {/* Lọc theo Khoa */}
-                <div style={{ flex: 1 }}>
-                    <label style={{ fontWeight: 'bold', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        <Filter size={16} /> Lọc theo Khoa (SV):
+                <div>
+                    <label style={{ fontWeight: 600, marginBottom: '6px', fontSize: '13px', color: p.textSub, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Filter size={13} /> Lọc theo Khoa (SV):
                     </label>
                     <select value={selectedFacultyId} onChange={e => setSelectedFacultyId(e.target.value)} style={inputStyle} disabled={!selectedCampaignId}>
                         <option value="">Tất cả các Khoa</option>
@@ -76,57 +95,51 @@ export default function ManageRegistrations() {
                 </div>
             </div>
 
-            {/* THỐNG KÊ NHANH & BẢNG DANH SÁCH */}
+            {/* BẢNG DANH SÁCH */}
             {selectedCampaignId && (
-                <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                        <h4 style={{ margin: 0 }}>Danh sách Sinh viên đăng ký</h4>
-                        <span style={{ backgroundColor: '#e1f5fe', color: '#0288d1', padding: '6px 15px', borderRadius: '20px', fontWeight: 'bold' }}>
-                            Đang hiển thị: {filteredRegistrations.length} sinh viên
-                        </span>
+                <div style={getSectionCard(isDark)}>
+                    <div style={{ ...getSectionHeader(isDark), justifyContent: 'space-between' }}>
+                        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: p.textSub }}>Danh sách Sinh viên đăng ký</h4>
+                        <span style={{ fontSize: '12px', color: p.textMuted }}>Đang hiển thị: <strong>{filteredRegistrations.length}</strong> sinh viên</span>
                     </div>
 
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                         <thead>
-                            <tr style={{ borderBottom: '2px solid #f1f2f6', color: '#636e72', backgroundColor: '#fafafa' }}>
-                                <th style={{ padding: '12px 10px' }}>Họ Tên SV</th>
-                                <th style={{ padding: '12px 10px' }}>Email</th>
-                                <th style={{ padding: '12px 10px' }}>Khoa</th>
-                                <th style={{ padding: '12px 10px', textAlign: 'center' }}>Trạng thái</th>
-                                <th style={{ padding: '12px 10px', textAlign: 'center' }}>Hành động</th>
+                            <tr>
+                                <th style={thStyle}>Họ Tên SV</th>
+                                <th style={thStyle}>Email</th>
+                                <th style={thStyle}>Khoa</th>
+                                <th style={{ ...thStyle, textAlign: 'center' }}>Trạng thái</th>
+                                <th style={{ ...thStyle, textAlign: 'center' }}>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {paginatedRegistrations.map((reg, index) => (
-                                <tr key={reg.id} style={{ borderBottom: '1px solid #f1f2f6', backgroundColor: index % 2 === 0 ? '#fff' : '#fcfcfc' }}>
-                                    <td style={{ padding: '12px 10px', fontWeight: 'bold', color: '#2d3436' }}>{reg.user?.fullName}</td>
-                                    <td style={{ padding: '12px 10px', color: '#636e72' }}>{reg.user?.email}</td>
-
-                                    {/* CỘT KHOA: Hiển thị tên khoa của SV */}
-                                    <td style={{ padding: '12px 10px' }}>
-                                        <span style={{ backgroundColor: '#f3e5f5', color: '#8e44ad', padding: '4px 10px', borderRadius: '6px', fontSize: '13px', fontWeight: '500' }}>
+                            {paginatedRegistrations.map((reg) => (
+                                <tr key={reg.id}>
+                                    <td style={tdStyle}><span style={{ fontWeight: 500, color: p.text }}>{reg.user?.fullName}</span></td>
+                                    <td style={{ ...tdStyle, color: p.textMuted }}>{reg.user?.email}</td>
+                                    <td style={tdStyle}>
+                                        <span style={tagStyle}>
                                             {reg.user?.faculty?.name || 'Chưa cập nhật'}
                                         </span>
                                     </td>
-
-                                    <td style={{ padding: '12px 10px', textAlign: 'center' }}>
+                                    <td style={{ ...tdStyle, textAlign: 'center' }}>
                                         <span style={{
-                                            padding: '5px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold',
-                                            backgroundColor: reg.status === 'APPROVED' ? '#d4edda' : reg.status === 'REJECTED' ? '#f8d7da' : '#fff3cd',
-                                            color: reg.status === 'APPROVED' ? '#155724' : reg.status === 'REJECTED' ? '#721c24' : '#856404'
+                                            padding: '3px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 500,
+                                            backgroundColor: reg.status === 'APPROVED' ? '#dcfce7' : reg.status === 'REJECTED' ? '#fee2e2' : '#fef3c7',
+                                            color: reg.status === 'APPROVED' ? '#15803d' : reg.status === 'REJECTED' ? '#dc2626' : '#92400e'
                                         }}>
                                             {reg.status === 'APPROVED' ? 'Đã Duyệt' : reg.status === 'REJECTED' ? 'Từ chối' : 'Chờ Duyệt'}
                                         </span>
                                     </td>
-                                    <td style={{ padding: '12px 10px', textAlign: 'center' }}>
+                                    <td style={{ ...tdStyle, textAlign: 'center' }}>
                                         {reg.status === 'PENDING' && (
-                                            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                                                <button onClick={() => handleUpdateStatus(reg.id, 'APPROVED')} title="Duyệt" style={{ border: 'none', background: '#d4edda', color: '#28a745', padding: '8px', borderRadius: '6px', cursor: 'pointer' }}>
-                                                    <CheckCircle size={18} />
+                                            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                                                <button onClick={() => handleUpdateStatus(reg.id, 'APPROVED')} title="Duyệt" style={btnApprove}>
+                                                    <CheckCircle size={16} />
                                                 </button>
-                                                <button onClick={() => handleUpdateStatus(reg.id, 'REJECTED')} title="Từ chối" style={{ border: 'none', background: '#f8d7da', color: '#dc3545', padding: '8px', borderRadius: '6px', cursor: 'pointer' }}>
-                                                    <XCircle size={18} />
+                                                <button onClick={() => handleUpdateStatus(reg.id, 'REJECTED')} title="Từ chối" style={btnReject}>
+                                                    <XCircle size={16} />
                                                 </button>
                                             </div>
                                         )}
@@ -135,7 +148,7 @@ export default function ManageRegistrations() {
                             ))}
                             {filteredRegistrations.length === 0 && (
                                 <tr>
-                                    <td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#b2bec3' }}>
+                                    <td colSpan={5} style={{ textAlign: 'center', padding: '32px', color: p.textFaint, fontSize: '14px' }}>
                                         Không tìm thấy sinh viên nào phù hợp với bộ lọc.
                                     </td>
                                 </tr>
@@ -156,7 +169,3 @@ export default function ManageRegistrations() {
         </div>
     );
 }
-
-const inputStyle = {
-    width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #dfe6e9', outline: 'none', backgroundColor: '#fdfdfd', fontSize: '14px'
-};

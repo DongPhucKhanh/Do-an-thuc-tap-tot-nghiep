@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Plus, Edit3, Trash2, Image, Calendar, X, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Image, Calendar, X } from 'lucide-react';
 import api from '../../config/axios';
 import Pagination from '../../components/admin/Pagination';
 
@@ -19,7 +19,7 @@ export default function ManagePosts() {
     const [editingPost, setEditingPost] = useState<any>({ title: '', content: '' });
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>('');
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    // fileInputRef reserved for future use
 
     useEffect(() => {
         fetchPosts(currentPage);
@@ -113,63 +113,59 @@ export default function ManagePosts() {
     };
 
     if (loading) {
-        return <div className="text-center py-12 text-gray-500 font-bold text-xs">Đang tải danh mục bài viết tin tức...</div>;
+        return <div style={{ padding: '20px', color: '#6b7280', fontSize: '13px' }}>Đang tải danh mục bài viết tin tức...</div>;
     }
 
     return (
-        <div className="p-6 space-y-6">
+        <div>
             {/* Header điều khiển */}
-            <div className="flex justify-between items-center border-b pb-4">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #e5e7eb' }}>
                 <div>
-                    <h1 className="text-2xl font-black text-gray-800">Quản lý Bài viết Tin tức</h1>
-                    <p className="text-xs text-gray-400 mt-0.5">Xuất bản các tin tức tình nguyện và hướng dẫn kỹ năng sống</p>
+                    <h2 style={{ margin: '0 0 4px 0', fontSize: '20px', fontWeight: 600, color: '#111827' }}>Quản lý Bài viết Tin tức</h2>
+                    <p style={{ margin: 0, fontSize: '12px', color: '#9ca3af' }}>Xuất bản các tin tức tình nguyện và hướng dẫn kỹ năng sống</p>
                 </div>
-                <button onClick={handleAddClick} className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all">
+                <button onClick={handleAddClick} style={btnPrimary}>
                     <Plus size={14} /> Viết bài mới
                 </button>
             </div>
 
             {/* BẢNG HIỂN THỊ DANH SÁCH BÀI TIN */}
-            <div className="bg-white rounded-2xl shadow overflow-hidden border">
-                <table className="w-full text-left text-xs sm:text-sm border-collapse">
-                    <thead className="bg-gray-50 text-gray-600 font-bold uppercase tracking-wider text-[11px]">
-                        <tr>
-                            <th className="p-4">Ảnh bìa</th>
-                            <th className="p-4">Tiêu đề tin tức</th>
-                            <th className="p-4">Ngày xuất bản</th>
-                            <th className="p-4 text-center">Hành động</th>
+            <div style={{ backgroundColor: 'white', borderRadius: '6px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                    <thead>
+                        <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                            <th style={thStyle}>Ảnh bìa</th>
+                            <th style={thStyle}>Tiêu đề tin tức</th>
+                            <th style={thStyle}>Ngày xuất bản</th>
+                            <th style={{ ...thStyle, textAlign: 'center' }}>Hành động</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y text-gray-700 font-medium">
+                    <tbody>
                         {posts.map((post) => (
-                            <tr key={post.id} className="hover:bg-gray-50/50 transition-colors">
+                            <tr key={post.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
                                 {/* 🌟 ĐÃ CẬP NHẬT: Đọc trường post.image chuẩn model */}
-                                <td className="p-4">
+                                <td style={tdStyle}>
                                     {post.image ? (
-                                        <img src={`http://localhost:5000${post.image}`} className="w-20 h-12 object-cover rounded-xl border" alt="news" onError={(e)=>{(e.target as HTMLImageElement).src='https://placehold.co/100x60/e2e8f0/94a3b8?text=No+Image'}} />
+                                        <img src={`http://localhost:5000${post.image}`} style={{ width: '72px', height: '48px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #e5e7eb' }} alt="news" onError={(e)=>{(e.target as HTMLImageElement).src='https://placehold.co/100x60/e2e8f0/94a3b8?text=No+Image'}} />
                                     ) : (
-                                        <div className="w-20 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400"><Image size={16} /></div>
+                                        <div style={{ width: '72px', height: '48px', backgroundColor: '#f3f4f6', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}><Image size={14} /></div>
                                     )}
                                 </td>
-                                <td className="p-4 max-w-xs font-bold text-slate-800 line-clamp-2 mt-2">{post.title}</td>
-                                <td className="p-4 text-gray-400 text-xs">
-                                    <span className="flex items-center gap-1"><Calendar size={12} /> {new Date(post.createdAt).toLocaleDateString('vi-VN')}</span>
+                                <td style={{ ...tdStyle, fontWeight: 500, color: '#111827', maxWidth: '300px' }}>{post.title}</td>
+                                <td style={{ ...tdStyle, color: '#9ca3af', whiteSpace: 'nowrap' }}>
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Calendar size={12} /> {new Date(post.createdAt).toLocaleDateString('vi-VN')}</span>
                                 </td>
-                                <td className="p-4 text-center">
-                                    <div className="flex gap-2 justify-center">
-                                        <button onClick={() => handleEditClick(post)} className="px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white font-bold text-xs rounded-xl transition-all border border-blue-100">
-                                            Sửa
-                                        </button>
-                                        <button onClick={() => handleDelete(post.id)} className="px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white font-bold text-xs rounded-xl transition-all border border-rose-100">
-                                            Xóa
-                                        </button>
+                                <td style={{ ...tdStyle, textAlign: 'center' }}>
+                                    <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
+                                        <button onClick={() => handleEditClick(post)} style={btnEdit}>Sửa</button>
+                                        <button onClick={() => handleDelete(post.id)} style={btnDelete}>Xóa</button>
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                {posts.length === 0 && <div className="text-center py-12 text-gray-400">Chưa có bài viết tin tức nào.</div>}
+                {posts.length === 0 && <div style={{ textAlign: 'center', padding: '32px', color: '#9ca3af', fontSize: '13px' }}>Chưa có bài viết tin tức nào.</div>}
             </div>
 
             {/* THANH PHÂN TRANG */}
@@ -183,29 +179,29 @@ export default function ManagePosts() {
 
             {/* MODAL POPUP FORM (THÊM / SỬA BÀI VIẾT) */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-3xl shadow-xl max-w-lg w-full overflow-hidden border">
-                        <div className="bg-gray-900 p-4 text-white flex justify-between items-center">
-                            <h3 className="font-bold text-xs sm:text-sm uppercase">{modalMode === 'add' ? '✍️ Viết bài tin tức mới' : '✏️ Chỉnh sửa bài viết'}</h3>
-                            <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white"><X size={18} /></button>
+                <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 50 }}>
+                    <div style={{ backgroundColor: 'white', borderRadius: '8px', maxWidth: '520px', width: '100%', overflow: 'hidden', border: '1px solid #e5e7eb' }}>
+                        <div style={{ backgroundColor: '#1f2937', padding: '14px 16px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h3 style={{ margin: 0, fontSize: '13px', fontWeight: 600, textTransform: 'uppercase' }}>{modalMode === 'add' ? 'Viết bài tin tức mới' : 'Chỉnh sửa bài viết'}</h3>
+                            <button onClick={() => setIsModalOpen(false)} style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer' }}><X size={18} /></button>
                         </div>
-                        <form onSubmit={handleFormSubmit} className="p-5 space-y-4 max-h-[75vh] overflow-y-auto text-sm">
-                            <label className="block space-y-1">
-                                <span className="font-bold text-gray-700">Tiêu đề bài viết:</span>
-                                <input type="text" value={editingPost.title} onChange={e => setEditingPost({ ...editingPost, title: e.target.value })} className="w-full px-3 py-2 border rounded-xl outline-none focus:border-blue-500 font-semibold" required />
+                        <form onSubmit={handleFormSubmit} style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '75vh', overflowY: 'auto' }}>
+                            <label style={{ display: 'block' }}>
+                                <span style={labelStyle}>Tiêu đề bài viết:</span>
+                                <input type="text" value={editingPost.title} onChange={e => setEditingPost({ ...editingPost, title: e.target.value })} style={inputStyle} required />
                             </label>
-                            <label className="block space-y-1">
-                                <span className="font-bold text-gray-700">Nội dung chi tiết:</span>
-                                <textarea rows={6} value={editingPost.content} onChange={e => setEditingPost({ ...editingPost, content: e.target.value })} className="w-full px-3 py-2 border rounded-xl outline-none focus:border-blue-500 leading-relaxed" required />
+                            <label style={{ display: 'block' }}>
+                                <span style={labelStyle}>Nội dung chi tiết:</span>
+                                <textarea rows={6} value={editingPost.content} onChange={e => setEditingPost({ ...editingPost, content: e.target.value })} style={inputStyle} required />
                             </label>
-                            <div className="block space-y-2 border-t pt-2">
-                                <span className="font-bold text-gray-700 block">Ảnh bìa tin tức:</span>
-                                {previewUrl && <img src={previewUrl} className="w-full h-40 object-cover rounded-xl border mb-2 shadow-xs" alt="Preview" />}
-                                <input type="file" accept="image/*" onChange={handleFileChange} className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '12px' }}>
+                                <span style={labelStyle}>Ảnh bìa tin tức:</span>
+                                {previewUrl && <img src={previewUrl} style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #e5e7eb', marginBottom: '8px' }} alt="Preview" />}
+                                <input type="file" accept="image/*" onChange={handleFileChange} style={{ fontSize: '13px', color: '#6b7280' }} />
                             </div>
-                            <div className="flex justify-end gap-2 pt-4 border-t">
-                                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border font-bold text-gray-500 rounded-xl hover:bg-gray-50">Hủy</button>
-                                <button type="submit" className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm">Lưu bài viết</button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', paddingTop: '12px', borderTop: '1px solid #e5e7eb' }}>
+                                <button type="button" onClick={() => setIsModalOpen(false)} style={btnCancel}>Hủy</button>
+                                <button type="submit" style={btnSave}>Lưu bài viết</button>
                             </div>
                         </form>
                     </div>
@@ -214,3 +210,13 @@ export default function ManagePosts() {
         </div>
     );
 }
+
+const thStyle: React.CSSProperties = { padding: '10px 14px', fontSize: '11px', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: 'left' };
+const tdStyle: React.CSSProperties = { padding: '10px 14px', fontSize: '13px', verticalAlign: 'middle' };
+const labelStyle: React.CSSProperties = { fontSize: '13px', fontWeight: 600, color: '#374151', display: 'block', marginBottom: '4px' };
+const inputStyle: React.CSSProperties = { width: '100%', padding: '8px 10px', borderRadius: '6px', border: '1px solid #d1d5db', outline: 'none', backgroundColor: '#ffffff', fontSize: '13px', boxSizing: 'border-box' };
+const btnPrimary: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', backgroundColor: '#2563eb', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '13px' };
+const btnEdit: React.CSSProperties = { padding: '5px 12px', backgroundColor: '#eff6ff', color: '#2563eb', border: '1px solid #bfdbfe', borderRadius: '4px', fontWeight: 600, cursor: 'pointer', fontSize: '12px' };
+const btnDelete: React.CSSProperties = { padding: '5px 12px', backgroundColor: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: '4px', fontWeight: 600, cursor: 'pointer', fontSize: '12px' };
+const btnCancel: React.CSSProperties = { padding: '8px 16px', border: '1px solid #d1d5db', fontWeight: 600, color: '#6b7280', borderRadius: '6px', cursor: 'pointer', backgroundColor: 'white', fontSize: '13px' };
+const btnSave: React.CSSProperties = { padding: '8px 16px', backgroundColor: '#2563eb', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '13px' };

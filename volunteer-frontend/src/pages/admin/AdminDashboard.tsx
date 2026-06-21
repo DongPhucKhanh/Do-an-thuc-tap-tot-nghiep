@@ -2,9 +2,13 @@ import { useState, useEffect } from 'react';
 import api from '../../config/axios';
 import { Users, Flag, ClipboardCheck, CheckCircle } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useTheme } from '../../context/ThemeContext';
+import { palette } from '../../styles/adminTheme';
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState<any>(null);
+    const { isDark } = useTheme();
+    const p = isDark ? palette.dark : palette.light;
 
     useEffect(() => {
         api.get('/stats/dashboard')
@@ -12,34 +16,47 @@ export default function AdminDashboard() {
            .catch(console.error);
     }, []);
 
-    if (!stats) return <div style={{ padding: '30px' }}>Đang tải dữ liệu...</div>;
+    if (!stats) return <div style={{ padding: '20px', color: p.textMuted }}>Đang tải dữ liệu...</div>;
 
     const { overview, chartData } = stats;
 
     return (
-        <div style={{ padding: '30px', backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-            <h2 style={{ color: '#1e1e2d', marginBottom: '25px', fontSize: '28px' }}>👋 Tổng quan Hệ thống</h2>
+        <div>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '20px', fontWeight: 600, color: p.text }}>Tổng quan Hệ thống</h2>
 
             {/* 4 THẺ CHỈ SỐ TỔNG QUAN */}
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '30px' }}>
-                <StatCard icon={<Users size={30} color="#0984e3"/>} title="Tổng Tình nguyện viên" value={overview.totalVolunteers} color="#e1f5fe" />
-                <StatCard icon={<Flag size={30} color="#d63031"/>} title="Chiến dịch đã mở" value={overview.totalCampaigns} color="#ff7675" />
-                <StatCard icon={<ClipboardCheck size={30} color="#e67e22"/>} title="Tổng đơn đăng ký" value={overview.totalRegistrations} color="#ffeaa7" />
-                <StatCard icon={<CheckCircle size={30} color="#00b894"/>} title="Đơn đã phê duyệt" value={overview.approvedRegistrations} color="#55efc4" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+                <StatCard icon={<Users size={20} color="#2563eb"/>} title="Tổng Tình nguyện viên" value={overview.totalVolunteers} isDark={isDark} />
+                <StatCard icon={<Flag size={20} color="#dc2626"/>} title="Chiến dịch đã mở" value={overview.totalCampaigns} isDark={isDark} />
+                <StatCard icon={<ClipboardCheck size={20} color="#d97706"/>} title="Tổng đơn đăng ký" value={overview.totalRegistrations} isDark={isDark} />
+                <StatCard icon={<CheckCircle size={20} color="#16a34a"/>} title="Đơn đã phê duyệt" value={overview.approvedRegistrations} isDark={isDark} />
             </div>
 
             {/* BIỂU ĐỒ THỐNG KÊ */}
-            <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-                <h3 style={{ marginBottom: '20px', color: '#2d3436' }}>📊 Thống kê lực lượng Tình nguyện viên theo Khoa</h3>
-                <div style={{ width: '100%', height: '400px' }}>
+            <div style={{
+                backgroundColor: p.surfaceAlt,
+                padding: '20px',
+                borderRadius: '6px',
+                border: `1px solid ${p.border}`
+            }}>
+                <h3 style={{ margin: '0 0 16px 0', fontSize: '14px', fontWeight: 600, color: p.textSub }}>Thống kê Tình nguyện viên theo Khoa</h3>
+                <div style={{ width: '100%', height: '360px' }}>
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                            <XAxis dataKey="name" tick={{fontSize: 12}} />
-                            <YAxis allowDecimals={false} />
-                            <Tooltip cursor={{fill: '#f1f2f6'}} />
-                            <Legend />
-                            <Bar dataKey="totalStudents" name="Số lượng Sinh viên" fill="#0984e3" radius={[5, 5, 0, 0]} barSize={50} />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#334155' : '#e5e7eb'} />
+                            <XAxis dataKey="name" tick={{ fontSize: 12, fill: p.textMuted }} />
+                            <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: p.textMuted }} />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: p.surface,
+                                    border: `1px solid ${p.border}`,
+                                    borderRadius: '6px',
+                                    color: p.text
+                                }}
+                                cursor={{ fill: isDark ? '#263244' : '#f3f4f6' }}
+                            />
+                            <Legend wrapperStyle={{ color: p.textSub }} />
+                            <Bar dataKey="totalStudents" name="Số lượng Sinh viên" fill="#2563eb" radius={[3, 3, 0, 0]} barSize={40} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -49,14 +66,29 @@ export default function AdminDashboard() {
 }
 
 // Component phụ trợ vẽ Thẻ chỉ số
-const StatCard = ({ icon, title, value, color }: any) => (
-    <div style={{ flex: 1, backgroundColor: 'white', padding: '25px', borderRadius: '15px', display: 'flex', alignItems: 'center', gap: '20px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-        <div style={{ padding: '15px', backgroundColor: color, borderRadius: '50%', display: 'flex' }}>
-            {icon}
+const StatCard = ({ icon, title, value, isDark }: any) => {
+    const p = isDark ? palette.dark : palette.light;
+    return (
+        <div style={{
+            backgroundColor: p.surface,
+            padding: '16px 20px',
+            borderRadius: '6px',
+            border: `1px solid ${p.border}`,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px'
+        }}>
+            <div style={{
+                width: '40px', height: '40px', borderRadius: '6px',
+                backgroundColor: isDark ? '#263244' : '#f3f4f6', display: 'flex',
+                alignItems: 'center', justifyContent: 'center', flexShrink: 0
+            }}>
+                {icon}
+            </div>
+            <div>
+                <p style={{ margin: 0, color: p.textMuted, fontSize: '12px', fontWeight: 500 }}>{title}</p>
+                <h2 style={{ margin: '4px 0 0 0', color: p.text, fontSize: '26px', fontWeight: 700 }}>{value}</h2>
+            </div>
         </div>
-        <div>
-            <p style={{ margin: 0, color: '#636e72', fontSize: '15px', fontWeight: 'bold' }}>{title}</p>
-            <h2 style={{ margin: '5px 0 0 0', color: '#2d3436', fontSize: '32px' }}>{value}</h2>
-        </div>
-    </div>
-);
+    );
+};

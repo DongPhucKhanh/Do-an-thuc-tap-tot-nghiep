@@ -1,14 +1,27 @@
 import { useState, useEffect } from 'react';
-import { Heart, MessageSquare, Trash2, ShieldAlert, Image, Film, Calendar, User } from 'lucide-react';
+import { Heart, MessageSquare, Trash2, ShieldAlert, Film, Calendar, User } from 'lucide-react';
 import api from '../../config/axios';
 import Pagination from '../../components/admin/Pagination';
+import { useTheme } from '../../context/ThemeContext';
+import {
+    getThStyle, getTdStyle, getBtnDelete,
+    getSectionCard, getH2Style, palette
+} from '../../styles/adminTheme';
 
 export default function ManageMoments() {
+    const { isDark } = useTheme();
+    const p = isDark ? palette.dark : palette.light;
+
     const [moments, setMoments] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+
+    // Theme-aware styles inside component
+    const thStyle = getThStyle(isDark);
+    const tdStyle = getTdStyle(isDark);
+    const btnDelete = getBtnDelete(isDark);
 
     useEffect(() => {
         fetchMoments();
@@ -40,7 +53,7 @@ export default function ManageMoments() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-[50vh] text-gray-500 font-semibold text-sm">
+            <div style={{ padding: '40px', textAlign: 'center', color: p.textMuted, fontSize: '13px' }}>
                 Đang quét dữ liệu Album khoảnh khắc tình nguyện...
             </div>
         );
@@ -50,48 +63,48 @@ export default function ManageMoments() {
     const paginatedMoments = moments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div className="p-6 space-y-6">
-            {/* Header thanh quản lý */}
-            <div className="flex justify-between items-center mb-6">
+        <div>
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
-                    <h2 className="text-3xl font-bold text-gray-800">Quản lý Khoảnh khắc</h2>
-                    <p className="text-xs text-gray-400 mt-1">Duyệt bài đăng nhật ký, hình ảnh, clip ngắn của Chiến sĩ tình nguyện</p>
+                    <h2 style={{ ...getH2Style(isDark), margin: '0 0 4px 0' }}>Quản lý Khoảnh khắc</h2>
+                    <p style={{ margin: 0, fontSize: '12px', color: p.textFaint }}>Duyệt bài đăng nhật ký, hình ảnh, clip ngắn của Chiến sĩ tình nguyện</p>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-500 bg-slate-100 px-4 py-2 rounded-xl border font-bold">
-                    Tổng số bài: <span className="text-blue-600">{moments.length}</span> bài viết
-                </div>
+                <span style={{ fontSize: '12px', color: p.textMuted, backgroundColor: isDark ? '#263244' : '#f3f4f6', padding: '6px 12px', borderRadius: '4px', border: `1px solid ${p.border}` }}>
+                    Tổng số: <strong>{moments.length}</strong> bài viết
+                </span>
             </div>
 
-            {/* BẢNG QUẢN TRỊ CHUẨN ĐỒ ÁN */}
-            <div className="bg-white rounded-2xl shadow border overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
-                        <thead className="bg-gray-50/80">
-                            <tr className="text-gray-700 font-semibold uppercase tracking-wider text-[11px]">
-                                <th className="px-6 py-4 text-left">Người đăng</th>
-                                <th className="px-6 py-4 text-left">Nội dung Nhật ký</th>
-                                <th className="px-6 py-4 text-left">Album Đa phương tiện</th>
-                                <th className="px-6 py-4 text-center">Tương tác</th>
-                                <th className="px-6 py-4 text-center">Hành động</th>
+            {/* BẢNG QUẢN TRỊ */}
+            <div style={getSectionCard(isDark)}>
+                <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                        <thead>
+                            <tr>
+                                <th style={thStyle}>Người đăng</th>
+                                <th style={thStyle}>Nội dung Nhật ký</th>
+                                <th style={thStyle}>Album Đa phương tiện</th>
+                                <th style={{ ...thStyle, textAlign: 'center' }}>Tương tác</th>
+                                <th style={{ ...thStyle, textAlign: 'center' }}>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white font-medium text-gray-700">
+                        <tbody>
                             {paginatedMoments.map((moment) => (
-                                <tr key={moment.id} className="hover:bg-gray-50/50 transition-colors">
-                                    
+                                <tr key={moment.id}>
+
                                     {/* 1. Thông tin người đăng */}
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 overflow-hidden font-bold">
+                                    <td style={{ ...tdStyle, whiteSpace: 'nowrap' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb', overflow: 'hidden', flexShrink: 0 }}>
                                                 {moment.user?.avatar ? (
-                                                    <img src={`http://localhost:5000${moment.user.avatar}`} className="w-full h-full object-cover" alt="avt" />
+                                                    <img src={`http://localhost:5000${moment.user.avatar}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="avt" />
                                                 ) : (
-                                                    <User size={16} />
+                                                    <User size={14} />
                                                 )}
                                             </div>
                                             <div>
-                                                <p className="font-bold text-gray-900">{moment.user?.fullName || 'Ẩn danh'}</p>
-                                                <p className="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
+                                                <p style={{ margin: 0, fontWeight: 500, color: p.text, fontSize: '13px' }}>{moment.user?.fullName || 'Ẩn danh'}</p>
+                                                <p style={{ margin: 0, fontSize: '11px', color: p.textFaint, display: 'flex', alignItems: 'center', gap: '3px' }}>
                                                     <Calendar size={10} /> {new Date(moment.createdAt).toLocaleDateString('vi-VN')}
                                                 </p>
                                             </div>
@@ -99,35 +112,35 @@ export default function ManageMoments() {
                                     </td>
 
                                     {/* 2. Tiêu đề và nội dung text */}
-                                    <td className="px-6 py-4 max-w-xs">
-                                        <p className="font-bold text-gray-900 leading-snug truncate">{moment.title}</p>
-                                        <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed font-normal">{moment.content || 'Không có nội dung chữ'}</p>
+                                    <td style={{ ...tdStyle, maxWidth: '240px' }}>
+                                        <p style={{ margin: '0 0 4px 0', fontWeight: 500, color: p.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{moment.title}</p>
+                                        <p style={{ margin: 0, fontSize: '12px', color: p.textMuted, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>{moment.content || 'Không có nội dung chữ'}</p>
                                         {moment.location && (
-                                            <span className="inline-block mt-1.5 text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">
+                                            <span style={{ display: 'inline-block', marginTop: '4px', fontSize: '11px', backgroundColor: isDark ? '#263244' : '#f3f4f6', color: p.textSub, padding: '2px 6px', borderRadius: '4px' }}>
                                                 📍 {moment.location}
                                             </span>
                                         )}
                                     </td>
 
-                                    {/* 3. 🌟 KHU VỰC SỬA LỖI: Hiển thị danh sách ảnh/video an toàn */}
-                                    <td className="px-6 py-4">
-                                        <div className="flex flex-wrap gap-1.5 max-w-[200px]">
+                                    {/* 3. Hiển thị danh sách ảnh/video an toàn */}
+                                    <td style={tdStyle}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', maxWidth: '180px' }}>
                                             {moment.media && moment.media.length > 0 ? (
                                                 moment.media.map((file: any, index: number) => {
                                                     // 🌟 ĐÃ SỬA: Dùng toán tử an toàn (?.) bảo vệ tuyệt đối
                                                     const isVideo = file?.type?.toUpperCase() === 'VIDEO' || file?.url?.endsWith('.mp4');
-                                                    
+
                                                     return (
-                                                        <div key={file.id || index} className="relative w-12 h-12 rounded-lg border overflow-hidden bg-gray-50 group">
+                                                        <div key={file.id || index} style={{ width: '44px', height: '44px', borderRadius: '4px', border: `1px solid ${p.border}`, overflow: 'hidden', backgroundColor: p.surfaceAlt }}>
                                                             {isVideo ? (
-                                                                <div className="w-full h-full flex items-center justify-center bg-slate-900 text-cyan-400">
+                                                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1e293b', color: '#22d3ee' }}>
                                                                     <Film size={14} />
                                                                 </div>
                                                             ) : (
-                                                                <img 
-                                                                    src={`http://localhost:5000${file?.url}`} 
-                                                                    className="w-full h-full object-cover" 
-                                                                    alt="thumb" 
+                                                                <img
+                                                                    src={`http://localhost:5000${file?.url}`}
+                                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                                    alt="thumb"
                                                                     onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/50x50/e2e8f0/94a3b8?text=Err'; }}
                                                                 />
                                                             )}
@@ -135,30 +148,30 @@ export default function ManageMoments() {
                                                     );
                                                 })
                                             ) : (
-                                                <span className="text-xs text-gray-400 italic">Bài đăng viết thô (Không đính kèm tệp)</span>
+                                                <span style={{ fontSize: '11px', color: p.textFaint, fontStyle: 'italic' }}>Bài đăng viết thô</span>
                                             )}
                                         </div>
                                     </td>
 
-                                    {/* 4. Thống kê số tim/bình luận công khai */}
-                                    <td className="px-6 py-4 text-center whitespace-nowrap text-xs">
-                                        <div className="inline-flex flex-col items-start gap-1">
-                                            <span className="flex items-center gap-1 font-bold text-rose-600">
-                                                <Heart size={13} className="fill-current" /> {moment.likes} lượt thích
+                                    {/* 4. Thống kê số tim/bình luận */}
+                                    <td style={{ ...tdStyle, textAlign: 'center', whiteSpace: 'nowrap' }}>
+                                        <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ef4444', fontWeight: 500, fontSize: '12px' }}>
+                                                <Heart size={12} /> {moment.likes} thích
                                             </span>
-                                            <span className="flex items-center gap-1 font-bold text-slate-500">
-                                                <MessageSquare size={13} /> {moment.shares} bình luận
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: p.textMuted, fontWeight: 500, fontSize: '12px' }}>
+                                                <MessageSquare size={12} /> {moment.shares} bình luận
                                             </span>
                                         </div>
                                     </td>
 
-                                    {/* 5. Thao tác xóa bỏ bài viết phạm quy */}
-                                    <td className="px-6 py-4 text-center whitespace-nowrap">
-                                        <button 
+                                    {/* 5. Thao tác xóa */}
+                                    <td style={{ ...tdStyle, textAlign: 'center', whiteSpace: 'nowrap' }}>
+                                        <button
                                             onClick={() => handleDelete(moment.id)}
-                                            className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl transition-all shadow-2sm"
+                                            style={{ ...btnDelete, display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '5px 10px', backgroundColor: isDark ? '#3f1f1f' : '#dc2626', color: 'white', border: 'none', borderRadius: '4px', fontWeight: 600, cursor: 'pointer', fontSize: '12px' }}
                                         >
-                                            <Trash2 size={12} /> Gỡ bài
+                                            <Trash2 size={13} /> Gỡ bài
                                         </button>
                                     </td>
 
@@ -168,7 +181,7 @@ export default function ManageMoments() {
                     </table>
                 </div>
                 {moments.length > 0 && (
-                    <Pagination 
+                    <Pagination
                         currentPage={currentPage}
                         totalPages={totalPages}
                         totalItems={moments.length}
@@ -178,8 +191,8 @@ export default function ManageMoments() {
                 )}
 
                 {moments.length === 0 && (
-                    <div className="text-center py-16 text-gray-400 text-xs sm:text-sm font-medium flex flex-col items-center justify-center gap-2">
-                        <ShieldAlert size={36} className="text-gray-300" />
+                    <div style={{ textAlign: 'center', padding: '48px', color: p.textFaint, fontSize: '13px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                        <ShieldAlert size={32} color={p.border} />
                         Chưa có sinh viên nào đăng bài viết khoảnh khắc lên mạng xã hội.
                     </div>
                 )}

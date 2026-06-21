@@ -71,12 +71,31 @@ export const updateStatus = async (req: AuthRequest, res: Response): Promise<voi
                     timeStr,
                     regInfo.campaign.location || 'Sẽ thông báo sau'
                 );
+
+                await prisma.notification.create({
+                    data: {
+                        userId: regInfo.userId,
+                        title: 'Đơn đăng ký được duyệt',
+                        content: `Chúc mừng! Đơn đăng ký chiến dịch "${campaignTitle}" của bạn đã được duyệt.`,
+                        type: 'REGISTRATION',
+                        link: '/my-activities'
+                    }
+                });
             } else if (status === 'REJECTED') {
                 await sendCampaignRejectionEmail(
                     regInfo.user.email,
                     volunteerName,
                     campaignTitle
                 );
+
+                await prisma.notification.create({
+                    data: {
+                        userId: regInfo.userId,
+                        title: 'Đơn đăng ký chưa phù hợp',
+                        content: `Rất tiếc, đơn đăng ký chiến dịch "${campaignTitle}" của bạn chưa được duyệt lần này.`,
+                        type: 'REGISTRATION'
+                    }
+                });
             }
         }
 
