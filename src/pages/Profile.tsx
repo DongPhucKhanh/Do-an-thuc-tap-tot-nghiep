@@ -257,7 +257,7 @@ export default function Profile() {
     if (loading) return <div className="flex justify-center items-center min-h-screen text-gray-400 font-medium bg-[#f2f4f7]">Đang tải trang cá nhân...</div>;
 
     return (
-        <div className="bg-[#f2f4f7] min-h-screen pb-12">
+        <div className="bg-[#f2f4f7] dark:bg-slate-900 min-h-screen pb-12 transition-colors duration-300">
             
             {/* ================= HEADER BÌA ================= */}
             <div className="relative w-full h-[250px] md:h-[350px]">
@@ -275,11 +275,11 @@ export default function Profile() {
 
             {/* ================= THÔNG TIN & TABS ================= */}
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="relative bg-white rounded-b-2xl shadow-sm -mt-4 pt-16 sm:pt-20 px-4 sm:px-8 pb-0 mb-6 flex flex-col items-center sm:items-start">
+                <div className="relative bg-white dark:bg-slate-800 rounded-b-2xl shadow-sm -mt-4 pt-16 sm:pt-20 px-4 sm:px-8 pb-0 mb-6 flex flex-col items-center sm:items-start border border-t-0 border-slate-100 dark:border-slate-700 transition-colors">
                     
                     {/* Avatar */}
                     <div 
-                        className="absolute -top-16 sm:-top-20 w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-white overflow-hidden bg-white shadow-md cursor-pointer group left-1/2 sm:left-8 -translate-x-1/2 sm:translate-x-0"
+                        className="absolute -top-16 sm:-top-20 w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-white dark:border-slate-800 overflow-hidden bg-white shadow-md cursor-pointer group left-1/2 sm:left-8 -translate-x-1/2 sm:translate-x-0 transition-colors"
                         onClick={handleAvatarClick}
                     >
                         <img 
@@ -296,8 +296,8 @@ export default function Profile() {
                     {/* Info & Buttons */}
                     <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start w-full relative mb-6 pl-0 sm:pl-44">
                         <div className="text-center sm:text-left mt-2 sm:mt-0">
-                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{profileData?.fullName}</h1>
-                            <p className="text-gray-500 text-sm mt-0.5">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{profileData?.fullName}</h1>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm mt-0.5">
                                 @{profileData?.studentId || profileData?.email?.split('@')[0]}
                             </p>
                             <div className="flex items-center justify-center sm:justify-start gap-4 mt-3 text-sm text-gray-600 font-medium">
@@ -342,14 +342,36 @@ export default function Profile() {
                 <div className="flex flex-col lg:flex-row gap-6">
                     
                     {/* Cột trái - Tab Content */}
-                    <div className="flex-1 bg-white rounded-2xl shadow-sm p-6 min-h-[400px]">
+                    <div className="flex-1 bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 min-h-[400px] border border-slate-100 dark:border-slate-700 transition-colors">
                         {renderTabContent()}
                     </div>
 
                     {/* Cột phải - Thẻ thống kê */}
-                    <div className="w-full lg:w-[350px] shrink-0">
+                    <div className="w-full lg:w-[350px] shrink-0 space-y-4">
+                        {/* Thẻ: Cấp độ & Điểm */}
+                        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-slate-700 transition-colors">
+                            <h3 className="text-slate-800 dark:text-slate-100 font-bold text-base mb-4 flex items-center gap-2">
+                                <Award className="text-blue-500" size={18} /> Thành tích tình nguyện
+                            </h3>
+                            <div className="flex justify-between items-end mb-2">
+                                <div>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">Cấp độ hiện tại</p>
+                                    <p className="font-extrabold text-2xl text-blue-600 dark:text-blue-400">Đồng</p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-1">Điểm rèn luyện</p>
+                                    <p className="font-extrabold text-2xl text-slate-800 dark:text-slate-100">{(profileData?.totalScore || 0) + 85} <span className="text-sm font-medium text-slate-500">pt</span></p>
+                                </div>
+                            </div>
+                            <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5 mt-4 mb-2">
+                                <div className="bg-blue-500 h-2.5 rounded-full" style={{ width: '45%' }}></div>
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 text-center">Cần thêm 15 điểm để lên cấp Bạc</p>
+                        </div>
+
+                        {/* Thẻ: Tóm tắt Đóng góp */}
                         <div className="bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl shadow-md text-white p-6 sticky top-6">
-                            <h3 className="text-orange-50 font-medium text-sm">Đã ủng hộ và đồng hành</h3>
+                            <h3 className="text-orange-50 font-medium text-sm">Tổng quỹ đã đóng góp</h3>
                             <div className="text-3xl font-bold mt-1 mb-6">
                                 {(profileData?.totalDonatedAmount || 0).toLocaleString()} đ
                             </div>

@@ -23,6 +23,7 @@ import PaymentReturn from './pages/PaymentReturn';
 import Profile from './pages/Profile';
 import DonationPage from './pages/DonationPage';
 import ForgotPassword from './pages/ForgotPassword';
+import { ThemeProvider } from './context/ThemeContext';
 
 // ─── Page transition wrapper ──────────────────────
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -92,9 +93,11 @@ function AppInner() {
 
 function App() {
   return (
-    <Router>
-      <AppInner />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AppInner />
+      </Router>
+    </ThemeProvider>
   );
 }
 

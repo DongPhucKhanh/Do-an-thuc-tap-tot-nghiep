@@ -3,10 +3,12 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   ChevronDown, ClipboardList, LogOut, Shield, User,
   PlusCircle, Menu, X, HeartHandshake, Trophy, ImageIcon,
-  Newspaper, BookOpen, FileText, LayoutGrid, MapPin
+  Newspaper, BookOpen, FileText, LayoutGrid, MapPin, Sun, Moon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoImg from '../assets/logo-doan-thanh-nien-vector-4.jpg';
+import { useTheme } from '../context/ThemeContext';
+import NotificationDropdown from './NotificationDropdown';
 
 // ─── Kiểu dữ liệu menu ─────────────────────────────
 interface MenuItem {
@@ -41,6 +43,7 @@ const menuData: Record<string, MenuGroup> = {
 };
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem('token');
@@ -94,12 +97,16 @@ export default function Navbar() {
           NAVBAR CHÍNH
       ══════════════════════════════════════════ */}
       <nav
-        className="sticky top-0 z-50 w-full"
+        className="sticky top-0 z-50 w-full transition-colors duration-300"
         style={{
-          backgroundColor: scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.88)',
+          backgroundColor: theme === 'dark' 
+            ? (scrolled ? 'rgba(15,23,42,0.96)' : 'rgba(15,23,42,0.88)') 
+            : (scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.88)'),
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: scrolled ? '1px solid rgba(226,232,240,0.9)' : '1px solid rgba(226,232,240,0.5)',
+          borderBottom: theme === 'dark'
+            ? (scrolled ? '1px solid rgba(51,65,85,0.9)' : '1px solid rgba(51,65,85,0.5)')
+            : (scrolled ? '1px solid rgba(226,232,240,0.9)' : '1px solid rgba(226,232,240,0.5)'),
           boxShadow: scrolled ? '0 4px 32px rgba(0,0,0,0.08)' : '0 1px 12px rgba(0,0,0,0.04)',
           transition: 'background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease',
           height: 'var(--nav-height)',
@@ -120,10 +127,10 @@ export default function Navbar() {
               <img src={logoImg} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div className="flex flex-col leading-none">
-              <span style={{ fontWeight: 800, fontSize: '15px', color: '#0f172a', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+              <span style={{ fontWeight: 800, fontSize: '15px', color: theme === 'dark' ? '#f8fafc' : '#0f172a', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
                 ThienNguyen
               </span>
-              <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 500, letterSpacing: '0.02em' }}>
+              <span style={{ fontSize: '10px', color: theme === 'dark' ? '#94a3b8' : '#64748b', fontWeight: 500, letterSpacing: '0.02em' }}>
                 Nền tảng tình nguyện
               </span>
             </div>
@@ -306,6 +313,24 @@ export default function Navbar() {
                     Quản trị
                   </Link>
                 )}
+
+                {/* Theme Toggle */}
+                <button
+                  onClick={toggleTheme}
+                  style={{
+                    width: '36px', height: '36px', borderRadius: '50%',
+                    border: 'none', background: 'transparent', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: theme === 'dark' ? '#cbd5e1' : '#475569', transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.backgroundColor = theme === 'dark' ? '#1e293b' : '#f1f5f9'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'}
+                >
+                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
+
+                {/* Notification Dropdown */}
+                <NotificationDropdown />
 
                 {/* User pill */}
                 <div
