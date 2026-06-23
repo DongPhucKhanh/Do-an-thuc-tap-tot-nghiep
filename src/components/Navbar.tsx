@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   ChevronDown, ClipboardList, LogOut, Shield, User,
   PlusCircle, Menu, X, HeartHandshake, Trophy, ImageIcon,
-  Newspaper, BookOpen, FileText, LayoutGrid, MapPin, Sun, Moon
+  Newspaper, BookOpen, FileText, LayoutGrid, MapPin, Sun, Moon, Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoImg from '../assets/logo-doan-thanh-nien-vector-4.jpg';
@@ -29,7 +29,7 @@ const menuData: Record<string, MenuGroup> = {
     items: [
       { label: 'Bảng xếp hạng thi đua', path: '/leaderboard', icon: <Trophy size={16} />, desc: 'Top tình nguyện viên xuất sắc' },
       { label: 'Khoảnh khắc tình nguyện', path: '/gallery', icon: <ImageIcon size={16} />, desc: 'Thư viện ảnh hoạt động' },
-      { label: 'Hoạt động gần đây', path: '/nearest-campaigns', icon: <MapPin size={16} />, desc: 'Chiến dịch sắp diễn ra' },
+      { label: 'Cẩm nang tình nguyện', path: '/handbook', icon: <BookOpen size={16} />, desc: 'Hướng dẫn kỹ năng' }
     ]
   },
   gioithieu: {
@@ -155,12 +155,24 @@ export default function Navbar() {
               to="/campaigns"
               className="nav-link px-3 py-2 rounded-lg transition-colors text-sm"
               style={{
-                color: isActive('/campaigns') ? '#2563eb' : '#475569',
-                backgroundColor: isActive('/campaigns') ? '#eff6ff' : 'transparent',
+                color: isActive('/campaigns') ? '#2563eb' : theme === 'dark' ? '#cbd5e1' : '#475569',
+                backgroundColor: isActive('/campaigns') ? (theme === 'dark' ? '#1e3a8a' : '#eff6ff') : 'transparent',
                 fontWeight: isActive('/campaigns') ? 600 : 500,
               }}
             >
               Chiến dịch
+            </Link>
+
+            <Link
+              to="/contact"
+              className="nav-link px-3 py-2 rounded-lg transition-colors text-sm"
+              style={{
+                color: isActive('/contact') ? '#2563eb' : theme === 'dark' ? '#cbd5e1' : '#475569',
+                backgroundColor: isActive('/contact') ? (theme === 'dark' ? '#1e3a8a' : '#eff6ff') : 'transparent',
+                fontWeight: isActive('/contact') ? 600 : 500,
+              }}
+            >
+              Liên hệ
             </Link>
 
             {/* Dropdown menus */}
@@ -494,6 +506,19 @@ export default function Navbar() {
                 >
                   <HeartHandshake size={18} />
                   Chiến dịch
+                </Link>
+
+                <Link
+                  to="/contact"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                  style={{
+                    color: isActive('/contact') ? '#2563eb' : '#0f172a',
+                    backgroundColor: isActive('/contact') ? '#eff6ff' : 'transparent',
+                    fontWeight: 600, fontSize: '15px', textDecoration: 'none',
+                  }}
+                >
+                  <Mail size={18} />
+                  Liên hệ
                 </Link>
 
                 {/* Dropdown sections mobile */}

@@ -13,7 +13,6 @@ import Gallery from './pages/Gallery';
 import TrainingPoint from './pages/TrainingPoint';
 import TrainingRegulations from './pages/TrainingRegulations';
 import Handbook from './pages/Handbook';
-import NearestCampaigns from './pages/NearestCampaigns';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LatestNewsSection from './components/LatestNewsSection';
@@ -23,6 +22,7 @@ import PaymentReturn from './pages/PaymentReturn';
 import Profile from './pages/Profile';
 import DonationPage from './pages/DonationPage';
 import ForgotPassword from './pages/ForgotPassword';
+import ContactPage from './pages/ContactPage';
 import { ThemeProvider } from './context/ThemeContext';
 
 // ─── Page transition wrapper ──────────────────────
@@ -74,7 +74,6 @@ function AppInner() {
             <Route path="/training-point" element={<PageWrapper><TrainingPoint /></PageWrapper>} />
             <Route path="/training-regulations" element={<PageWrapper><TrainingRegulations /></PageWrapper>} />
             <Route path="/handbook" element={<PageWrapper><Handbook /></PageWrapper>} />
-            <Route path="/nearest-campaigns" element={<PageWrapper><NearestCampaigns /></PageWrapper>} />
             <Route path="/latest-news" element={<PageWrapper><LatestNewsSection /></PageWrapper>} />
             <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
             <Route path="/news" element={<PageWrapper><NewsPage /></PageWrapper>} />
@@ -82,6 +81,7 @@ function AppInner() {
             <Route path="/payment-return" element={<PageWrapper><PaymentReturn /></PageWrapper>} />
             <Route path="/campaign/:id/donate" element={<DonationPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
           </Routes>
         </AnimatePresence>
       </main>

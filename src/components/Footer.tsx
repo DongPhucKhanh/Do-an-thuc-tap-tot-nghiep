@@ -43,7 +43,6 @@ const footerLinks = {
       { label: 'Chiến dịch', href: '/campaigns' },
       { label: 'Bảng xếp hạng', href: '/leaderboard' },
       { label: 'Thư viện ảnh', href: '/gallery' },
-      { label: 'Hoạt động gần đây', href: '/nearest-campaigns' },
     ]
   },
   info: {

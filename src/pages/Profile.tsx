@@ -97,10 +97,8 @@ export default function Profile() {
         formData.append('fullName', editForm.fullName); formData.append('phone', editForm.phone);
         formData.append('studentId', editForm.studentId); formData.append('faculty', editForm.faculty);
         formData.append('dob', editForm.dob); formData.append('gender', editForm.gender);
-        formData.append('address', editForm.address);
-        
-        if (editForm.lat) formData.append('lat', editForm.lat);
-        if (editForm.lng) formData.append('lng', editForm.lng);
+        // Bỏ lat/lng khỏi form gửi lên do backend tự auto-geocode
+        if (editForm.address) formData.append('address', editForm.address);
 
         try {
             await api.put('/users/profile', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
@@ -466,10 +464,6 @@ export default function Profile() {
                             </div>
                             <div className="border-t pt-2 space-y-3">
                                 <label className="block space-y-1"><span className="font-bold text-gray-700">Địa chỉ cư trú hiện tại:</span><input type="text" value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} className="w-full px-3 py-2 border rounded-xl outline-none focus:border-blue-500 text-gray-600" /></label>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <label className="block space-y-1"><span className="font-bold text-slate-400 text-[11px]">Vĩ độ địa lý (Lat):</span><input type="number" step="any" value={editForm.lat} onChange={e => setEditForm({...editForm, lat: e.target.value})} className="w-full px-3 py-1.5 border rounded-lg outline-none bg-slate-50 text-xs" /></label>
-                                    <label className="block space-y-1"><span className="font-bold text-slate-400 text-[11px]">Kinh độ địa lý (Lng):</span><input type="number" step="any" value={editForm.lng} onChange={e => setEditForm({...editForm, lng: e.target.value})} className="w-full px-3 py-1.5 border rounded-lg outline-none bg-slate-50 text-xs" /></label>
-                                </div>
                             </div>
                             <div className="flex justify-end gap-2 pt-4 border-t">
                                 <button type="button" onClick={() => setIsEditModalOpen(false)} className="px-4 py-2 border font-bold text-gray-500 rounded-xl hover:bg-gray-50 transition-all">Hủy bỏ</button>

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
-import { MapPin, Calendar, CheckCircle, XCircle, Clock, ClipboardList, Camera, Download, X, Upload } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle, XCircle, Clock, ClipboardList, Camera, Download, X, Upload, QrCode } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 import jsPDF from 'jspdf';
 import { useTheme } from '../context/ThemeContext';
 
@@ -22,6 +23,34 @@ export default function MyActivities() {
     // Ref cho Giấy chứng nhận ẩn
     const certRef = useRef<HTMLDivElement>(null);
     const [certData, setCertData] = useState<{name: string, campaign: string, date: string, rating: number} | null>(null);
+
+    // State cho QR Scanner
+    const [isQRScannerOpen, setIsQRScannerOpen] = useState(false);
+
+    useEffect(() => {
+        if (isQRScannerOpen) {
+            const scanner = new Html5QrcodeScanner('qr-reader', { fps: 10, qrbox: { width: 250, height: 250 } }, false);
+            scanner.render(async (decodedText) => {
+                scanner.clear();
+                setIsQRScannerOpen(false);
+                try {
+                    const data = JSON.parse(decodedText);
+                    if (data.type === 'CHECKIN' || data.type === 'CHECKOUT') {
+                        const res = await api.post(`/campaigns/${data.campaignId}/scan-qr`, { type: data.type });
+                        alert(res.data.message);
+                    } else {
+                        alert('Mã QR không đúng định dạng!');
+                    }
+                } catch (e: any) {
+                    alert(e.response?.data?.error || 'Mã QR không hợp lệ hoặc Lỗi hệ thống!');
+                }
+            }, (err) => { /* ignore */ });
+
+            return () => {
+                scanner.clear().catch(e => console.error(e));
+            };
+        }
+    }, [isQRScannerOpen]);
 
     useEffect(() => {
         const fetchMyActivities = async () => {
@@ -155,9 +184,29 @@ export default function MyActivities() {
                                     </div>
                                 )}
 
+                                {act.evaluations && act.evaluations.length > 0 && (
+                                    <div className="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-xl border border-amber-100 dark:border-amber-700/50 mb-4">
+                                        <p className="font-semibold text-sm text-amber-700 dark:text-amber-500 flex items-center gap-1.5 mb-2">
+                                            ⭐ Đánh giá từ BTC:
+                                        </p>
+                                        {act.evaluations.map((evalItem: any) => (
+                                            <div key={evalItem.id} className="text-sm text-amber-800 dark:text-amber-200 mt-2">
+                                                <div className="font-medium">Chấm điểm: {evalItem.rating} / 5 sao</div>
+                                                <div className="italic mt-1 text-amber-700 dark:text-amber-400">"{evalItem.comment}"</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
                                 {/* Các nút chức năng khi Đã Duyệt */}
                                 {act.status === 'APPROVED' && (
-                                    <div className="flex gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+                                    <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+                                        <button 
+                                            onClick={() => setIsQRScannerOpen(true)}
+                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 text-xs font-semibold rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-colors"
+                                        >
+                                            <QrCode size={14} /> Điểm danh
+                                        </button>
                                         <button 
                                             onClick={() => openMomentModal(act)}
                                             className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-semibold rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
@@ -253,6 +302,26 @@ export default function MyActivities() {
                 </div>
             </div>
 
+            {/* Modal QR Scanner */}
+            {isQRScannerOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-sm shadow-2xl overflow-hidden animate-slide-up">
+                        <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
+                            <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+                                <QrCode size={18} className="text-purple-600 dark:text-purple-400" />
+                                Quét mã Điểm danh
+                            </h3>
+                            <button onClick={() => setIsQRScannerOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="p-5">
+                            <p className="text-sm text-slate-500 mb-4 text-center">Hướng camera về phía mã QR của Ban tổ chức để điểm danh đến / về.</p>
+                            <div id="qr-reader" className="w-full overflow-hidden rounded-xl border border-slate-200"></div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

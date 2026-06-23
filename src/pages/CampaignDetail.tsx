@@ -4,6 +4,7 @@ import { MapPin, Calendar, Users, ArrowLeft, CheckCircle, Gift, X, Target, Heart
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../api/axios';
 import CampaignCard from '../components/CampaignCard';
+import ChatRoom from '../components/ChatRoom';
 
 // ─────────────────────────────────────────────────────────────
 // SUB-COMPONENTS
@@ -381,6 +382,7 @@ export default function CampaignDetail() {
     const [loading, setLoading] = useState(true);
     const [isRegistering, setIsRegistering] = useState(false);
     const [showFullDescription, setShowFullDescription] = useState(false);
+    const [isApprovedUser, setIsApprovedUser] = useState(false);
 
     // State quản lý form Quyên góp vật phẩm (Giữ nguyên vẹn)
     const [showDonationModal, setShowDonationModal] = useState(false);
@@ -398,12 +400,17 @@ export default function CampaignDetail() {
             try {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                const [detailRes, listRes] = await Promise.all([
+                const [detailRes, listRes, myRegRes] = await Promise.all([
                     api.get(`/campaigns/${id}`),
-                    api.get('/campaigns')
+                    api.get('/campaigns'),
+                    api.get('/registrations/me').catch(() => ({ data: { data: [] } }))
                 ]);
 
                 setCampaign(detailRes.data.data);
+
+                const myRegs = myRegRes.data.data || [];
+                const approvedReg = myRegs.find((reg: any) => reg.campaignId === parseInt(id || '0') && reg.status === 'APPROVED');
+                if (approvedReg) setIsApprovedUser(true);
 
                 const others = listRes.data.data.filter((c: any) =>
                     c.status === 'OPEN' && c.id !== parseInt(id || '0')
@@ -563,6 +570,17 @@ export default function CampaignDetail() {
                                 Mọi thông tin và giao dịch được kiểm duyệt bởi hệ thống trường Cao đẳng Công Thương TP.HCM.
                             </p>
                         </motion.div>
+
+                        {/* Chat Room */}
+                        {isApprovedUser && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.3 }}
+                            >
+                                <ChatRoom campaignId={parseInt(id || '0')} />
+                            </motion.div>
+                        )}
                     </div>
                 </div>
 
