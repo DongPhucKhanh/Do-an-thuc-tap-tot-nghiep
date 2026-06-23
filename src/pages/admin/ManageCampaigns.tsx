@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { QRCodeCanvas } from 'qrcode.react';
 import api from '../../config/axios';
 import Pagination from '../../components/admin/Pagination';
 
@@ -16,6 +17,10 @@ export default function ManageCampaigns() {
     const [editingCampaign, setEditingCampaign] = useState<any>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null); // Lưu file ảnh mới chọn
     const [previewUrl, setPreviewUrl] = useState<string>(''); // Lưu link preview ảnh xem trước
+
+    // 🌟 CÁC STATE QUẢN LÝ QR ĐIỂM DANH
+    const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+    const [selectedCampaignForQR, setSelectedCampaignForQR] = useState<any>(null);
 
     useEffect(() => {
         fetchCampaigns(currentPage);
@@ -64,8 +69,6 @@ export default function ManageCampaigns() {
         formData.append('location', editingCampaign.location);
         formData.append('description', editingCampaign.description);
         formData.append('requiredVolunteers', editingCampaign.requiredVolunteers);
-        if (editingCampaign.lat) formData.append('lat', editingCampaign.lat);
-        if (editingCampaign.lng) formData.append('lng', editingCampaign.lng);
         
         // Nếu có chọn file ảnh mới thì nạp vào FormData
         if (selectedFile) {
@@ -177,6 +180,13 @@ export default function ManageCampaigns() {
 
                                 <td className="px-6 py-5 text-center">
                                     <div className="flex flex-col sm:flex-row gap-1.5 justify-center">
+                                        {/* NÚT QR ĐIỂM DANH */}
+                                        <button 
+                                            onClick={() => { setSelectedCampaignForQR(camp); setIsQRModalOpen(true); }} 
+                                            className="px-3 py-1.5 text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-all"
+                                        >
+                                            QR Điểm danh
+                                        </button>
                                         {/* NÚT SỬA ĐƯỢC BỔ SUNG */}
                                         <button onClick={() => handleEditClick(camp)} className="px-3 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all">
                                             Sửa
@@ -253,6 +263,37 @@ export default function ManageCampaigns() {
                                 <button type="submit" className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm">Lưu thay đổi</button>
 							</div>
                         </form>
+                    </div>
+                </div>
+            )}
+            {/* ================= MODAL MÃ QR ĐIỂM DANH ================= */}
+            {isQRModalOpen && selectedCampaignForQR && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full overflow-hidden border">
+                        <div className="bg-gray-900 p-4 text-white flex justify-between items-center">
+                            <h3 className="font-bold text-sm uppercase">📷 QR Điểm danh Chiến dịch #{selectedCampaignForQR.id}</h3>
+                            <button onClick={() => setIsQRModalOpen(false)} className="text-gray-400 hover:text-white font-bold">✕</button>
+                        </div>
+                        
+                        <div className="p-6 flex flex-col items-center justify-center space-y-6">
+                            <div className="bg-white p-4 border-4 border-purple-100 rounded-2xl shadow-sm">
+                                <QRCodeCanvas 
+                                    value={JSON.stringify({ type: 'CHECKIN', campaignId: selectedCampaignForQR.id })} 
+                                    size={220}
+                                    level="H"
+                                    includeMargin={true}
+                                />
+                            </div>
+                            <div className="text-center">
+                                <h4 className="font-bold text-lg text-gray-800 mb-1">{selectedCampaignForQR.title}</h4>
+                                <p className="text-sm text-gray-500 mb-4">Sinh viên dùng ứng dụng để quét mã này khi ĐẾN tham gia hoạt động.</p>
+                                
+                                <div className="text-xs text-gray-400 border-t pt-4">
+                                    <p>Mã QR này chứa thông tin điểm danh đến.</p>
+                                    <p>Hệ thống tự động ghi nhận giờ vào.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

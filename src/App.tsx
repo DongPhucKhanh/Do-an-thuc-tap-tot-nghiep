@@ -17,6 +17,7 @@ import EvaluateVolunteers from './pages/admin/EvaluateVolunteers';
 import ManagePosts from './pages/admin/ManagePosts';
 import QRDonationManager from './pages/admin/QRDonationManager';
 import ManageMoments from './pages/admin/ManageMoments';
+import ManageContacts from './pages/admin/ManageContacts';
 import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
               <Route path="moments" element={<ManageMoments />} />
               <Route path="posts" element={<ManagePosts />} />
               <Route path="donations" element={<QRDonationManager />} />
+              <Route path="contacts" element={<ManageContacts />} />
           </Route>
 
           {/* 👇 3. Gõ đường dẫn sai -> Tự động quay về trang Login (gốc) */}

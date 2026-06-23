@@ -11,15 +11,26 @@ export default function VolunteerHistory() {
     const p = isDark ? palette.dark : palette.light;
 
     const [volunteers, setVolunteers] = useState<any[]>([]);
+    const [faculties, setFaculties] = useState<any[]>([]);
+    const [selectedFacultyId, setSelectedFacultyId] = useState('');
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const [history, setHistory] = useState<any[]>([]);
 
-    // Tải danh sách Tình nguyện viên ngay khi mở trang
+    // Tải danh sách Tình nguyện viên và Khoa ngay khi mở trang
     useEffect(() => {
         api.get('/campaigns/volunteers/list') 
            .then(res => setVolunteers(res.data.data))
            .catch(console.error);
+        
+        api.get('/faculties')
+           .then(res => setFaculties(res.data.data))
+           .catch(console.error);
     }, []);
+
+    // Lọc danh sách tình nguyện viên theo Khoa
+    const filteredVolunteers = selectedFacultyId
+        ? volunteers.filter(v => v.facultyId?.toString() === selectedFacultyId)
+        : volunteers;
 
     // Hàm gọi API lấy lịch sử khi Admin chọn 1 người
     const fetchHistory = async (userId: number) => {
@@ -40,18 +51,34 @@ export default function VolunteerHistory() {
         <div>
             <h2 style={getH2Style(isDark)}>Theo dõi Lịch sử Tham gia</h2>
             
-            <div style={{ ...getFilterPanel(isDark), marginBottom: '20px' }}>
-                <label style={{ fontWeight: 600, marginRight: '10px', fontSize: '13px', color: p.textSub }}>Chọn Tình nguyện viên:</label>
-                <select 
-                    onChange={(e) => fetchHistory(Number(e.target.value))} 
-                    defaultValue="" 
-                    style={{ ...inputStyle, minWidth: '320px' }}
-                >
-                    <option value="" disabled>-- Tìm kiếm / Chọn tình nguyện viên --</option>
-                    {volunteers.map(vol => (
-                        <option key={vol.id} value={vol.id}>{vol.fullName} ({vol.email})</option>
-                    ))}
-                </select>
+            <div style={{ ...getFilterPanel(isDark), marginBottom: '20px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '300px' }}>
+                    <label style={{ display: 'block', fontWeight: 600, marginBottom: '8px', fontSize: '13px', color: p.textSub }}>Lọc theo Khoa:</label>
+                    <select 
+                        value={selectedFacultyId}
+                        onChange={(e) => { setSelectedFacultyId(e.target.value); setSelectedUser(null); setHistory([]); }} 
+                        style={{ ...inputStyle, width: '100%' }}
+                    >
+                        <option value="">-- Tất cả các Khoa --</option>
+                        {faculties.map(f => (
+                            <option key={f.id} value={f.id}>{f.name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div style={{ flex: 2, minWidth: '300px' }}>
+                    <label style={{ display: 'block', fontWeight: 600, marginBottom: '8px', fontSize: '13px', color: p.textSub }}>Chọn Tình nguyện viên:</label>
+                    <select 
+                        onChange={(e) => fetchHistory(Number(e.target.value))} 
+                        value={selectedUser ? selectedUser.id : ""}
+                        style={{ ...inputStyle, width: '100%' }}
+                    >
+                        <option value="" disabled>-- Tìm kiếm / Chọn tình nguyện viên --</option>
+                        {filteredVolunteers.map(vol => (
+                            <option key={vol.id} value={vol.id}>{vol.fullName} ({vol.email})</option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             {selectedUser && (

@@ -14,7 +14,8 @@ import {
     Star,
     Image,
     Newspaper,
-    QrCode
+    QrCode,
+    Mail
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { palette } from '../styles/adminTheme';
@@ -44,7 +45,7 @@ export default function Sidebar() {
     return (
         <div style={{
             width: '240px',
-            backgroundColor: p.surface,
+            backgroundColor: p.sidebarBg,
             borderRight: `1px solid ${p.border}`,
             display: 'flex',
             flexDirection: 'column',
@@ -93,6 +94,7 @@ export default function Sidebar() {
                 <NavLink to="/admin/banners" style={navStyle}><ImageIcon size={16} /> Quản lý Banner</NavLink>
                 <NavLink to="/admin/donations" style={navStyle}><QrCode size={16} /> Quản lý Quyên góp QR</NavLink>
                 <NavLink to="/admin/evaluations" style={navStyle}><Star size={16} /> Đánh giá Tình nguyện viên</NavLink>
+                <NavLink to="/admin/contacts" style={navStyle}><Mail size={16} /> Quản lý Liên hệ</NavLink>
             </div>
         </div>
     );
