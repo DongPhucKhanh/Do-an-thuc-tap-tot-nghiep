@@ -1,0 +1,2860 @@
+BỘ CÔNG THƯƠNG
+
+TRƯỜNG CAO ĐẲNG CÔNG THƯƠNG TP.HCM
+
+KHOA CÔNG NGHỆ THÔNG TIN
+
+
+
+
+
+
+
+ĐỀ CƯƠNG THỰC TẬP TỐT NGHIỆP
+
+
+
+ĐỀ TÀI: Quản lý và Điều phối Hoạt động Tình nguyện
+
+
+
+Giảng viên hướng dẫn:   Trần Nhật Nam 
+
+Thực hiện:	ĐỒNG PHÚC KHÁNH
+
+2123110051 – CCQ2311B
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+TP. Hồ Chí Minh – Tháng 06/2024
+
+
+
+
+
+
+
+LỜI NHẬN XÉT
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+
+
+TP HCM, ngày …. tháng …. năm 2026
+
+
+
+Giáo viên nhận xét
+
+
+
+
+
+
+
+
+
+LỜI CẢM ƠN
+
+Lời đầu tiên, em xin trân trọng cảm ơn Thầy Trần Nhật Nam, người đã dành thời gian và tâm huyết để tận tình hướng dẫn em trong suốt quá trình học tập và hoàn thành đề cương Thực tập tốt nghiệp.
+
+Xin chân thành cảm ơn ban giám hiệu nhà trường, các thầy cô trong khoa Công nghệ thông tin và các phòng ban nhà trường đã tạo điều kiện tốt nhất cho em cũng như các bạn khác trong suốt thời gian học tập và làm Thực tập.
+
+Cuối cùng em xin gửi lời cảm ơn đến gia đình, bạn bè, người thân, đã giúp đỡ động viên em rất nhiều trong quá trình học tập và làm Thực tập tốt nghiệp. Do thời gian thực hiện có hạn, kiến thức còn hạn chế nên đồ án Thực tập của em chắc chắn không tránh khỏi những thiếu sót nhất định.
+
+Em rất mong nhận được ý kiến đóng góp của thầy cô giáo và các bạn để em có thêm kinh nghiệm và tiếp tục hoàn thiện Thực tập tốt nghiệp của mình.
+
+Em xin chân thành cảm ơn!
+
+
+
+	TP HCM, ngày …. tháng …. năm 2026
+
+	Sinh viên thực hiện
+
+	
+
+
+
+
+
+	ĐỒNG PHÚC KHÁNH
+
+	
+
+MỤC LỤC
+
+
+
+LỜI NHẬN XÉT	i
+
+LỜI CẢM ƠN	ii
+
+MỤC LỤC	iii
+
+DANH MỤC HÌNH ẢNH	vi
+
+DANH MỤC BẢNG	vii
+
+CHƯƠNG 1. TỔNG QUAN	1
+
+1.1. Lý do chọn đề tài	1
+
+1.2. Mục đích đề tài	1
+
+1.3. Phương pháp nghiên cứu	1
+
+1.4. Cấu trúc đề tài	2
+
+CHƯƠNG 2. CƠ SỞ LÝ THUYẾT	3
+
+2.1.Tìm hiểu về JavaScript	3
+
+2.1.1. JavaScript	3
+
+2.1.2. Chức năng của JavaScript	3
+
+2.1.3. Lợi ích của JavaScript	3
+
+2.1.4. Giới hạn của JavaScript	5
+
+2.2. Tổng quan về ReactJS	5
+
+2.2.1. ReactJS	5
+
+2.2.2. Các tính năng chính của ReactJS	5
+
+2.2.3. Ưu điểm khi sử dụng ReactJS	6
+
+2.2.4. Nhược điểm của ReactJs	7
+
+2.3. Tìm hiểu về Restful API	7
+
+2.3.1. Restfull API	7
+
+2.3.2. Các thành phần chính của Restful API	8
+
+2.4. Tổng quan về Node.js	9
+
+2.4.1. Node.js	9
+
+2.4.2. Một số ưu điểm khi sử dụng NodeJS	9
+
+2.4.3. Một số nhược điểm của NodeJS	10
+
+2.5. Tổng quát về HTML	10
+
+2.5.1. HTML	10
+
+2.5.2. Cách HTML hoạt động	11
+
+2.5.3. Ưu và nhược điểm của HTML	11
+
+2.6. Tìm hiểu về CSS	12
+
+2.6.1. CSS	12
+
+2.6.2 Điểm mạnh của CSS	12
+
+2.7. Tổng quan về Bootstrap	13
+
+2.7.1. Bootstrap	13
+
+2.7.2. Ưu điểm của Bootstrap	14
+
+2.7.3. Nhược điểm của Bootstrap	15
+
+CHƯƠNG 3. PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG	16
+
+3.1. Thực trạng bài toán	16
+
+3.1.1. Yêu cầu chức năng	16
+
+3.1.2. Thực trạng hệ thống	16
+
+3.2. Phân tích yêu cầu hệ thống	17
+
+3.2.1. Yêu cầu chức năng	17
+
+3.2.2. Danh sách các Actor	18
+
+3.2.3. Danh sách các Use case	18
+
+3.2.4. Biểu đồ Usecase	20
+
+3.2.5. Biểu đồ hoạt động	24
+
+3.3. Cơ sở dữ liệu	34
+
+3.3.1. Category	34
+
+3.3.2. Brand	35
+
+3.3.3. Product	36
+
+3.3.4. ProductStore	37
+
+3.3.5. ProductSale	37
+
+3.3.6. Topic	38
+
+3.3.7. Bảng Post	39
+
+3.3.8. User	40
+
+3.3.9. Order	41
+
+3.3.10. OrderDetail	42
+
+3.3.11. Contact	42
+
+3.3.12. Banner	43
+
+CHƯƠNG 4. TRANG WEB BÁN ĐIỆN THOẠI	44
+
+4.1. Trang người dùng	44
+
+4.1.1. Trang chủ	44
+
+4.1.2. Trang sản phẩm	45
+
+4.1.3. Trang chi tiết sản phẩm	46
+
+4.1.4. Trang sản phẩm sản phẩm theo danh mục	47
+
+4.1.5. Trang liên hệ	48
+
+4.1.6. Trang đăng nhập	49
+
+4.1.7. Trang đăng kí	50
+
+4.1.8. Trang tất cả các bài viết	50
+
+4.1.9. Trang chi tiết bài viết	51
+
+4.1.10. Trang chi tiết trang đơn	52
+
+4.1.11. Trang bài viết theo chủ đề	52
+
+4.1.12. Trang giỏ hàng	53
+
+4.1.13. Trang nhập thông tin đơn đặt hàng	54
+
+4.2. Trang quản trị	54
+
+4.2.1. Quản lý khách hàng	54
+
+4.2.2. Quản lý sản phẩm	55
+
+4.2.3. Quản lý banner	55
+
+4.2.4. Quản lý đơn hàng	56
+
+4.2.5. Quản lý menu	56
+
+4.2.6. Quản lý thương hiệu	57
+
+4.2.7. Quản lý danh mục	57
+
+4.2.8. Quản lý nhập hàng	58
+
+4.2.9. Quản lý sản phẩm khuyến mãi	58
+
+4.2.10. Quản lý tất cả bài viết	59
+
+4.2.11. Quản lý trang đơn	59
+
+4.2.12. Quản lý chủ đề bài viết	60
+
+4.2.13. Quản lý liên hệ	60
+
+4.2.14. Quản lý xuất hàng	61
+
+4.2.15. Quản lý thành viên	61
+
+KẾT LUẬN	62
+
+1. Kết quả đạt được	62
+
+2. Kết quả chưa đạt được	63
+
+3. Hướng phát triển	64
+
+TÀI LIỆU THAM KHẢO	65
+
+
+
+
+
+DANH MỤC HÌNH ẢNH
+
+Hình 1. Lợi ích của JavaScript	4
+
+Hình 2. Chức năng của ReactJs	6
+
+Hình 3. Restful API	8
+
+Hình 4. Các thành phần của RESTful API	9
+
+Hình 5. Ưu điểm của NodeJS	10
+
+Hình 6. Bootstrap	14
+
+Hình 7. Sơ đồ usecase tổng quát	20
+
+Hình 8. Sơ đồ usecase trang quản trị	21
+
+Hình 9. Sơ đồ usecase khách	21
+
+Hình 10. Sơ đồ usecase khách hàng	22
+
+Hình 11. Sơ đồ usecase quản lý liên hệ	22
+
+Hình 12. Sơ đồ usecase quản lý bài viết	23
+
+Hình 13. Sơ đồ usecase quản lý đơn hàng	23
+
+Hình 14. Sơ đồ usecase quản lý thành viên	23
+
+Hình 15. Sơ đồ usecase quản lý khách hàng	24
+
+Hình 16. Biểu đồ hoạt động đăng nhập	24
+
+Hình 17. Biểu đồ hoạt động đăng ký	25
+
+Hình 18. Biểu đồ hoạt động thêm sản phẩm vào giỏ hàng	25
+
+Hình 19. Biểu đồ hoạt động đăng xuất	26
+
+Hình 20. Biểu đồ hoạt động tìm kiếm sản phẩm	26
+
+Hình 21. Biểu đồ hoạt động xem chi tiết sản phẩm	27
+
+Hình 22. Biểu đồ hoạt động cập nhật giỏ hàng	27
+
+Hình 23. Biểu đồ hoạt động xóa sản phẩm khỏi giỏ hàng	28
+
+Hình 24. Biểu đồ hoạt động đặt hàng	28
+
+Hình 25. Biểu đồ hoạt động quản lý danh mục	29
+
+Hình 26. Biểu đồ hoạt động quản lý sản phẩm	30
+
+Hình 27. Biểu đồ hoạt động quản lý thương hiệu	31
+
+Hình 28. Sơ đồ hoạt động quản lý menu	32
+
+Hình 29. Sơ đồ hoạt động quản lý bài viết	33
+
+Hình 30. Giao diện trang chủ	44
+
+Hình 31. Giao diện trang tất cả sản phẩm	45
+
+Hình 32. Giao diện trang chi tiết sản phẩm	46
+
+Hình 33. Giao diện sản phẩm theo danh mục	47
+
+Hình 34. Giao diện trang liên hệ	48
+
+Hình 35. Giao diện trang đăng nhập	49
+
+Hình 36. Giao diện trang đăng ký	50
+
+Hình 37. Giao diện trang tất cả bài viết	50
+
+Hình 38 . Giao diện trang chi tiết bài viết	51
+
+Hình 39. Giao diện trang chi tiết trang đơn	52
+
+Hình 40. Giao diện trang bài viết theo chủ đề	52
+
+Hình 41. Giao diện trang giỏ hàng	53
+
+Hình 42. Giao diện trang thanh toán	54
+
+Hình 43. Giao diện trang quản lý khách hàng	54
+
+Hình 44. Giao diện trang quản lý sản phẩm	55
+
+Hình 45. Giao diện trang quản lý banner	55
+
+Hình 46. Giao diện trang quản lý đơn hàng	56
+
+Hình 47. Giao diện trang quản lý menu	56
+
+Hình 48. Giao diện trang thương hiệu	57
+
+Hình 49. Giao diện trang danh mục	57
+
+Hình 50. Giao diện trang quản lý nhập hàng	58
+
+Hình 51. Giao diện trang sản phẩm khuyến mãi	58
+
+Hình 52. Giao diện trang quản lý bài viết	59
+
+Hình 53. Giao diện trang quản lý trang đơn	59
+
+Hình 54. Giao diện trang chủ đề bài viết	60
+
+Hình 55. Giao diện trang liên hệ	60
+
+Hình 56. Giao diện trang xuất hàng	61
+
+Hình 57. Giao diện trang thành viên	61
+
+
+
+DANH MỤC BẢNG
+
+Bảng 1. Danh sách các Actor	18
+
+Bảng 2. Danh sách các Usecase	19
+
+Bảng 3. Danh mục sản phẩm	34
+
+Bảng 4. Thương hiệu sản phẩm	35
+
+Bảng 5. Sản phẩm	36
+
+Bảng 6. Sản phẩm trong kho	37
+
+Bảng 7. Sản phẩm khuyến mãi	37
+
+Bảng 8. Tin tức	38
+
+Bảng 9. Bài viết	39
+
+Bảng 10. Thành viên	40
+
+Bảng 11. Đơn hàng	41
+
+Bảng 12. Chi tiết đơn hàng	42
+
+Bảng 13. Liên hệ	43
+
+Bảng 14. Slider	43
+
+
+
+CHƯƠNG 1. TỔNG QUAN
+
+1.1. Lý do chọn đề tài
+
+Trong thời đại công nghệ số hiện nay, việc áp dụng công nghệ thông tin vào công tác quản lý các hoạt động Đoàn - Hội và cộng đồng là vô cùng cần thiết. Hiện tại, phong trào tình nguyện của sinh viên đang phát triển rất mạnh mẽ, nhưng khâu tổ chức, đăng ký tham gia và cấp giấy chứng nhận chủ yếu vẫn thực hiện qua các hình thức thủ công hoặc các biểu mẫu rời rạc. Điều này gây mất thời gian cho sinh viên và tạo ra nhiều khó khăn cho ban tổ chức trong việc theo dõi tiến độ và đánh giá điểm rèn luyện.
+
+Nhận thấy nhu cầu đó, việc thiết kế và xây dựng một "Hệ thống Quản lý Tình nguyện viên" là giải pháp tối ưu giúp kết nối sinh viên với các chiến dịch một cách nhanh chóng, đồng thời giúp ban tổ chức quản lý danh sách, duyệt đơn và tương tác với tình nguyện viên dễ dàng, góp phần số hóa quy trình quản lý tại trường.
+
+1.2. Mục đích đề tài
+
+Mục đích của nghiên cứu này là phát triển một trang web quản lý tình nguyện viên hoàn chỉnh, giúp sinh viên tra cứu và đăng ký tham gia các chiến dịch cộng đồng một cách dễ dàng và tiện lợi hơn. Các kết quả đạt được và kinh nghiệm thu thập trong quá trình thực hiện sẽ được sử dụng để xây dựng một quy trình số hóa chuẩn mực, giúp tiết kiệm thời gian cho cả ban quản trị chiến dịch lẫn tình nguyện viên tham gia.
+
+1.3. Phương pháp nghiên cứu
+
+Sử dụng các công cụ và mạng xã hội để nghiên cứu và thu thập thông tin về hành vi và hoạt động của khách hàng trên các trang thương mại điện tử khác. Thực hiện các cuộc khảo sát trên các nền tảng mạng xã hội như: FaceBook, Zalo, TikTok, Shoppee, Lazada, … để hiểu được các nhu cầu và mong muốn của khách hàng về trang website bán hàng.
+
+Phân tích các nguyên lý thiết kế UI/UX và đặc biệt là tập trung nhất vào người tiêu dùng để tạo cho người dùng cảm nhận được tính linh hoạt và dễ dàng khi sử dụng trang web bán hàng. Nghiên cứu các kiến trúc và công nghệ phù hợp để áp dụng. Thiết kế, xây dựng ứng dụng, triển khai và cài đặt ứng dụng hệ thống API server.
+
+
+
+
+
+1.4. Cấu trúc đề tài
+
+Chương 1: Tổng quan 
+
+Chương 2: Cơ sở lí thuyết
+
+Chương 3: Phân tích và thiết kế hệ thống
+
+Chương 4: Xây dựng ứng dụng và đánh giá
+
+Kết luận
+
+Tài liệu tham khảo
+
+
+
+CHƯƠNG 2. CƠ SỞ LÝ THUYẾT
+
+2.1. Tổng quan về JavaScript
+
+2.1.1. Giới thiệu JavaScript
+
+JavaScript là ngôn ngữ kịch bản đóng vai trò cốt lõi trong lập trình web hiện đại. Nó cho phép lập trình viên biến các trang web từ những tài liệu tĩnh khô khan thành các ứng dụng web động, có tính tương tác cao. JavaScript hỗ trợ đa mô hình lập trình, bao gồm hướng đối tượng, hướng hàm và hướng sự kiện. Mặc dù là ngôn ngữ đơn luồng (single-thread), JavaScript vẫn có khả năng xử lý các tác vụ bất đồng bộ cực kỳ xuất sắc, biến nó thành lựa chọn số một cho phía client-side.
+
+2.1.2. Các chức năng nổi bật của JavaScript
+
+Thao tác DOM động: JavaScript có khả năng truy cập và thay đổi cấu trúc trang HTML theo thời gian thực thông qua Document Object Model (DOM). Điều này cho phép cập nhật nội dung trang mà không cần tải lại, mang lại trải nghiệm mượt mà cho người dùng.
+
+Xử lý sự kiện người dùng:  Ngôn ngữ này lắng nghe và phản hồi các hành động của người dùng như nhấp chuột, nhập liệu, cuộn trang thông qua hệ thống Event Listener linh hoạt, tạo nên sự tương tác sống động trên giao diện.
+
+Giao tiếp bất đồng bộ: Thông qua Fetch API và XMLHttpRequest, JavaScript cho phép trao đổi dữ liệu với máy chủ mà không làm gián đoạn hoạt động của trang, hỗ trợ các định dạng dữ liệu phổ biến như JSON và XML.
+
+Lưu trữ phía client: JavaScript cung cấp các cơ chế lưu trữ dữ liệu cục bộ gồm localStorage, sessionStorage và IndexedDB, giúp duy trì trạng thái ứng dụng mà không cần phụ thuộc hoàn toàn vào máy chủ..
+
+
+
+Phát triển ứng dụng hiện đại: Với hệ sinh thái phong phú gồm các framework như React, Angular, Vue.js, JavaScript hỗ trợ xây dựng các ứng dụng web quy mô lớn, phức tạp với kiến trúc rõ ràng và khả năng tái sử dụng code cao.
+
+Phát triển Ứng dụng Web: Sử dụng các framework và thư viện như React, Angular, Vue.js để xây dựng các ứng dụng web phức tạp.
+
+Tích hợp với API: Tương tác với các API bên ngoài để lấy dữ liệu hoặc thực hiện các dịch vụ khác nhau.
+
+
+
+2.1.3. Ưu điểm của JavaScript
+
+Không cần cài đặt thêm phần mềm: JavaScript được tích hợp sẵn trong tất cả các trình duyệt web hiện đại, giúp lập trình viên bắt đầu phát triển ngay lập tức mà không cần thiết lập môi trường phức tạp.
+
+Tốc độ thực thi cao: Nhờ các công cụ tối ưu hóa như V8 Engine của Google Chrome, JavaScript được biên dịch sang mã máy trong quá trình thực thi (Just-In-Time compilation), mang lại hiệu năng vượt trội so với các ngôn ngữ thông dịch truyền thống.
+
+Cộng đồng và tài nguyên dồi dào: JavaScript sở hữu một trong những cộng đồng lập trình viên lớn nhất thế giới, với kho thư viện npm chứa hàng triệu gói mã nguồn mở sẵn sàng tái sử dụng.
+
+Lập trình đa năng: Từ frontend đến backend, từ ứng dụng di động đến IoT, JavaScript có thể ứng dụng trong hầu hết mọi lĩnh vực của phát triển phần mềm hiện đại.
+
+
+
+
+
+2.1.4. Hạn chế của JavaScript
+
+Hình 1. Lợi ích của JavaScript
+
+Mặc dù có nhiều điểm mạnh, JavaScript vẫn tồn tại một số hạn chế cần lưu ý. Cơ chế kiểu dữ liệu động (dynamic typing) của JavaScript đôi khi gây ra những lỗi khó phát hiện, đặc biệt trong các dự án lớn. Chẳng hạn, phép so sánh giữa các kiểu dữ liệu khác nhau có thể cho kết quả không mong đợi nếu lập trình viên không nắm rõ quy tắc ép kiểu tự động của ngôn ngữ. Ngoài ra, do mã JavaScript được thực thi trực tiếp trên trình duyệt của người dùng, việc bảo mật ứng dụng đòi hỏi sự cẩn thận đặc biệt để phòng tránh các lỗ hổng như XSS (Cross-Site Scripting). Sự khác biệt về cách các trình duyệt hỗ trợ một số tính năng mới cũng là thách thức mà lập trình viên JavaScript thường xuyên gặp phải. 
+
+2.2. Tổng quan về ReactJS
+
+2.2.1. Giới thiệu ReactJS
+
+ReactJS là một thư viện JavaScript mã nguồn mở được Facebook (nay là Meta) giới thiệu vào năm 2013, với mục tiêu giải quyết những thách thức trong việc xây dựng giao diện người dùng phức tạp và có hiệu suất cao. Khác với các framework MVC truyền thống, React tập trung hoàn toàn vào tầng View, cho phép lập trình viên tự do lựa chọn các giải pháp phù hợp cho tầng Model và Controller.
+
+Triết lý cốt lõi của React là chia nhỏ giao diện thành các thành phần độc lập (component), mỗi thành phần quản lý trạng thái và logic hiển thị riêng của mình. Cách tiếp cận này không chỉ giúp code dễ đọc và bảo trì hơn, mà còn thúc đẩy khả năng tái sử dụng code ở mức độ cao.
+
+2.2.2. Các tính năng chính của ReactJS
+
+JSX – Cú pháp mở rộng của JavaScript: JSX cho phép viết cấu trúc giao diện HTML trực tiếp trong file JavaScript, giúp code trực quan và dễ hiểu hơn. Trình biên dịch Babel sẽ chuyển đổi JSX thành các lệnh JavaScript thuần túy trước khi thực thi.
+
+Component-based Architecture: Toàn bộ giao diện trong React được xây dựng từ các component nhỏ độc lập. Các component này có thể lồng nhau, truyền dữ liệu cho nhau và được tái sử dụng ở nhiều nơi trong ứng dụng, tương tự như các khối LEGO.
+
+Virtual DOM: Thay vì cập nhật trực tiếp lên DOM thật (tốn kém về hiệu năng), React duy trì một bản sao nhẹ hơn gọi là Virtual DOM. Khi trạng thái thay đổi, React so sánh Virtual DOM mới và cũ, rồi chỉ cập nhật đúng những phần thực sự thay đổi lên DOM thật.
+
+Props và State: Props là dữ liệu được truyền từ component cha xuống component con, trong khi State là dữ liệu nội bộ của component. Sự kết hợp giữa Props và State tạo nên luồng dữ liệu một chiều rõ ràng, dễ theo dõi và debug.
+
+React Hooks: Được giới thiệu từ phiên bản 16.8, Hooks như useState, useEffect, useContext cho phép sử dụng các tính năng của React trong functional component mà không cần viết class, giúp code ngắn gọn và hiện đại hơn.
+
+
+
+Hình 2. Chức năng của ReactJs
+
+2.2.3. Ưu điểm của ReactJS
+
+Hiệu năng vượt trội nhờ Virtual DOM: Cơ chế diffing và reconciliation của React đảm bảo chỉ những phần giao diện thực sự thay đổi mới được render lại, giúp ứng dụng hoạt động mượt mà ngay cả khi xử lý lượng dữ liệu lớn..
+
+Hệ sinh thái phong phú: React có kho thư viện bổ trợ rất đa dạng như React Router (điều hướng), Redux và Zustand (quản lý state toàn cục), React Query (quản lý dữ liệu bất đồng bộ), giúp đáp ứng hầu hết mọi yêu cầu của dự án.
+
+Hỗ trợ Server-Side Rendering (SSR): Thông qua framework Next.js, React có thể render trang web trên máy chủ trước khi gửi về trình duyệt, cải thiện đáng kể tốc độ tải trang lần đầu và thân thiện hơn với các công cụ tìm kiếm (SEO).
+
+2.2.4. Nhược điểm của ReactJS
+
+Tốc độ thay đổi nhanh: React và hệ sinh thái xung quanh liên tục cập nhật, điều này đòi hỏi lập trình viên phải không ngừng học hỏi để bắt kịp các thực hành tốt nhất. Đối với người mới bắt đầu, lượng kiến thức cần nắm vững có thể khá áp lực.
+
+Chỉ xử lý tầng View: React không phải framework toàn diện, do đó lập trình viên cần tự lựa chọn và kết hợp nhiều thư viện khác nhau cho routing, quản lý state, gọi API, v.v. Điều này đem lại sự linh hoạt nhưng cũng có thể gây phân mảnh trong cách triển khai giữa các dự án.
+
+2.3. Tổng quan về RESTful API
+
+2.3.1. Khái niệm RESTful API
+
+REST (Representational State Transfer) là một phong cách kiến trúc phần mềm được Roy Fielding đề xuất vào năm 2000 trong luận án tiến sĩ của ông. REST không phải là một giao thức hay tiêu chuẩn cụ thể, mà là tập hợp các nguyên tắc hướng dẫn cách thiết kế hệ thống phân tán linh hoạt, nhẹ nhàng và có khả năng mở rộng cao.
+
+RESTful API là API được thiết kế tuân theo các nguyên tắc của REST, sử dụng giao thức HTTP làm nền tảng truyền thông. Mỗi tài nguyên (resource) trong hệ thống được xác định bởi một URL duy nhất, và các thao tác trên tài nguyên đó được thực hiện thông qua các phương thức HTTP chuẩn. Nhờ tính đơn giản và tính nhất quán, RESTful API hiện là kiểu thiết kế API phổ biến nhất trong phát triển web và ứng dụng di động
+
+
+
+Hình 3. Restful API
+
+2.3.2. Các thành phần và nguyên tắc của RESTful API
+
+Tài nguyên (Resource): Mọi thực thể trong hệ thống đều được coi là tài nguyên và có một địa chỉ URI duy nhất. Ví dụ: /api/products đại diện cho tập hợp sản phẩm, /api/products/1 đại diện cho sản phẩm có ID là 1.
+
+Phương thức HTTP: RESTful API sử dụng các phương thức HTTP với ngữ nghĩa rõ ràng: GET để truy xuất dữ liệu, POST để tạo mới, PUT/PATCH để cập nhật, và DELETE để xóa tài nguyên. Cách dùng nhất quán này giúp API dễ hiểu và dễ sử dụng.
+
+Stateless (Phi trạng thái): Mỗi yêu cầu từ client đến server phải chứa đầy đủ thông tin cần thiết để xử lý, server không lưu trữ bất kỳ thông tin phiên làm việc nào giữa các yêu cầu. Điều này giúp hệ thống dễ mở rộng theo chiều ngang.
+
+Định dạng dữ liệu: RESTful API thường trả về dữ liệu dưới dạng JSON nhờ tính nhẹ nhàng và dễ xử lý. XML cũng được hỗ trợ trong một số trường hợp đặc thù.
+
+Mã trạng thái HTTP: Server truyền đạt kết quả xử lý thông qua mã trạng thái HTTP có ý nghĩa rõ ràng: 200 (thành công), 201 (tạo mới thành công), 400 (yêu cầu không hợp lệ), 401 (chưa xác thực), 404 (không tìm thấy), 500 (lỗi server).
+
+
+
+
+
+Hình 4. Các thành phần của RESTful API
+
+2.4. Tổng quan về Node.js
+
+2.4.1. Giới thiệu Node.js
+
+Node.js là môi trường thực thi JavaScript phía máy chủ, được Ryan Dahl công bố vào năm 2009. Điểm đột phá của Node.js nằm ở việc mang JavaScript – vốn chỉ chạy trong trình duyệt – ra ngoài để chạy trên máy chủ, mở ra khả năng sử dụng một ngôn ngữ thống nhất cho toàn bộ ứng dụng web.
+
+Node.js được xây dựng trên nền tảng V8 JavaScript Engine của Google, kết hợp với mô hình I/O bất đồng bộ và vòng lặp sự kiện (event loop) không chặn. Nhờ kiến trúc này, Node.js xử lý hàng nghìn kết nối đồng thời chỉ với một luồng duy nhất, tiêu thụ tài nguyên hệ thống ít hơn đáng kể so với mô hình đa luồng truyền thống.
+
+2.4.2. Ưu điểm của Node.js
+
+Hiệu năng cao với I/O không chặn: Mô hình bất đồng bộ của Node.js cho phép xử lý nhiều yêu cầu song song mà không cần tạo thêm luồng. Khi một yêu cầu đang chờ kết quả từ database hay file hệ thống, Node.js tiếp tục xử lý các yêu cầu khác thay vì chờ đợi.
+
+Thống nhất ngôn ngữ lập trình: Việc sử dụng JavaScript cho cả frontend và backend giúp đội ngũ phát triển chia sẻ code, kiến thức và công cụ giữa hai phía, rút ngắn thời gian phát triển và giảm sự phức tạp trong quản lý dự án.
+
+Hệ sinh thái npm khổng lồ: npm (Node Package Manager) là kho lưu trữ gói phần mềm lớn nhất thế giới với hơn hai triệu gói, cung cấp giải pháp sẵn có cho hầu hết mọi nhu cầu từ xử lý file, kết nối database đến bảo mật và kiểm thử.
+
+Phù hợp cho ứng dụng thời gian thực: Node.js đặc biệt phù hợp với các ứng dụng cần cập nhật dữ liệu liên tục như chat trực tuyến, thông báo đẩy, dashboard theo dõi trực tiếp, nhờ khả năng duy trì nhiều kết nối WebSocket đồng thời.
+
+
+
+Hình 5. Ưu điểm của NodeJS
+
+2.4.3. Nhược điểm của Node.js
+
+Hạn chế với tác vụ tính toán nặng: Mô hình đơn luồng của Node.js trở thành điểm yếu khi xử lý các tác vụ đòi hỏi nhiều CPU như mã hóa dữ liệu, xử lý ảnh hay tính toán phức tạp. Một tác vụ nặng có thể chặn toàn bộ vòng lặp sự kiện, ảnh hưởng đến hiệu năng tổng thể của hệ thống.
+
+Callback hell và độ phức tạp bất đồng bộ: Lập trình bất đồng bộ, dù đã được cải thiện nhiều với async/await và Promise, vẫn đòi hỏi lập trình viên có tư duy khác biệt so với lập trình đồng bộ truyền thống. Việc xử lý lỗi trong luồng bất đồng bộ cũng phức tạp hơn và dễ bỏ sót.
+
+2.5. Tổng quát về HTML
+
+2.5.1. HTML
+
+HTML (HyperText Markup Language) là ngôn ngữ đánh dấu tiêu chuẩn được sử dụng để tạo cấu trúc và nội dung cho các trang web. Được Tim Berners-Lee phát minh vào năm 1991, HTML đã trải qua nhiều phiên bản và hiện tại đang ở phiên bản HTML5 với nhiều cải tiến quan trọng về ngữ nghĩa, đa phương tiện và lưu trữ cục bộ.
+
+Không giống như các ngôn ngữ lập trình thực sự, HTML là ngôn ngữ khai báo – lập trình viên mô tả cấu trúc và ý nghĩa của nội dung thay vì chỉ định các bước thực thi. Trình duyệt web sau đó diễn giải các thẻ HTML và hiển thị nội dung tương ứng. HTML thường được kết hợp với CSS để tạo kiểu dáng và JavaScript để thêm tính năng tương tác, tạo thành bộ ba công nghệ nền tảng của mọi trang web hiện đại.
+
+Nói chung, HTML hoạt động giống như một công cụ định dạng và bố cục cho trang web, tương tự như cách Microsoft Word được sử dụng để định dạng văn bản. Khi kết hợp với CSS và JavaScript, HTML trở thành nền tảng vững chắc cho phát triển web, cho phép tạo ra giao diện người dùng đẹp mắt và các tính năng tương tác động.
+
+2.5.2. Cách HTML hoạt động
+
+Khi người dùng nhập địa chỉ URL vào trình duyệt, trình duyệt gửi yêu cầu HTTP đến máy chủ tương ứng. Máy chủ phản hồi bằng cách gửi lại tài liệu HTML, thường kèm theo các tài nguyên bổ trợ như file CSS, JavaScript và hình ảnh. Trình duyệt tiến hành phân tích (parse) tài liệu HTML, xây dựng cây DOM (Document Object Model) đại diện cho cấu trúc trang, áp dụng các quy tắc CSS để tính toán kiểu dáng, và cuối cùng vẽ (render) trang lên màn hình cho người dùng xem.
+
+Quá trình này diễn ra trong tích tắc, và trình duyệt liên tục cập nhật hiển thị khi nhận thêm tài nguyên hoặc khi JavaScript thay đổi cấu trúc DOM. Hiểu rõ quy trình này giúp lập trình viên tối ưu hóa hiệu năng tải trang, chẳng hạn bằng cách đặt script ở cuối body hoặc sử dụng thuộc tính async/defer.
+
+2.5.3. Ưu và nhược điểm của HTML
+
+Ưu điểm: HTML có ngưỡng học tập thấp, phù hợp với người mới bắt đầu học lập trình web. Cú pháp thẻ trực quan giúp dễ đọc và hiểu cấu trúc tài liệu. HTML5 bổ sung nhiều thẻ ngữ nghĩa như header, nav, article, footer giúp mô tả ý nghĩa nội dung rõ ràng hơn, hỗ trợ SEO và khả năng tiếp cận (accessibility). Hỗ trợ nhúng đa phương tiện như video, audio và canvas trực tiếp mà không cần plugin bên ngoài.
+
+Nhược điểm: HTML thuần túy chỉ tạo ra trang web tĩnh, không có khả năng xử lý logic hay lưu trữ dữ liệu. Việc duy trì tính nhất quán giao diện trên nhiều trang đòi hỏi sự hỗ trợ của CSS và hệ thống template. Ngoài ra, mặc dù các trình duyệt hiện đại đã đạt được mức độ hỗ trợ HTML5 khá đồng đều, một số tính năng mới vẫn có thể hiển thị khác biệt trên các phiên bản trình duyệt cũ hơn.
+
+2.6. Tổng quan về CSS
+
+2.6.1. Giới thiệu CSS
+
+CSS (Cascading Style Sheets) là ngôn ngữ tạo kiểu dáng được thiết kế để mô tả cách trình bày và hiển thị của các tài liệu HTML. CSS tách biệt hoàn toàn phần nội dung (HTML) khỏi phần trình bày (CSS), đây là nguyên tắc thiết kế quan trọng giúp code dễ bảo trì và có thể tái sử dụng stylesheet trên nhiều trang web khác nhau.
+
+CSS3 – phiên bản hiện tại – mang lại nhiều tính năng mạnh mẽ như animation, transition, flexbox, CSS grid và custom properties (CSS variables), giúp lập trình viên tạo ra các giao diện hiện đại, linh hoạt và đáp ứng mà ít phụ thuộc hơn vào JavaScript.
+
+2.6.2 Điểm mạnh của CSS
+
+Phân tách nội dung và hình thức: Bằng cách đặt toàn bộ quy tắc trình bày trong file CSS riêng biệt, lập trình viên có thể thay đổi toàn bộ diện mạo website chỉ bằng cách chỉnh sửa một file duy nhất, mà không cần động đến cấu trúc HTML. Điều này đặc biệt hữu ích trong các dự án lớn hoặc khi cần thay đổi thương hiệu (rebranding)..
+
+Responsive Design dễ dàng: CSS cung cấp Media Queries cho phép áp dụng các quy tắc trình bày khác nhau tùy theo kích thước màn hình, giúp xây dựng giao diện tương thích đa thiết bị mà không cần viết nhiều phiên bản HTML riêng biệt.
+
+Hiệu suất tải trang cải thiện: Trình duyệt lưu cache file CSS sau lần tải đầu tiên, nên các trang tiếp theo trong cùng website tải nhanh hơn đáng kể. Một file CSS được dùng chung cho toàn bộ website cũng giảm lượng dữ liệu cần truyền tải so với việc nhúng style trực tiếp trong HTML.
+
+Tính kế thừa và cascade: Cơ chế kế thừa và cascade của CSS cho phép định nghĩa quy tắc chung cho phần tử cha và các phần tử con tự động thừa hưởng. Kết hợp với độ ưu tiên (specificity), lập trình viên có thể kiểm soát chính xác kiểu dáng áp dụng cho từng phần tử.
+
+2.7. Tổng quan về Bootstrap
+
+2.7.1. Giới thiệu Bootstrap
+
+Bootstrap là framework CSS mã nguồn mở được Twitter phát triển và công bố vào năm 2011. Với mục tiêu giúp các lập trình viên xây dựng giao diện web đẹp và nhất quán một cách nhanh chóng, Bootstrap cung cấp một bộ thành phần UI được thiết kế sẵn, hệ thống lưới linh hoạt và nhiều tiện ích CSS hữu dụng. Hiện tại Bootstrap đang ở phiên bản 5, với nhiều cải tiến về hiệu năng và loại bỏ sự phụ thuộc vào jQuery.
+
+Bootstrap áp dụng triết lý Mobile-First – tức là thiết kế giao diện cho màn hình di động trước, sau đó mở rộng dần cho màn hình lớn hơn. Cách tiếp cận này phù hợp với xu hướng người dùng truy cập web chủ yếu qua thiết bị di động hiện nay.
+
+Không chỉ dừng lại ở hệ thống lưới, Bootstrap còn cung cấp hàng loạt các thành phần UI tiện ích như nút, biểu mẫu, bảng, modal, thanh điều hướngvà nhiều hơn thế nữa. Những thành phần này đều được thiết kế với mục đích tối ưu hóa trải nghiệm người dùng và dễ dàng tích hợp vào bất kỳ dự án web nào. Điều này giúp giảm thiểu công sức và thời gian mà các nhà phát triển phải bỏ ra để xây dựng các thành phần từ đầu, đồng thời đảm bảo tính nhất quán và thẩm mỹ cho giao diện.
+
+Một điểm mạnh khác của Bootstrap là khả năng tùy biến cao. Bạn có thể dễ dàng chỉnh sửa các biến số và các lớp CSS để phù hợp với nhu cầu cụ thể của dự án. Thậm chí, bạn có thể chọn lọc và chỉ sử dụng những phần của Bootstrap mà bạn cần, giúp tối ưu hóa hiệu suất của trang web.
+
+Với sự phổ biến rộng rãi và cộng đồng hỗ trợ lớn, Bootstrap đã trở thành một trong những framework CSS hàng đầu thế giới. Nó không chỉ giúp chuẩn hóa quy trình phát triển web mà còn giúp các nhà phát triển dễ dàng tiếp cận và học hỏi từ nhau. Những cập nhật và cải tiến liên tục từ cộng đồng giúp Bootstrap luôn đổi mới và đáp ứng kịp thời những nhu cầu thay đổi của thị trường.
+
+Tóm lại, Bootstrap không chỉ là một công cụ hỗ trợ phát triển web mạnh mẽ và linh hoạt, mà còn là một tiêu chuẩn gần như không thể thiếu đối với các nhà phát triển web hiện đại. Sử dụng Bootstrap, bạn có thể tiết kiệm thời gian, công sức và đảm bảo chất lượng cao cho các dự án web của mình.
+
+
+
+Hình 6. Bootstrap 
+
+2.7.2. Ưu điểm của Bootstrap
+
+Tăng tốc độ phát triển: Các component được xây dựng sẵn như navbar, card, modal, carousel, form giúp lập trình viên có ngay giao diện chuyên nghiệp mà không cần viết CSS từ đầu. Điều này đặc biệt có giá trị trong giai đoạn prototype hoặc khi deadline dự án cận kề.
+
+Hệ thống lưới 12 cột linh hoạt: Grid system của Bootstrap chia màn hình thành 12 cột và cung cấp các lớp responsive như col-sm, col-md, col-lg, col-xl cho phép kiểm soát cách bố cục thay đổi ở từng kích thước màn hình một cách trực quan và dễ dàng.
+
+Đồng nhất trên các trình duyệt: Bootstrap đã xử lý sẵn các khác biệt về CSS giữa các trình duyệt, đảm bảo giao diện hiển thị nhất quán mà không cần lập trình viên phải tốn công kiểm tra và vá lỗi từng trình duyệt.
+
+Tùy biến cao: Bootstrap cho phép tùy chỉnh thông qua SASS variables – lập trình viên có thể thay đổi màu sắc chủ đạo, kích thước font, breakpoint và nhiều thuộc tính khác chỉ bằng cách ghi đè các biến, tạo ra giao diện độc đáo riêng cho dự án.
+
+Cộng đồng và tài liệu phong phú: Bootstrap có tài liệu chính thức rất chi tiết, kèm theo hàng nghìn template, theme và plugin của bên thứ ba, giúp lập trình viên dễ dàng tìm kiếm giải pháp và nguồn cảm hứng thiết kế.
+
+2.7.3. Nhược điểm của Bootstrap
+
+Kích thước file lớn: Nếu sử dụng Bootstrap theo cách mặc định, dự án phải tải toàn bộ thư viện dù chỉ dùng một phần nhỏ các thành phần. Điều này làm tăng thời gian tải trang, đặc biệt ảnh hưởng đến người dùng có kết nối mạng chậm.
+
+Giao diện dễ nhận ra: Vì Bootstrap được dùng rộng rãi, nhiều website Bootstrap có giao diện trông giống nhau nếu không được tùy chỉnh kỹ. Điều này có thể khiến sản phẩm thiếu bản sắc riêng so với các đối thủ cạnh tranh.
+
+Phụ thuộc framework: Việc xây dựng dự án xung quanh Bootstrap đôi khi dẫn đến HTML bị ràng buộc bởi các lớp CSS cụ thể của framework, gây khó khăn khi muốn chuyển sang framework khác hoặc viết CSS thuần túy trong tương lai.
+
+Học thêm quy ước riêng: Ngoài CSS cơ bản, lập trình viên cần nắm vững hệ thống lớp và quy ước đặt tên của Bootstrap. Đối với người mới, điều này có thể tạo thêm một lớp phức tạp trong quá trình học tập ban đầu.
+
+
+
+
+
+
+
+CHƯƠNG 3. PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+
+3.1. Thực trạng bài toán
+
+3.1.1. Yêu cầu chức năng
+
+Bài toán đặt ra là cần xây dựng một "Hệ thống Quản lý Tình nguyện viên" tập trung, thay thế cho các phương pháp quản lý thủ công rời rạc qua mạng xã hội hoặc giấy tờ. Hệ thống cần đáp ứng các yêu cầu cốt lõi sau:
+
+Đối với khâu tổ chức và quản lý: Cho phép tạo lập, theo dõi và cập nhật thông tin các chiến dịch tình nguyện (như Mùa Hè Xanh, Hiến máu nhân đạo,...). Hệ thống cần số hóa quy trình duyệt đơn đăng ký của sinh viên, tự động hóa việc gửi email thông báo kết quả (OTP, Đậu/Rớt), phân công nhiệm vụ và đánh giá kết quả rèn luyện sau chiến dịch.
+
+Đối với khâu tương tác và kết nối: Cung cấp không gian mạng xã hội thu nhỏ (Bảng tin khoảnh khắc) để tình nguyện viên chia sẻ nhật ký hoạt động dưới dạng đa phương tiện (nhiều hình ảnh, video). Hỗ trợ các tính năng tương tác cộng đồng như Thích (Like), Bình luận (Comment) và Chia sẻ (Share).
+
+Đối với khâu thuật toán và thống kê: Tích hợp thuật toán tính toán khoảng cách (Haversine) dựa trên tọa độ GPS để gợi ý các chiến dịch gần nơi ở của sinh viên nhất. Xây dựng bảng xếp hạng thi đua minh bạch giữa các Khoa dựa trên tần suất tham gia của sinh viên.
+
+Đối với khâu hậu cần: Hỗ trợ tính năng ghi nhận và quản lý trạng thái quyên góp vật phẩm từ sinh viên cho các chiến dịch
+
+3.1.2. Thực trạng hệ thống
+
+Để giải quyết bài toán trên, hệ thống được thiết kế và vận hành với thực trạng như sau:
+
+Kiến trúc hệ thống: Ứng dụng được phát triển theo mô hình Client - Server. Frontend sử dụng thư viện ReactJS kết hợp Tailwind CSS để xây dựng giao diện người dùng tối ưu (UI/UX) và tương thích đa nền tảng (Responsive). Backend sử dụng Node.js (Express) kết hợp ORM Prisma để thao tác với cơ sở dữ liệu quan hệ MySQL
+
+Quản lý luồng dữ liệu đa phương tiện: Khắc phục hạn chế của việc lưu trữ text thuần túy, hệ thống được tinh chỉnh để xử lý tải lên (upload) và hiển thị trực tiếp các tệp hình ảnh, video cục bộ, đảm bảo tốc độ phản hồi nhanh chóng trên bảng tin.
+
+Bảo mật và phân quyền: Hệ thống áp dụng cơ chế xác thực JWT (JSON Web Token) kết hợp mã hóa mật khẩu bcrypt. Phân tách rõ ràng luồng nghiệp vụ giữa Quản trị viên (Admin), Tình nguyện viên (Sinh viên đã xác thực) và Khách vãng lai (Guest).
+
+3.2. Phân tích yêu cầu hệ thống
+
+3.2.1. Yêu cầu chức năng
+
+Trang quản trị
+
+Tổng quan (Dashboard): Thống kê số liệu tổng quát (tổng chiến dịch, tình nguyện viên, bài viết, biểu đồ hệ thống).
+
+Duyệt Tình nguyện viên: Quản lý, phê duyệt hoặc từ chối đơn đăng ký tham gia chiến dịch của sinh viên.
+
+Quản lý Chiến dịch & Hoạt động: Thêm mới, cập nhật thông tin, hình ảnh và thay đổi trạng thái (mở/đóng) chiến dịch.
+
+Quản lý Danh mục & Khoa: Phân loại chiến dịch và cập nhật danh sách các đơn vị/Khoa để phục vụ tính điểm thi đua.
+
+Quản lý Tài khoản: Kiểm soát thông tin, phân quyền và khóa/mở tài khoản sinh viên.
+
+Điều phối Nhân sự: Giao việc (Assign Task) cụ thể cho tình nguyện viên trong từng chiến dịch.
+
+Đánh giá Tình nguyện viên: Chấm điểm, nhận xét mức độ hoàn thành nhiệm vụ của sinh viên.
+
+Quản lý Bài viết & Khoảnh khắc: Kiểm duyệt, xóa các bài đăng vi phạm trên bảng tin cộng đồng.
+
+Theo dõi Lịch sử: Tra cứu chi tiết lịch sử tham gia tình nguyện của từng sinh viên.
+
+Quản lý Banner: Cập nhật hình ảnh slider, banner quảng bá trên trang chủ.
+
+Quản lý liên hệ
+
+Trang người dùng
+
+Xem trang chủ
+
+Xác thực tài khoản
+
+Khám phá chiến dịch
+
+Tham gia & Quyên góp
+
+Mạng xã hội nội bộ
+
+Xem bài viết theo chủ đề
+
+Xem chi tiết bài viết
+
+Liên hệ và gửi mail
+
+Tìm kiếm
+
+Quản lý Hồ sơ (Profile)
+
+
+
+
+
+
+
+
+
+3.2.2. Danh sách các Actor
+
+
+
+STT
+
+Tên Actor
+
+Ý nghĩa
+
+1
+
+Quản trị viên (Admin)
+
+Là đại diện Ban tổ chức, có quyền lực cao nhất. Chịu trách nhiệm vận hành nền tảng, quản lý nội dung, điều phối nhân sự và xử lý dữ liệu báo cáo.
+
+2
+
+Tình nguyện viên (User)
+
+Là sinh viên đã đăng ký và xác thực tài khoản thành công. Có quyền cập nhật hồ sơ, tham gia chiến dịch, quyên góp và tương tác trên nền tảng mạng xã hội nội bộ.
+
+3
+
+Khách (Guest)
+
+Là người dùng truy cập nhưng chưa đăng nhập. Bị giới hạn quyền hạn, chỉ có thể xem các thông tin công khai như trang chủ, danh sách chiến dịch và đọc bảng tin.
+
+Bảng 1. Danh sách các Actor
+
+3.2.3. Danh sách các Use case
+
+ID
+
+Tên Use Case
+
+Mô tả
+
+UC1
+
+Đăng nhập / Đăng ký
+
+Cho phép người dùng tạo tài khoản mới hoặc đăng nhập vào hệ thống.
+
+UC2
+
+Xem Chiến dịch & Bảng tin
+
+Lướt xem danh sách các chiến dịch đang mở và đọc các bài viết trên Bảng tin.
+
+UC3
+
+Khôi phục mật khẩu
+
+Yêu cầu cấp lại mật khẩu thông qua mã OTP gửi về Email cá nhân.
+
+UC4
+
+Cập nhật Hồ sơ cá nhân
+
+Cập nhật thông tin (Họ tên, MSSV, Khoa), đổi Avatar 
+
+UC5
+
+Đăng ký tham gia (Apply)
+
+Sinh viên nộp đơn tham gia vào một chiến dịch cụ thể.
+
+UC6
+
+Quyên góp vật phẩm
+
+Ghi nhận thông tin sinh viên đóng góp hiện vật cho chiến dịch.
+
+UC7
+
+Đăng bài Khoảnh khắc
+
+Đăng tải bài viết chia sẻ hoạt động kèm theo nhiều tệp hình ảnh, video.
+
+UC8
+
+Tương tác bài viết
+
+Thực hiện các hành động Thích, Bình luận, Chia sẻ trên một bài viết.
+
+UC9
+
+Xem lịch sử cá nhân
+
+Theo dõi các chiến dịch đã tham gia, trạng thái duyệt đơn và nhiệm vụ được phân công.
+
+UC10
+
+Quản lý liên hệ
+
+Quản trị quản lý thông tin liên hệ,
+
+trả lời liên hệ
+
+UC11
+
+Xem Tổng quan (Dashboard)
+
+Theo dõi số lượng thống kê, biểu đồ tăng trưởng và bảng xếp hạng thi đua.
+
+UC12
+
+Duyệt Tình nguyện viên
+
+Xem xét, Phê duyệt (Approved) hoặc Từ chối (Rejected) đơn đăng ký của sinh viên.
+
+UC13
+
+Quản lý Chiến dịch
+
+Tạo chiến dịch mới, cập nhật thông tin, thay đổi hình ảnh, đóng/mở chiến dịch.
+
+UC14
+
+Quản lý Danh mục & Khoa
+
+Thêm, sửa, xóa các nhóm danh mục hoạt động và danh sách các Khoa trực thuộc.
+
+UC15
+
+Quản lý Tài khoản SV
+
+Xem thông tin, khóa tài khoản (Ban) hoặc cấp quyền cho tài khoản sinh viên.
+
+UC16
+
+Điều phối Nhân sự
+
+Phân công nhiệm vụ chi tiết (Assign Task) cho từng sinh viên trong chiến dịch.
+
+UC17
+
+Đánh giá Tình nguyện viên
+
+Chấm điểm sao và nhập lời nhận xét cho sinh viên sau khi hoàn thành chiến dịch.
+
+UC18
+
+Quản lý Bài viết
+
+Kiểm duyệt, xóa bỏ các bài viết hoặc bình luận vi phạm trên Bảng tin.
+
+UC19
+
+Theo dõi Lịch sử TNV
+
+Tra cứu lại toàn bộ lịch sử tham gia và thành tích của một sinh viên cụ thể.
+
+UC20
+
+Quản lý Banner
+
+Thay đổi, tải lên các hình ảnh quảng bá hiển thị trên trang chủ hệ thống.
+
+UC21
+
+Quản lý chủ để bài viết
+
+Quản trị quản lý chủ để bài viết 
+
+Bảng 2. Danh sách các Usecase
+
+
+
+
+
+3.2.4. Biểu đồ Usecase 
+
+Biểu đồ Usecase tổng quát
+
+
+
+Hình 7. Sơ đồ usecase tổng quát
+
+
+
+Biểu đồ Usecase quản lý Danh mục & Khoa
+
+
+
+Hình 8. Sơ đồ usecase trang quản trị
+
+Biểu đồ usecase quản lý Tài khoản Sinh viên
+
+
+
+Hình 9. Sơ đồ usecase quản lý tài khoản sinh viên 
+
+
+
+Biểu đồ usecase đánh giá tình nguyện viên 
+
+
+
+Hình 10. Sơ đồ usecase đánh giá tình nguyên viên 
+
+Biểu đồ usecase Theo dõi & Lịch sử
+
+
+
+Hình 11. Sơ đồ usecase theo dõi & lịch sử 
+
+
+
+Biểu đồ usecase quản lý banner
+
+
+
+Hình 12. Sơ đồ usecase quản lý banner
+
+Biểu đồ usecase tương tác bảng tin 
+
+
+
+Hình 13. Sơ đồ usecase tương tác bản tin 
+
+Biểu đồ usecase quyên góp vật phẩm
+
+
+
+Hình 14. Sơ đồ usecase quyên góp vật phẩm
+
+3.2.5. Biểu đồ hoạt động
+
+Đăng nhập
+
+
+
+Hình 16. Biểu đồ hoạt động đăng nhập
+
+
+
+Đăng ký
+
+
+
+Hình 17. Biểu đồ hoạt động đăng ký
+
+Thêm sản phẩm vào giỏ hàng 
+
+
+
+Hình 18. Biểu đồ hoạt động thêm sản phẩm vào giỏ hàng
+
+
+
+Đăng xuất
+
+
+
+Hình 19. Biểu đồ hoạt động đăng xuất
+
+Tìm kiếm sản phẩm
+
+
+
+Hình 20. Biểu đồ hoạt động tìm kiếm sản phẩm
+
+
+
+Chi tiết sản phẩm
+
+
+
+Hình 21. Biểu đồ hoạt động xem chi tiết sản phẩm
+
+Cập nhật giỏ hàng
+
+
+
+Hình 22. Biểu đồ hoạt động cập nhật giỏ hàng
+
+	
+
+
+
+
+
+Xóa sản phẩm khỏi giỏ hàng
+
+
+
+Hình 23. Biểu đồ hoạt động xóa sản phẩm khỏi giỏ hàng
+
+Đặt hàng
+
+
+
+Hình 24. Biểu đồ hoạt động đặt hàng
+
+
+
+
+
+Quản lý danh mục
+
+
+
+
+
+Hình 25. Biểu đồ hoạt động quản lý danh mục
+
+
+
+
+
+
+
+
+
+
+
+Quản lý sản phẩm
+
+
+
+
+
+Hình 26. Biểu đồ hoạt động quản lý sản phẩm
+
+ 
+
+
+
+
+
+
+
+Quản lý thương hiệu
+
+
+
+
+
+Hình 27. Biểu đồ hoạt động quản lý thương hiệu
+
+
+
+
+
+
+
+Quản lý menu
+
+
+
+
+
+Hình 28. Sơ đồ hoạt động quản lý menu
+
+ 
+
+
+
+
+
+Quản lý bài viết
+
+
+
+
+
+Hình 29. Sơ đồ hoạt động quản lý bài viết
+
+
+
+3.3. Cơ sở dữ liệu
+
+3.3.1. Category
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+number
+
+not null
+
+2
+
+Name
+
+string
+
+not null
+
+3
+
+Slug
+
+string
+
+not null
+
+4
+
+Description
+
+string
+
+not null
+
+5
+
+Image
+
+string
+
+
+
+6
+
+Parent_id
+
+number
+
+not null
+
+7
+
+Sort_order
+
+number
+
+not null
+
+8
+
+Created_at
+
+datetime
+
+
+
+9
+
+Updated_at
+
+datetime
+
+
+
+10
+
+Created_by
+
+number
+
+not null
+
+11
+
+Updated_by
+
+number
+
+
+
+12
+
+Status
+
+number
+
+not null
+
+Bảng 3. Danh mục sản phẩm
+
+
+
+3.3.2. Brand
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+number
+
+not null
+
+2
+
+Name
+
+string
+
+not null
+
+3
+
+Slug
+
+string
+
+not null
+
+4
+
+Sort_order
+
+number
+
+not null
+
+5
+
+Image
+
+string
+
+
+
+6
+
+Desciption
+
+string
+
+not null
+
+7
+
+Created_at
+
+datetime
+
+
+
+8
+
+Updated_at
+
+datetime
+
+
+
+9
+
+Created_by
+
+number
+
+not null
+
+10
+
+Updated_by
+
+number
+
+
+
+11
+
+Status
+
+number
+
+not null
+
+Bảng 4. Thương hiệu sản phẩm
+
+
+
+3.3.3. Product
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Category_id
+
+Number
+
+not null
+
+3
+
+Brand_id
+
+Number
+
+not null
+
+4
+
+Name
+
+String
+
+not null
+
+5
+
+Slug
+
+String
+
+not null
+
+6
+
+Detail
+
+String
+
+not null
+
+7
+
+Description
+
+String
+
+not null
+
+8
+
+Image
+
+Number
+
+not null
+
+9
+
+Price
+
+Number
+
+not null
+
+10
+
+Created_At
+
+datetime
+
+not null
+
+11
+
+Updated_At
+
+datetime
+
+
+
+12
+
+Created_by
+
+Number
+
+not null
+
+13
+
+Updated_by
+
+Number
+
+
+
+14
+
+Status
+
+Number
+
+not null
+
+Bảng 5. Sản phẩm
+
+3.3.4. ProductStore
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Product_id
+
+Number
+
+not null
+
+3
+
+Priceroot
+
+Number
+
+not null
+
+4
+
+Qty
+
+String
+
+not null
+
+5
+
+Created_At
+
+datetime
+
+
+
+6
+
+Updated_At
+
+datetime
+
+
+
+7
+
+Created_by
+
+Number
+
+not null
+
+8
+
+Updated_by
+
+Number
+
+
+
+Bảng 6. Sản phẩm trong kho
+
+3.3.5. ProductSale
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Product_id
+
+Number
+
+not null
+
+3
+
+Pricesale
+
+Number
+
+not null
+
+4
+
+Date_begin
+
+datetime
+
+
+
+5
+
+Date_end
+
+datetime
+
+not null
+
+6
+
+Created_At
+
+datetime
+
+
+
+7
+
+Updated_At
+
+datetime
+
+
+
+8
+
+Created_by
+
+Number
+
+not null
+
+9
+
+Updated_by
+
+Number
+
+
+
+Bảng 7. Sản phẩm khuyến mãi
+
+3.3.6. Topic
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Name
+
+String
+
+not null
+
+3
+
+Slug
+
+String
+
+not null
+
+4
+
+Sort_order
+
+Number
+
+not null
+
+5
+
+Desciption
+
+String
+
+not null
+
+6
+
+Created_at
+
+datetime
+
+
+
+7
+
+Updated_at
+
+datetime
+
+
+
+8
+
+Created_by
+
+Number
+
+not null
+
+9
+
+Updated_by
+
+Number
+
+
+
+10
+
+Status
+
+Number
+
+not null
+
+Bảng 8. Tin tức
+
+
+
+3.3.7. Bảng Post
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Topic_id
+
+String
+
+not null
+
+3
+
+Slug
+
+String
+
+not null
+
+4
+
+Title
+
+String
+
+not null
+
+5
+
+Detail
+
+String
+
+not null
+
+6
+
+Image
+
+String
+
+not null
+
+7
+
+Type
+
+String
+
+not null
+
+8
+
+Desciption
+
+String
+
+not null
+
+9
+
+Created_at
+
+datetime
+
+
+
+10
+
+Updated_at
+
+datetime
+
+
+
+11
+
+Created_by
+
+Number
+
+not null
+
+12
+
+Updated_by
+
+Number
+
+
+
+13
+
+Status
+
+Number
+
+not null
+
+Bảng 9. Bài viết
+
+
+
+3.3.8. User
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Name
+
+String
+
+not null
+
+3
+
+Username
+
+String
+
+not null
+
+4
+
+Password
+
+String
+
+not null
+
+5
+
+Gender
+
+String
+
+not null
+
+6
+
+Phone
+
+String
+
+not null
+
+7
+
+Email
+
+String
+
+not null
+
+8
+
+Roles
+
+String
+
+not null
+
+9
+
+Created_at
+
+datetime
+
+
+
+10
+
+Updated_at
+
+datetime
+
+
+
+11
+
+Created_by
+
+Number
+
+not null
+
+12
+
+Updated_by
+
+Number
+
+
+
+13
+
+Status
+
+Number
+
+not null
+
+14
+
+Address
+
+String
+
+not null
+
+Bảng 10. Thành viên
+
+
+
+3.3.9. Order
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+User_id
+
+Number
+
+not null
+
+3
+
+Delivery_name
+
+String
+
+not null
+
+4
+
+Delivery_gender
+
+String
+
+not null
+
+5
+
+Delivery_email
+
+String
+
+not null
+
+6
+
+Delivery_phone
+
+String
+
+not null
+
+7
+
+Delivery_address
+
+String
+
+not null
+
+8
+
+Note
+
+String
+
+not null
+
+9
+
+Created_at
+
+datetime
+
+
+
+10
+
+Updated_at
+
+datetime
+
+
+
+11
+
+Created_by
+
+Number
+
+not null
+
+12
+
+Updated_by
+
+Number
+
+
+
+13
+
+Status
+
+Number
+
+not null
+
+Bảng 11. Đơn hàng
+
+3.3.10. OrderDetail
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Order_id
+
+Number
+
+not null
+
+3
+
+Product_id
+
+Number
+
+not null
+
+4
+
+Price
+
+Number
+
+not null
+
+5
+
+Qty
+
+Number
+
+not null
+
+6
+
+Discount
+
+Number
+
+not null
+
+7
+
+Amount
+
+Number
+
+not null
+
+Bảng 12. Chi tiết đơn hàng
+
+3.3.11. Contact
+
+
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+User_id
+
+Number
+
+
+
+3
+
+Name
+
+String
+
+not null
+
+4
+
+Email
+
+String
+
+not null
+
+5
+
+Phone
+
+String
+
+not null
+
+6
+
+Title
+
+String
+
+not null
+
+7
+
+Content
+
+String
+
+not null
+
+8
+
+Reply_id
+
+String
+
+
+
+9
+
+Created_at
+
+datetime
+
+
+
+10
+
+Updated_at
+
+datetime
+
+
+
+11
+
+Created_by
+
+Number
+
+not null
+
+12
+
+Updated_by
+
+Number
+
+
+
+13
+
+Status
+
+Number
+
+not null
+
+Bảng 13. Liên hệ
+
+3.3.12. Banner
+
+STT
+
+Thuộc tính
+
+Kiểu
+
+Ràng buộc
+
+1
+
+Id
+
+Number
+
+not null
+
+2
+
+Name
+
+String
+
+not null
+
+3
+
+Image
+
+String
+
+not null
+
+4
+
+Link
+
+String
+
+not null
+
+5
+
+Position
+
+String
+
+not null
+
+6
+
+Description
+
+String
+
+not null
+
+7
+
+Created_at
+
+datetime
+
+not null
+
+8
+
+Updated_at
+
+datetime
+
+
+
+9
+
+Created_by
+
+Number
+
+
+
+10
+
+Updated_by
+
+Number
+
+
+
+11
+
+Status
+
+Number
+
+not null
+
+Bảng 14. Slider
+
+
+
+
+
+CHƯƠNG 4. TRANG WEB BÁN ĐIỆN THOẠI
+
+4.1. Trang người dùng
+
+4.1.1. Trang chủ
+
+
+
+Hình 30. Giao diện trang chủ
+
+Trang chủ của website Eshopper không chỉ đơn thuần là nơi hiển thị các sản phẩm, mà còn là một trải nghiệm mua sắm tinh tế, hấp dẫn và thân thiện với người dùng. Được thiết kế một cách tỉ mỉ, trang chủ giới thiệu những sản phẩm nổi bật nhất, được chọn lọc kỹ càng để mang đến cho khách hàng những mặt hàng bán chạy nhất, sản phẩm mới ra mắt hoặc những ưu đãi hấp dẫn nhất. Điều này giúp khách hàng dễ dàng tiếp cận với những sản phẩm đáng chú ý và có giá trị cao, đồng thời nâng cao trải nghiệm mua sắm của họ.
+
+Ngoài ra, trang chủ của Eshopper còn được tổ chức một cách khoa học với các danh mục sản phẩm phong phú, đa dạng, giúp khách hàng dễ dàng tìm kiếm và khám phá những mặt hàng phù hợp với nhu cầu và sở thích cá nhân. Mỗi danh mục được trình bày rõ ràng, dễ dàng truy cập, tạo sự thuận tiện tối đa cho người dùng trong quá trình mua sắm.
+
+Đặc biệt, những chương trình khuyến mãi đặc biệt, các đợt giảm giá theo mùa và các sự kiện mua sắm độc quyền luôn được hiển thị một cách nổi bật trên trang chủ. Điều này không chỉ thu hút sự chú ý của khách hàng mà còn khuyến khích họ tận dụng những ưu đãi này để tiết kiệm chi phí, từ đó gia tăng sự hài lòng và lòng trung thành của họ đối với Eshopper.
+
+Như vậy, trang chủ của Eshopper không chỉ là một cửa hàng trực tuyến mà còn là một điểm đến mua sắm đáng tin cậy, nơi khách hàng có thể tận hưởng những trải nghiệm mua sắm tuyệt vời, tìm thấy những sản phẩm chất lượng và nắm bắt những cơ hội tiết kiệm hấp dẫn.
+
+4.1.2. Trang sản phẩm
+
+
+
+Hình 31. Giao diện trang tất cả sản phẩm
+
+Trang sản phẩm của Eshopper là điểm đến lý tưởng cho những ai đang tìm kiếm thông tin chi tiết về các sản phẩm mà họ quan tâm. Được thiết kế với mục tiêu mang đến trải nghiệm mua sắm trực tuyến tuyệt vời, trang này không chỉ cung cấp thông tin rõ ràng và chi tiết về từng sản phẩm mà còn giúp khách hàng dễ dàng so sánh, lựa chọn và đưa ra quyết định mua hàng.
+
+Mỗi trang sản phẩm trên Eshopper đều được trình bày một cách trực quan, với hình ảnh sắc nét, mô tả chi tiết, thông số kỹ thuật đầy đủ và đánh giá từ người dùng. Điều này giúp khách hàng có được cái nhìn toàn diện về sản phẩm trước khi quyết định mua. Ngoài ra, các tính năng bổ trợ như gợi ý sản phẩm liên quan, bộ lọc tìm kiếm thông minh và các chương trình khuyến mãi hấp dẫn cũng góp phần nâng cao trải nghiệm mua sắm.
+
+Với Eshopper, việc mua sắm trực tuyến trở nên dễ dàng và thú vị hơn bao giờ hết. Khách hàng không chỉ tiết kiệm thời gian và công sức mà còn có thể hoàn toàn yên tâm về chất lượng và giá trị của sản phẩm mà họ lựa chọn.
+
+
+
+4.1.3. Trang chi tiết sản phẩm
+
+
+
+Hình 32. Giao diện trang chi tiết sản phẩm
+
+Trang chi tiết sản phẩm trên Eshopper được thiết kế với mục tiêu mang đến cho khách hàng tất cả thông tin cần thiết về từng sản phẩm một cách rõ ràng và chi tiết. Tại đây, khách hàng không chỉ có thể xem thông số kỹ thuật, mô tả chi tiếtvà hình ảnh chất lượng cao của sản phẩm mà còn có thể đọc các đánh giá từ người dùng trước đó và so sánh với các sản phẩm tương tự. Giao diện của trang được tối ưu hóa để thân thiện với người dùng, giúp việc tìm kiếm và tra cứu thông tin trở nên dễ dàng và nhanh chóng. Ngoài ra, Eshopper còn cung cấp các gợi ý sản phẩm liên quan, giúp khách hàng có thêm lựa chọn phù hợp với nhu cầu của mình. Với tất cả những tiện ích này, trang chi tiết sản phẩm trên Eshopper không chỉ giúp khách hàng đưa ra quyết định mua sắm thông minh mà còn mang lại trải nghiệm mua sắm trực tuyến thuận tiện và hài lòng.
+
+4.1.4. Trang sản phẩm sản phẩm theo danh mục
+
+
+
+Hình 33. Giao diện sản phẩm theo danh mục
+
+Trang sản phẩm theo danh mục của Eshopper mang đến cho khách hàng một trải nghiệm mua sắm trực tuyến hoàn hảo và tối ưu. Với hệ thống phân loại sản phẩm rõ ràng và chi tiết, người mua có thể dễ dàng tìm kiếm và lựa chọn những mặt hàng phù hợp nhất với nhu cầu của mình. Từ những sản phẩm thời trang, công nghệ đến các mặt hàng gia dụng, tất cả đều được sắp xếp theo từng danh mục cụ thể, giúp khách hàng tiết kiệm thời gian và công sức khi mua sắm. Ngoài ra, giao diện thân thiện và tính năng tìm kiếm thông minh của Eshopper cũng góp phần nâng cao trải nghiệm người dùng, biến việc mua sắm trực tuyến trở nên thú vị và tiện lợi hơn bao giờ hết.
+
+
+
+
+
+4.1.5. Trang liên hệ
+
+
+
+Hình 34. Giao diện trang liên hệ
+
+Trang liên hệ của Eshopper được thiết kế với mục tiêu tạo sự kết nối dễ dàng và hiệu quả giữa khách hàng và đội ngũ hỗ trợ. Với giao diện thân thiện và trực quan, khách hàng có thể nhanh chóng tìm thấy các phương thức liên lạc phù hợp để giải đáp mọi thắc mắc, từ các vấn đề về sản phẩm cho đến dịch vụ sau bán hàng.
+
+Trang này không chỉ cung cấp số điện thoại, địa chỉ emailvà biểu mẫu liên hệ trực tuyến mà còn tích hợp các kênh hỗ trợ hiện đại như chat trực tiếp và các trang mạng xã hội, đảm bảo khách hàng có nhiều lựa chọn phù hợp với nhu cầu cá nhân. Bên cạnh đó, thông tin chi tiết về thời gian làm việc và các câu hỏi thường gặp cũng được hiển thị rõ ràng, giúp khách hàng dễ dàng tìm kiếm câu trả lời nhanh chóng mà không cần phải chờ đợi lâu.
+
+Sự cam kết của Eshopper trong việc mang lại trải nghiệm tốt nhất cho khách hàng thể hiện rõ ràng qua trang liên hệ này, đảm bảo rằng mọi yêu cầu đều được tiếp nhận và xử lý một cách nhanh chóng, chuyên nghiệp. Khách hàng có thể hoàn toàn yên tâm rằng mọi thắc mắc và vấn đề của họ sẽ được giải quyết một cách tận tâm và hiệu quả nhất.
+
+
+
+
+
+4.1.6. Trang đăng nhập
+
+
+
+
+
+Hình 35. Giao diện trang đăng nhập
+
+Trang đăng nhập của Eshopper không chỉ được thiết kế với mục đích đơn giản là giúp khách hàng truy cập vào tài khoản cá nhân của họ mà còn mang đến trải nghiệm người dùng tuyệt vời nhất. Với giao diện thân thiện, trang này đảm bảo rằng người dùng có thể dễ dàng và nhanh chóng đăng nhập vào hệ thống mà không gặp bất kỳ khó khăn nào. Ngoài ra, Eshopper chú trọng đặc biệt đến tính bảo mật, sử dụng các công nghệ tiên tiến nhất để bảo vệ thông tin cá nhân của khách hàng. Mọi quy trình từ nhập thông tin đến xác thực đều được mã hóa cẩn thận, giúp khách hàng yên tâm tuyệt đối khi sử dụng dịch vụ. Trang đăng nhập của Eshopper không chỉ là cửa ngõ để người dùng truy cập vào hệ thống mà còn là biểu tượng của sự an toàn và tin cậy mà Eshopper cam kết mang lại.
+
+
+
+
+
+4.1.7. Trang đăng kí
+
+
+
+Hình 36. Giao diện trang đăng ký
+
+Trang đăng ký của Eshopper là nơi người dùng có thể tạo ra một tài khoản cá nhân bằng cách cung cấp các thông tin cá nhân cơ bản như tên, địa chỉ email và mật khẩu. Quá trình đăng ký được thiết kế đơn giản và dễ hiểu, giúp người dùng nhanh chóng hoàn tất việc tạo tài khoản.
+
+4.1.8. Trang tất cả các bài viết 
+
+
+
+Hình 37. Giao diện trang tất cả bài viết
+
+Trang tất cả bài viết của Eshopper là nơi khách hàng có thể tìm thấy và đọc các bài viết, tin tức và cập nhật mới nhất từ cửa hàng. Trang này được thiết kế để cung cấp thông tin hữu ích và tạo sự kết nối giữa Eshopper và khách hàng.
+
+4.1.9. Trang chi tiết bài viết  
+
+
+
+Hình 38 . Giao diện trang chi tiết bài viết
+
+Trang chi tiết bài viết của Eshopper không chỉ đơn thuần là nơi trưng bày nội dung của một bài viết cụ thể mà còn là một không gian hoàn hảo để khách hàng trải nghiệm và khám phá thông tin một cách toàn diện. Mỗi bài viết trên trang này đều được trình bày chi tiết, bao gồm các thông tin quan trọng, hình ảnh minh họa sắc nét và các yếu tố tương tác thú vị.
+
+Thiết kế của trang chi tiết bài viết tập trung vào việc tạo ra một trải nghiệm đọc thú vị và dễ dàng cho khách hàng. Mọi thông tin đều được sắp xếp một cách khoa học, giúp người đọc nhanh chóng nắm bắt được những nội dung chính yếu. Hình ảnh được chèn vào bài viết không chỉ để minh họa mà còn giúp bài viết trở nên sống động hơn, tăng cường sự hấp dẫn và lôi cuốn.
+
+Với mục tiêu mang đến trải nghiệm đọc tốt nhất, trang chi tiết bài viết của Eshopper luôn chú trọng vào việc cung cấp nội dung chất lượng, hình ảnh đẹp mắt và các tính năng tương tác thông minh. Khách hàng không chỉ đọc bài viết mà còn cảm nhận được sự tâm huyết và chuyên nghiệp mà Eshopper đặt vào từng chi tiết nhỏ nhất.
+
+
+
+4.1.10. Trang chi tiết trang đơn
+
+
+
+Hình 39. Giao diện trang chi tiết trang đơn
+
+Trang chi tiết trang đơn của Eshopper là nơi cung cấp thông tin cụ thể về một chủ đề hoặc nội dung đặc biệt mà shop muốn truyền tải đến khách hàng. Trang này có thể bao gồm thông tin về chính sách, hướng dẫn, giới thiệu, hoặc bất kỳ nội dung nào không thuộc các danh mục sản phẩm hoặc bài viết thông thường.
+
+4.1.11. Trang bài viết theo chủ đề 
+
+
+
+Hình 40. Giao diện trang bài viết theo chủ đề
+
+
+
+Trang bài viết theo chủ đề của Eshopper được thiết kế để cung cấp cho khách hàng một trải nghiệm đọc dễ dàng và thuận tiện khi tìm kiếm các bài viết liên quan đến một chủ đề cụ thể. Trang này giúp khách hàng nhanh chóng truy cập vào những thông tin mà họ quan tâm nhất, từ đó nâng cao sự tương tác và sự hài lòng của khách hàng.
+
+4.1.12. Trang giỏ hàng
+
+
+
+Hình 41. Giao diện trang giỏ hàng
+
+Trang giao diện giỏ hàng của Eshopper là một phần quan trọng trong trải nghiệm mua sắm trực tuyến, nơi khách hàng có thể dễ dàng xem lại tất cả các sản phẩm mà họ đã chọn trước đó. Giao diện này không chỉ cho phép khách hàng kiểm tra lại các chi tiết về sản phẩm như tên, giá cả và hình ảnh, mà còn cung cấp tính năng chỉnh sửa số lượng sản phẩm hoặc loại bỏ những sản phẩm không còn mong muốn.
+
+Một trong những điểm nổi bật của trang giỏ hàng là tính năng tự động cập nhật tổng số tiền, giúp khách hàng luôn nắm rõ số tiền cần thanh toán mà không cần phải tính toán thủ công. Ngoài ra, trang này còn có các tùy chọn linh hoạt cho việc lưu lại các sản phẩm yêu thích, giúp khách hàng có thể dễ dàng quay lại mua sắm sau này mà không cần phải tìm kiếm lại.
+
+Khi khách hàng đã sẵn sàng, họ có thể tiến hành thanh toán chỉ với vài bước đơn giản. Trang giỏ hàng của Eshopper được thiết kế với giao diện thân thiện và trực quan, đảm bảo mọi thao tác từ việc thêm sản phẩm vào giỏ hàng đến thanh toán đều diễn ra mượt mà và không gặp trở ngại. Tất cả những yếu tố này kết hợp lại nhằm mang đến cho khách hàng một trải nghiệm mua sắm trực tuyến thuận tiện, dễ dàng và hiệu quả.
+
+
+
+
+
+4.1.13. Trang nhập thông tin đơn đặt hàng 
+
+
+
+Hình 42. Giao diện trang thanh toán
+
+Trang nhập thông tin đặt hàng của Eshopper là bước cuối cùng trong quy trình mua sắm trực tuyến, nơi khách hàng cung cấp thông tin cần thiết để hoàn tất đơn hàng và thanh toán. Trang này được thiết kế để đảm bảo tính chính xác, bảo mật và thuận tiện cho khách hàng.
+
+4.2. Trang quản trị
+
+4.2.1. Quản lý khách hàng
+
+
+
+Hình 43. Giao diện trang quản lý khách hàng
+
+4.2.2. Quản lý sản phẩm
+
+
+
+Hình 44. Giao diện trang quản lý sản phẩm
+
+Trang quản lý sản phẩm là một phần quan trọng của hệ thống quản lý nội dung cho các trang web thương mại điện tử. Giao diện trang này thường bao gồm nhiều phần khác nhau để giúp người quản trị dễ dàng thêm, sửa, xóa và quản lý thông tin sản phẩm
+
+
+
+4.2.3. Quản lý banner
+
+
+
+Hình 45. Giao diện trang quản lý banner
+
+
+
+4.2.4. Quản lý đơn hàng
+
+
+
+Hình 46. Giao diện trang quản lý đơn hàng
+
+4.2.5. Quản lý menu
+
+
+
+Hình 47. Giao diện trang quản lý menu
+
+
+
+4.2.6. Quản lý thương hiệu
+
+
+
+Hình 48. Giao diện trang thương hiệu
+
+
+
+4.2.7. Quản lý danh mục
+
+
+
+Hình 49. Giao diện trang danh mục
+
+
+
+
+
+4.2.8. Quản lý nhập hàng
+
+
+
+Hình 50. Giao diện trang quản lý nhập hàng
+
+
+
+4.2.9. Quản lý sản phẩm khuyến mãi
+
+Hình 51. Giao diện trang sản phẩm khuyến mãi
+
+
+
+
+
+4.2.10. Quản lý tất cả bài viết 
+
+
+
+Hình 52. Giao diện trang quản lý bài viết
+
+
+
+4.2.11. Quản lý trang đơn 
+
+Hình 53. Giao diện trang quản lý trang đơn
+
+
+
+4.2.12. Quản lý chủ đề bài viết 
+
+
+
+Hình 54. Giao diện trang chủ đề bài viết
+
+4.2.13. Quản lý liên hệ  
+
+
+
+Hình 55. Giao diện trang liên hệ
+
+
+
+4.2.14. Quản lý xuất hàng
+
+
+
+Hình 56. Giao diện trang xuất hàng
+
+4.2.15. Quản lý thành viên
+
+
+
+Hình 57. Giao diện trang thành viên
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+KẾT LUẬN
+
+1. Kết quả đạt được
+
+Hệ thống website bán hàng trực tuyến, sau một thời gian phát triển, đã cơ bản hoàn thành những mục tiêu sau:
+
+Về phần cơ sở lý thuyết: Chúng tôi đã nêu rõ các khái niệm cơ bản liên quan đến các ngôn ngữ lập trình sử dụng trong website như ReactJs, NodeJs, JavaScript, HTML,CSS và Boostrap. Đặc biệt, cơ sở dữ liệu MySQL cũng được giới thiệu chi tiết, cho phép người dùng hiểu rõ hơn về cách thức lưu trữ và quản lý dữ liệu.
+
+Về phần tổng quan đề tài: đã được lựa chọn và trình bày với lý do ngắn gọn và dễ hiểu. Mục tiêu của dự án hướng đến việc xây dựng một nền tảng bán hàng trực tuyến tiện lợi, hiệu quả và đáp ứng nhu cầu của người dùng. Tuy nhiên, phần này vẫn còn một số hạn chế cần khắc phục để hoàn thiện hơn.
+
+Về phần phân tích thiết kế hệ thống: đã xây dựng được nhiều loại biểu đồ quan trọng như biểu đồ use case, biểu đồ tuần tự và biểu đồ hoạt động của website bán hàng. Các biểu đồ này giúp làm rõ cách thức hoạt động của hệ thống và cung cấp cái nhìn tổng quan về các tương tác giữa người dùng và hệ thống.
+
+Về phần xây dựng website: giao diện website được thiết kế đơn giản, thân thiện với người dùng, dễ sử dụng và trực quan. Tuy nhiên, vẫn còn nhiều chức năng chưa được hoàn thiện, đòi hỏi thời gian và công sức để phát triển thêm trong tương lai.
+
+Về các chức năng đối với người sử dụng webstite: người dùng có thể thực hiện các chức năng cơ bản như xem hàng, mua hàng, tìm kiếm sản phẩm nhanh chóng và thanh toán đơn hàng bằng tiền mặt hoặc PayPal. Các chức năng này giúp nâng cao trải nghiệm mua sắm và tạo sự tiện lợi tối đa cho khách hàng.
+
+Các chức năng về tài khoản người dùng: người dùng có thể đăng ký, đăng nhập và khôi phục mật khẩu một cách dễ dàng. Hệ thống bảo vệ tài khoản và thông tin cá nhân của người dùng, đảm bảo tính bảo mật cao.
+
+Về các chức năng đối với người quản trị: người quản trị có thể thực hiện các tác vụ quản lý sản phẩm như thêm, xoá, sửa và cập nhật sản phẩm. Ngoài ra, họ cũng có thể quản lý đơn hàng, thông tin người dùng và cập nhật dữ liệu web một cách dễ dàng và hiệu quả.
+
+Vận dụng tất cả kiến thức đã học: đã áp dụng tất cả kiến thức đã học ở trường và những kiến thức tự tìm hiểu để thực hiện đồ án này. Điều này giúp củng cố kiến thức và kỹ năng lập trình, đồng thời nâng cao khả năng giải quyết vấn đề thực tiễn.
+
+Khả năng kết hợp kiến thức đã học và công nghệ mới: Dự án là cơ hội để kết hợp những kiến thức đã học với các công nghệ mới, giúp mở rộng tầm nhìn và phát triển kỹ năng công nghệ của đội ngũ. Điều này không chỉ giúp hoàn thành dự án mà còn chuẩn bị tốt hơn cho những dự án tương lai.
+
+2. Kết quả chưa đạt được
+
+Dựa trên kết quả đạt được từ dự án website bán hàng đã mô tả, có thể nhận thấy một số điểm chưa hoàn thiện như sau:
+
+Hoàn thiện chức năng: mặc dù đã triển khai các chức năng cơ bản như xem hàng, mua hàng và quản lý sản phẩm, vẫn còn một số tính năng chưa được hoàn thiện và chưa thực hiện. Điều này có thể làm giảm trải nghiệm người dùng và ảnh hưởng tiêu cực đến hiệu suất bán hàng.
+
+Mục tiêu và lý do chọn đề tài chưa được chi tiết hóa: dù đã nêu lý do và mục tiêu chọn đề tài, nhưng việc chi tiết hóa các mục tiêu và lý do vẫn còn hạn chế. Điều này có thể dẫn đến sự thiếu rõ ràng và định hình không cụ thể về hướng đi và ý định của dự án.
+
+Giao diện và trải nghiệm người dùng chưa tối ưu: giao diện hiện tại đơn giản và thân thiện với người dùng, nhưng cần cải thiện thêm để tối ưu hóa trải nghiệm người dùng và tạo sự thu hút hơn đối với khách hàng.
+
+Các chức năng quản trị chưa đầy đủ: tuy đã có một số chức năng quản trị như quản lý sản phẩm và đơn hàng, nhưng vẫn còn một số chức năng quản trị khác chưa được triển khai hoặc chưa đầy đủ, ảnh hưởng đến hiệu suất hoạt động tổng thể của dự án
+
+Tính bảo mật và ổn định của hệ thống chưa được đảm bảo: dù đã có một số tính năng bảo mật như đăng ký, đăng nhập và bảo vệ thông tin người dùng, nhưng cần tiếp tục cải thiện để đảm bảo tính an toàn và ổn định của hệ thống.
+
+Kết quả chưa thực sự đáp ứng được mục tiêu đề ra: dự án cần đảm bảo rằng các kết quả đạt được thực sự đáp ứng mục tiêu ban đầu và mang lại giá trị cho người dùng cũng như doanh nghiệp.
+
+3. Hướng phát triển
+
+Phát triển các tính năng chưa hoàn thiện: tiếp tục nâng cấp và hoàn thiện các chức năng chưa được triển khai đầy đủ trên trang web bán hàng. Điều này có thể bao gồm cải thiện trải nghiệm người dùng, bổ sung các tính năng mới như phân trang, lọc sản phẩm, đánh giá và nhận xét, tối ưu quy trình thanh toánvà tích hợp thêm các phương thức thanh toán như thẻ tín dụng, ví điện tử,…
+
+Tăng cường bảo mật và hiệu suất: nâng cao khả năng bảo mật của hệ thống để bảo vệ thông tin cá nhân của người dùng và chống lại các cuộc tấn công mạng. Đồng thời, tối ưu hóa hiệu suất và tính ổn định để đảm bảo hệ thống hoạt động mượt mà và liên tục
+
+Cải thiện giao diện và hiệu năng: tiếp tục cải thiện giao diện người dùng để mang lại trải nghiệm mua sắm thuận tiện và thú vị. Điều này bao gồm tối ưu hóa giao diện cho thiết bị di động, cải thiện tốc độ tải trang và phát triển các tính năng tương tác động.
+
+Phát triển thêm các dịch vụ: xem xét việc mở rộng các tính năng và dịch vụ của trang web để thu hút và giữ chân khách hàng. Các dịch vụ có thể bao gồm chương trình khuyến mãi, tích điểm, hỗ trợ trực tuyến và tăng cường dịch vụ sau bán hàng.
+
+Phát triển công cụ quản lý và phân tích: xây dựng các công cụ quản lý dữ liệu giúp quản trị viên dễ dàng quản lý sản phẩm, đơn hàng và thông tin người dùng. Đồng thời, nâng cao khả năng phân tích dữ liệu để hiểu rõ hơn về hành vi mua sắm của khách hàng và tối ưu hóa chiến lược kinh doanh.
+
+Cập nhật và áp dụng công nghệ mới: tiếp tục nghiên cứu và ứng dụng các công nghệ mới cũng như xu hướng trong phát triển web và thương mại điện tử. Điều này bao gồm việc cập nhật kiến thức về các ngôn ngữ lập trình, framework, công cụ phát triển và tiêu chuẩn an toàn.
+
+
+
+TÀI LIỆU THAM KHẢO
+
+https://www.w3schools.com/
+
+https://laravel.com/docs
+
+https://www.postman.com/
+
+https://www.postgresql.org/
+
+https://www.phpmyadmin.net/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

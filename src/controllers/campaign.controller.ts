@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as campaignService from '../services/campaign.service';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import prisma from '../config/prisma';
+import { geocodeAddress } from '../utils/geocode.util';
 
 // 🌟 HÀM NỘI BỘ: Tính khoảng cách Haversine giữa tọa độ nơi ở SV và Địa điểm Chiến dịch (Đơn vị: km)
 const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
@@ -22,13 +23,23 @@ export const create = async (req: AuthRequest, res: Response): Promise<void> => 
     try {
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
+        // Auto geocode location (Bỏ qua lat/lng gửi từ client)
+        let lat = null;
+        let lng = null;
+        if (req.body.location && req.body.location.trim() !== '') {
+            const coords = await geocodeAddress(req.body.location);
+            if (coords) {
+                lat = coords.lat;
+                lng = coords.lng;
+            }
+        }
+
         const payload = {
             ...req.body,
             requiredVolunteers: parseInt(req.body.requiredVolunteers, 10),
             categoryId: req.body.categoryId ? parseInt(req.body.categoryId, 10) : null,
-            // Ép kiểu tọa độ Float nếu Admin có truyền lên khi tạo
-            lat: req.body.lat ? parseFloat(req.body.lat) : null,
-            lng: req.body.lng ? parseFloat(req.body.lng) : null,
+            lat,
+            lng,
             image: imageUrl
         };
 
@@ -129,13 +140,24 @@ export const update = async (req: AuthRequest, res: Response): Promise<void> => 
         // 🌟 1. KIỂM TRA NẾU ADMIN CÓ UPLOAD FILE ẢNH MỚI
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
 
+        // Auto geocode location (Bỏ qua lat/lng cũ)
+        let lat = undefined;
+        let lng = undefined;
+        if (req.body.location && req.body.location.trim() !== '') {
+            const coords = await geocodeAddress(req.body.location);
+            if (coords) {
+                lat = coords.lat;
+                lng = coords.lng;
+            }
+        }
+
         // 🌟 2. GOM CÁC TRƯỜNG DỮ LIỆU CŨ VÀ ÉP KIỂU TỪ FORMDATA TRUYỀN LÊN
         const payload: any = {
             ...req.body,
             requiredVolunteers: req.body.requiredVolunteers ? parseInt(req.body.requiredVolunteers, 10) : undefined,
             categoryId: req.body.categoryId ? parseInt(req.body.categoryId, 10) : undefined,
-            lat: req.body.lat ? parseFloat(req.body.lat) : undefined,
-            lng: req.body.lng ? parseFloat(req.body.lng) : undefined,
+            lat,
+            lng,
         };
 
         // Nếu có ảnh mới thì gán đường dẫn mới vào payload để lưu xuống MySQL
@@ -179,7 +201,61 @@ export const getCampaignById = async (req: Request, res: Response): Promise<any>
         res.status(200).json({ data: campaign });
     } catch (error) {
         console.error("Lỗi lấy chi tiết chiến dịch:", error);
-        res.status(500).json({ error: "Lỗi hệ thống khi tải chi tiết chiến dịch." });
+        res.status(500).json({ error: "Lỗi hệ thống khi tải chiến dịch gần bạn" });
+    }
+};
+
+// ================= TÍNH NĂNG ĐIỂM DANH QR =================
+export const scanQR = async (req: AuthRequest, res: Response): Promise<any> => {
+    try {
+        const campaignId = parseInt(req.params.id as string, 10);
+        const { type } = req.body; // 'CHECKIN' or 'CHECKOUT'
+        const userId = req.user?.id;
+
+        if (!userId) return res.status(401).json({ error: "Chưa xác thực" });
+        if (type !== 'CHECKIN' && type !== 'CHECKOUT') return res.status(400).json({ error: "Loại quét không hợp lệ" });
+
+        // Kiểm tra xem sinh viên có đăng ký chiến dịch này không
+        const registration = await prisma.registration.findFirst({
+            where: {
+                campaignId,
+                userId,
+                status: 'APPROVED' // Chỉ điểm danh nếu đã được duyệt
+            }
+        });
+
+        if (!registration) {
+            return res.status(403).json({ error: "Bạn chưa được duyệt tham gia chiến dịch này!" });
+        }
+
+        if (type === 'CHECKIN') {
+            if (registration.checkInAt) {
+                return res.status(400).json({ error: "Bạn đã điểm danh đến rồi!" });
+            }
+            await prisma.registration.update({
+                where: { id: registration.id },
+                data: { checkInAt: new Date() }
+            });
+            return res.status(200).json({ message: "Điểm danh ĐẾN thành công!", data: new Date() });
+        }
+
+        if (type === 'CHECKOUT') {
+            if (!registration.checkInAt) {
+                return res.status(400).json({ error: "Bạn phải quét mã ĐẾN trước khi quét mã VỀ!" });
+            }
+            if (registration.checkOutAt) {
+                return res.status(400).json({ error: "Bạn đã điểm danh về rồi!" });
+            }
+            await prisma.registration.update({
+                where: { id: registration.id },
+                data: { checkOutAt: new Date() }
+            });
+            return res.status(200).json({ message: "Điểm danh VỀ thành công!", data: new Date() });
+        }
+
+    } catch (error) {
+        console.error("Lỗi scan QR:", error);
+        res.status(500).json({ error: "Lỗi hệ thống khi điểm danh." });
     }
 };
 
@@ -366,5 +442,71 @@ export const updateDonationStatus = async (req: AuthRequest, res: Response): Pro
         res.status(200).json({ message: "Đã xác nhận nhận vật phẩm thành công!", data: updated });
     } catch (error: any) {
         res.status(500).json({ error: "Lỗi khi cập nhật trạng thái quyên góp." });
+    }
+};
+
+
+
+// ================= TÍNH NĂNG KANBAN BOARD =================
+export const getCampaignTasks = async (req: AuthRequest, res: Response): Promise<any> => {
+    try {
+        const campaignId = parseInt(req.params.id as string, 10);
+        // Lấy tất cả Tasks thông qua Registration của Campaign này
+        const tasks = await prisma.task.findMany({
+            where: {
+                registration: { campaignId }
+            },
+            include: {
+                registration: {
+                    include: { user: { select: { id: true, fullName: true, avatar: true } } }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+        res.status(200).json({ data: tasks });
+    } catch (error) {
+        console.error("Lỗi lấy danh sách task:", error);
+        res.status(500).json({ error: "Lỗi hệ thống khi lấy nhiệm vụ." });
+    }
+};
+
+export const updateTaskStatus = async (req: AuthRequest, res: Response): Promise<any> => {
+    try {
+        const taskId = parseInt(req.params.taskId as string, 10);
+        const { status } = req.body;
+
+        if (!status || !['TODO', 'DOING', 'DONE'].includes(status)) {
+            return res.status(400).json({ error: "Trạng thái không hợp lệ" });
+        }
+
+        const updatedTask = await prisma.task.update({
+            where: { id: taskId },
+            data: { status }
+        });
+
+        res.status(200).json({ message: "Cập nhật trạng thái thành công", data: updatedTask });
+    } catch (error) {
+        console.error("Lỗi cập nhật trạng thái task:", error);
+        res.status(500).json({ error: "Lỗi hệ thống khi cập nhật nhiệm vụ." });
+    }
+};
+
+// ================= TÍNH NĂNG REAL-TIME CHAT =================
+export const getCampaignMessages = async (req: AuthRequest, res: Response): Promise<any> => {
+    try {
+        const campaignId = parseInt(req.params.id as string, 10);
+        // Lấy 50 tin nhắn gần nhất
+        const messages = await prisma.chatMessage.findMany({
+            where: { campaignId },
+            include: {
+                sender: { select: { id: true, fullName: true, avatar: true } }
+            },
+            orderBy: { createdAt: 'asc' }, // Sắp xếp cũ đến mới để chat box hiển thị đúng
+            take: 50
+        });
+        res.status(200).json({ data: messages });
+    } catch (error) {
+        console.error("Lỗi lấy danh sách tin nhắn:", error);
+        res.status(500).json({ error: "Lỗi hệ thống khi lấy tin nhắn." });
     }
 };

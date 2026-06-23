@@ -9,6 +9,7 @@ export default function QRDonationManager() {
     // State phục vụ việc tìm kiếm và lọc dữ liệu
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('All');
+    const [selectedFaculty, setSelectedFaculty] = useState('All');
     
     // State phân trang
     const [currentPage, setCurrentPage] = useState(1);
@@ -59,13 +60,23 @@ export default function QRDonationManager() {
     // 3. LOGIC LỌC VÀ TÌM KIẾM DỮ LIỆU TRÊN FRONTEND
     useEffect(() => {
         setCurrentPage(1); // Reset về trang 1 khi tìm kiếm hoặc lọc
-    }, [searchTerm, selectedStatus]);
+    }, [searchTerm, selectedStatus, selectedFaculty]);
+
+    // Lấy danh sách các Khoa duy nhất từ dữ liệu giao dịch
+    const uniqueFaculties = useMemo(() => {
+        const faculties = new Set(transactions.map(t => t.faculty || t.user?.faculty || 'Hệ thống'));
+        return Array.from(faculties).sort();
+    }, [transactions]);
 
     const filteredTransactions = useMemo(() => {
         return transactions.filter(t => {
             // Lọc theo trạng thái (PENDING, SUCCESS, REJECTED)
             const matchesStatus = selectedStatus === 'All' || t.status === selectedStatus;
             
+            // Lọc theo khoa
+            const facultyStr = t.faculty || t.user?.faculty || 'Hệ thống';
+            const matchesFaculty = selectedFaculty === 'All' || facultyStr === selectedFaculty;
+
             // Tìm kiếm theo mã giao dịch (orderId) hoặc tên/MSSV sinh viên (nếu Backend có join kèm)
             const searchLower = searchTerm.toLowerCase();
             const studentName = t.studentName || t.user?.name || '';
@@ -76,9 +87,9 @@ export default function QRDonationManager() {
                                  studentName.toLowerCase().includes(searchLower) ||
                                  studentId.includes(searchTerm);
 
-            return matchesStatus && matchesSearch;
+            return matchesStatus && matchesSearch && matchesFaculty;
         });
-    }, [transactions, searchTerm, selectedStatus]);
+    }, [transactions, searchTerm, selectedStatus, selectedFaculty]);
 
     // 4. PHÂN TRANG
     const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
@@ -116,18 +127,34 @@ export default function QRDonationManager() {
                         style={{ width: '100%', paddingLeft: '32px', paddingRight: '12px', paddingTop: '8px', paddingBottom: '8px', backgroundColor: '#fafafa', border: '1px solid #d1d5db', borderRadius: '6px', outline: 'none', fontSize: '13px', boxSizing: 'border-box' }} 
                     />
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: '200px' }}>
-                    <Filter size={14} color="#9ca3af" />
-                    <select 
-                        value={selectedStatus}
-                        onChange={(e) => setSelectedStatus(e.target.value)}
-                        style={{ flex: 1, padding: '8px 10px', backgroundColor: '#fafafa', border: '1px solid #d1d5db', borderRadius: '6px', outline: 'none', fontSize: '13px', color: '#374151', cursor: 'pointer' }}
-                    >
-                        <option value="All">-- Tất cả trạng thái --</option>
-                        <option value="PENDING">Chờ xử lý (PENDING)</option>
-                        <option value="SUCCESS">Thành công (SUCCESS)</option>
-                        <option value="REJECTED">Đã hủy (REJECTED)</option>
-                    </select>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: '180px' }}>
+                        <Filter size={14} color="#9ca3af" />
+                        <select 
+                            value={selectedFaculty}
+                            onChange={(e) => setSelectedFaculty(e.target.value)}
+                            style={{ flex: 1, padding: '8px 10px', backgroundColor: '#fafafa', border: '1px solid #d1d5db', borderRadius: '6px', outline: 'none', fontSize: '13px', color: '#374151', cursor: 'pointer' }}
+                        >
+                            <option value="All">-- Tất cả các khoa --</option>
+                            {uniqueFaculties.map((fac, idx) => (
+                                <option key={idx} value={fac}>{fac}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: '180px' }}>
+                        <Filter size={14} color="#9ca3af" />
+                        <select 
+                            value={selectedStatus}
+                            onChange={(e) => setSelectedStatus(e.target.value)}
+                            style={{ flex: 1, padding: '8px 10px', backgroundColor: '#fafafa', border: '1px solid #d1d5db', borderRadius: '6px', outline: 'none', fontSize: '13px', color: '#374151', cursor: 'pointer' }}
+                        >
+                            <option value="All">-- Tất cả trạng thái --</option>
+                            <option value="PENDING">Chờ xử lý (PENDING)</option>
+                            <option value="SUCCESS">Thành công (SUCCESS)</option>
+                            <option value="REJECTED">Đã hủy (REJECTED)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 

@@ -7,6 +7,7 @@ import prisma from '../config/prisma';
 // 🌟 THÊM 2 IMPORT NÀY CHO TÍNH NĂNG QUÊN MẬT KHẨU
 import bcrypt from 'bcryptjs';
 import { sendForgotPasswordEmail, sendVerificationEmail } from '../utils/email.util';
+import { geocodeAddress } from '../utils/geocode.util';
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -200,9 +201,16 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
         const avatarUrl = files && files['avatar'] ? `/uploads/${files['avatar'][0].filename}` : undefined;
         const coverPhotoUrl = files && files['coverPhoto'] ? `/uploads/${files['coverPhoto'][0].filename}` : undefined;
 
-        // 🌟 2. Ép kiểu dữ liệu tọa độ địa lý truyền lên từ map
-        const lat = req.body.lat ? parseFloat(req.body.lat) : undefined;
-        const lng = req.body.lng ? parseFloat(req.body.lng) : undefined;
+        // 🌟 2. Tự động lấy tọa độ địa lý từ địa chỉ (Bỏ qua lat, lng cũ gửi lên)
+        let lat = undefined;
+        let lng = undefined;
+        if (address && address.trim() !== "") {
+            const coords = await geocodeAddress(address);
+            if (coords) {
+                lat = coords.lat;
+                lng = coords.lng;
+            }
+        }
 
         let connectFaculty = undefined;
         if (faculty && faculty.trim() !== "") {

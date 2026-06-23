@@ -1,11 +1,22 @@
 import prisma from '../config/prisma';
 import bcrypt from 'bcrypt'; 
 import jwt from 'jsonwebtoken';
+import { geocodeAddress } from '../utils/geocode.util';
 
 // Tạo người dùng mới (Đăng ký)
 export const createUser = async (data: any) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    let lat = null;
+    let lng = null;
+    if (data.address) {
+        const coords = await geocodeAddress(data.address);
+        if (coords) {
+            lat = coords.lat;
+            lng = coords.lng;
+        }
+    }
 
     return await prisma.user.create({
         data: {
@@ -19,7 +30,9 @@ export const createUser = async (data: any) => {
             phone: data.phone || null,
             dob: data.dob || null,
             gender: data.gender || null,
-            address: data.address || null
+            address: data.address || null,
+            lat,
+            lng
         }
     });
 };

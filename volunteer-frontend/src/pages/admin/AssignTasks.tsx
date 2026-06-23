@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import api from '../../config/axios';
 import Pagination from '../../components/admin/Pagination';
+import KanbanBoard from '../../components/admin/KanbanBoard';
+import ChatRoom from '../../components/admin/ChatRoom';
 import { useTheme } from '../../context/ThemeContext';
 import {
     getThStyle, getTdStyle, getInputStyle, getBtnPrimary,
@@ -14,6 +16,9 @@ export default function AssignTasks() {
     const [campaigns, setCampaigns] = useState<any[]>([]);
     const [selectedCampId, setSelectedCampId] = useState<number | null>(null);
     const [participants, setParticipants] = useState<any[]>([]);
+    
+    // Tab active ('list' | 'kanban' | 'chat')
+    const [activeTab, setActiveTab] = useState<'list' | 'kanban' | 'chat'>('list');
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
@@ -102,6 +107,30 @@ export default function AssignTasks() {
                 </div>
             </div>
 
+            {/* Tab điều hướng */}
+            {selectedCampId && (
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                    <button 
+                        onClick={() => setActiveTab('list')}
+                        style={{ ...btnPrimary, backgroundColor: activeTab === 'list' ? '#2563eb' : p.surfaceAlt, color: activeTab === 'list' ? 'white' : p.textSub, border: `1px solid ${p.border}` }}
+                    >
+                        Danh sách Phân công
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('kanban')}
+                        style={{ ...btnPrimary, backgroundColor: activeTab === 'kanban' ? '#2563eb' : p.surfaceAlt, color: activeTab === 'kanban' ? 'white' : p.textSub, border: `1px solid ${p.border}` }}
+                    >
+                        Bảng Kanban Tiến độ
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('chat')}
+                        style={{ ...btnPrimary, backgroundColor: activeTab === 'chat' ? '#2563eb' : p.surfaceAlt, color: activeTab === 'chat' ? 'white' : p.textSub, border: `1px solid ${p.border}` }}
+                    >
+                        Kênh Thảo luận (Chat)
+                    </button>
+                </div>
+            )}
+
             {/* Chọn chiến dịch */}
             <div style={{ ...getFilterPanel(isDark), marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, color: p.textSub, fontSize: '13px' }}>
@@ -117,8 +146,8 @@ export default function AssignTasks() {
                 </select>
             </div>
 
-            {/* Bảng nhân sự */}
-            {selectedCampId && (
+            {/* Giao diện tương ứng với Tab */}
+            {selectedCampId && activeTab === 'list' && (
                 <div style={getSectionCard(isDark)}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
@@ -140,7 +169,15 @@ export default function AssignTasks() {
                                     <tr key={reg.id} style={{ borderBottom: `1px solid ${p.borderLight}` }}>
                                         <td style={tdStyle}>
                                             <div style={{ fontWeight: 500, color: p.text, fontSize: '13px' }}>{reg.user.fullName}</div>
-                                            <div style={{ color: p.textFaint, fontSize: '12px' }}>{reg.user.email}</div>
+                                            <div style={{ color: p.textFaint, fontSize: '12px', marginBottom: '8px' }}>{reg.user.email}</div>
+                                            <div style={{ fontSize: '11px', color: p.textSub, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                                <span style={{ color: reg.checkInAt ? '#059669' : p.textFaint }}>
+                                                    📥 ĐẾN: {reg.checkInAt ? new Date(reg.checkInAt).toLocaleTimeString('vi-VN') : 'Chưa quét mã'}
+                                                </span>
+                                                <span style={{ color: reg.checkOutAt ? '#059669' : p.textFaint }}>
+                                                    📤 VỀ: {reg.checkOutAt ? new Date(reg.checkOutAt).toLocaleTimeString('vi-VN') : 'Chưa quét mã'}
+                                                </span>
+                                            </div>
                                         </td>
                                         <td style={tdStyle}>
                                             {reg.tasks && reg.tasks.length > 0 ? (
@@ -212,6 +249,14 @@ export default function AssignTasks() {
                         />
                     )}
                 </div>
+            )}
+
+            {selectedCampId && activeTab === 'kanban' && (
+                <KanbanBoard campaignId={selectedCampId} />
+            )}
+
+            {selectedCampId && activeTab === 'chat' && (
+                <ChatRoom campaignId={selectedCampId} />
             )}
         </div>
     );

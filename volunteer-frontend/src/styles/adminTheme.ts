@@ -9,6 +9,7 @@ export const palette = {
         bg: '#f5f5f5',
         surface: '#ffffff',
         surfaceAlt: '#fafafa',
+        sidebarBg: '#f8fafc', // Tối lại 1 tí (Slate 50) thay vì trắng tinh
         border: '#e5e7eb',
         borderLight: '#f3f4f6',
         text: '#111827',
@@ -20,6 +21,7 @@ export const palette = {
         bg: '#0f172a',
         surface: '#1e293b',
         surfaceAlt: '#263244',
+        sidebarBg: '#1e293b',
         border: '#334155',
         borderLight: '#2d3f55',
         text: '#f1f5f9',

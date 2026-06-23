@@ -175,3 +175,43 @@ export const sendCampaignRejectionEmail = async (email: string, volunteerName: s
         console.error('[EMAIL ERROR]:', error);
     }
 };
+
+// 4. HÀM GỬI PHẢN HỒI LIÊN HỆ
+export const sendContactReplyEmail = async (email: string, name: string, replyContent: string) => {
+    try {
+        await transporter.sendMail({
+            from: `"Hệ Thống Tình Nguyện" <${process.env.EMAIL_USER}>`,
+            to: email, 
+            subject: '✅ Phản hồi yêu cầu liên hệ từ Quản trị viên',
+            html: `
+                <div style="background-color: #f4f7f6; padding: 40px 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
+                    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div style="background-color: #3b82f6; padding: 25px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 22px;">PHẢN HỒI LIÊN HỆ</h1>
+                        </div>
+                        
+                        <div style="padding: 35px 30px;">
+                            <p style="color: #333333; font-size: 16px; margin-top: 0;">Xin chào <strong>${name}</strong>,</p>
+                            <p style="color: #4b5563; font-size: 15px;">Chúng tôi đã nhận được tin nhắn liên hệ của bạn và xin gửi tới bạn phản hồi từ Ban Quản Trị:</p>
+                            
+                            <div style="padding: 20px; background-color: #eff6ff; border-left: 4px solid #3b82f6; margin: 25px 0; border-radius: 4px;">
+                                <p style="color: #1e3a8a; font-size: 15px; margin: 0; white-space: pre-wrap;">${replyContent}</p>
+                            </div>
+                            
+                            <p style="color: #4b5563; font-size: 15px; margin-bottom: 0;">Nếu bạn có bất kỳ thắc mắc nào khác, xin đừng ngần ngại liên hệ lại với chúng tôi.</p>
+                            <p style="color: #4b5563; font-size: 15px;">Trân trọng,</p>
+                            <p style="color: #4b5563; font-size: 15px; font-weight: bold;">Ban Quản Trị Hệ thống Tình Nguyện</p>
+                        </div>
+                        
+                        <div style="background-color: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0;">Email này được gửi tự động từ Hệ thống Quản lý Tình nguyện viên.</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        });
+        console.log(`[Email] Đã gửi email phản hồi liên hệ tới ${email}`);
+    } catch (error) {
+        console.error(`[Email Error] Lỗi gửi email phản hồi cho ${email}:`, error);
+    }
+};

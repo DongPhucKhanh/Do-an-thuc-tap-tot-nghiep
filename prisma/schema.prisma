@@ -43,11 +43,13 @@ resetPasswordOtp      String?   // Lưu mã 6 số
   facultyId        Int?              // Cho phép null nếu Admin/BTC không thuộc khoa nào
   faculty          Faculty?          @relation(fields: [facultyId], references: [id])
   pointEvaluations PointEvaluation[] // Điểm rèn luyện trực tuyến theo kỳ
+  contacts      Contact[]
   registrations    Registration[]    // 1 User có thể đăng ký nhiều Chiến dịch
   itemDonations    ItemDonation[]    // Danh sách vật phẩm quyên góp
   moments          Moment[]          // Các bài viết khoảnh khắc đã đăng lên bảng tin
   comments         Comment[]         // Các bình luận tương tác
   notifications    Notification[]
+  chatMessages     ChatMessage[]
   createdAt        DateTime          @default(now())
 }
 
@@ -86,6 +88,7 @@ model Campaign {
   registrations       Registration[]
   itemDonations       ItemDonation[]
   moments             Moment[]
+  chatMessages        ChatMessage[]
 }
 
 // Bảng Đơn đăng ký (Bảng trung gian quản lý thành viên chiến dịch)
@@ -95,6 +98,10 @@ model Registration {
   campaignId Int
   status     RegStatus  @default(PENDING) 
   appliedAt  DateTime   @default(now())
+
+  // Tính năng Điểm danh QR
+  checkInAt  DateTime?
+  checkOutAt DateTime?
 
   // Khóa ngoại liên kết
   user       User       @relation(fields: [userId], references: [id])
@@ -246,6 +253,33 @@ model Donation {
   // Liên kết tới người dùng quyên góp (ẩn danh nếu chưa đăng nhập thì để optional ?)
   userId      Int?
   user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  status    String   @default("PENDING") // PENDING, REPLIED
+  reply     String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+// Bảng ChatMessage cho Hệ thống Chat nội bộ (Real-time Socket.io)
+model ChatMessage {
+  id         Int      @id @default(autoincrement())
+  campaignId Int
+  senderId   Int
+  content    String   @db.Text
+  createdAt  DateTime @default(now())
+
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 // Bảng Thông báo (Notification)

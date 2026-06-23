@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { 
     create, getAll, getRegistrations, update, remove, 
     getCampaignById, getSystemStats, getFacultyLeaderboard,
-    updateDonationStatus, donateItems, getAllDonations, getNearestCampaigns // 👈 Đã bổ sung đầy đủ import
+    updateDonationStatus, donateItems, getAllDonations, getNearestCampaigns, scanQR,
+    getCampaignTasks, updateTaskStatus, getCampaignMessages
 } from '../controllers/campaign.controller';
 
 import { 
@@ -37,12 +38,20 @@ router.get('/:id', getCampaignById);
 // Đăng ký tham gia và Quyên góp
 router.post('/:id/register', verifyToken, apply); 
 router.post('/:id/donate-items', verifyToken, donateItems);
+router.post('/:id/scan-qr', verifyToken, scanQR);
 
 // Quản lý đơn, nhiệm vụ, đánh giá
 router.get('/:id/registrations', verifyToken, verifyAdmin, getRegistrations);
 router.patch('/registrations/:id/evaluate', verifyToken, verifyAdmin, evaluate);
 router.patch('/registrations/:id/task', verifyToken, verifyAdmin, assignTask); 
 router.delete('/tasks/:taskId', verifyToken, verifyAdmin, removeTask); 
+
+// KANBAN BOARD ROUTES
+router.get('/:id/tasks', verifyToken, verifyAdmin, getCampaignTasks);
+router.patch('/tasks/:taskId/status', verifyToken, verifyAdmin, updateTaskStatus);
+
+// REAL-TIME CHAT ROUTES
+router.get('/:id/messages', verifyToken, getCampaignMessages);
 
 // Quản lý tình nguyện viên
 router.get('/volunteers/list', verifyToken, verifyAdmin, getAllVolunteers); 
